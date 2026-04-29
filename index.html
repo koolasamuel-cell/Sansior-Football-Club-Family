@@ -637,17 +637,28 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </div>
 
 <!-- ─── DASHBOARD ─── -->
-<div id="dashboard-page" class="page">
-  <div style="max-width:1400px;margin:0 auto;padding:0 1.5rem">
+ 
+ <div id="dashboard-page" class="page">
+  <div style="max-width:1400px; margin:0 auto; padding:0 1.5rem">
     
-    <div class="dash-header">
-      <div>
+    <div class="dash-header" style="display:flex; align-items:center; gap:1.5rem; padding: 1rem 0;">
+      <div class="member-avatar" id="dash-avatar-container" style="margin:0; width:128px; height:128px; flex-shrink:0; border:2px solid var(--gold); position:relative; overflow:hidden; border-radius:50%; background:rgba(255,255,255,0.05); display:flex; align-items:center; justify-content:center;">
+        
+        <div style="position:absolute; font-size:0.75rem; color:var(--gold); text-transform:uppercase; letter-spacing:1px; text-align:center; pointer-events:none; font-weight:600; line-height:1.2;">
+          Choose<br>File
+        </div>
+
+        <img id="dash-profile-img" src="https://via.placeholder.com/128" alt="" style="width:100%; height:100%; border-radius:50%; object-fit:cover; position:relative; z-index:1; display:block;">
+      </div>
+
+      <div style="flex:1">
         <div class="dash-welcome">Welcome, <span id="dash-name">—</span></div>
         <div class="dash-role-tag" id="dash-role-tag">—</div>
       </div>
-      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-        <div style="font-size:.8rem;color:var(--muted)" id="dash-team-tag">—</div>
-        <button class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px" onclick="doLogout()">Logout</button>
+
+      <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap">
+        <div style="font-size:.8rem; color:var(--muted)" id="dash-team-tag">—</div>
+        <button class="btn btn-outline btn-sm" style="clip-path:none; border-radius:2px" onclick="doLogout()">Logout</button>
       </div>
     </div>
 
@@ -987,7 +998,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const APP_URL = "https://script.google.com/macros/s/AKfycbwagdFnbEjTvOW-tF9g8fsJmYttjJRTGeMwjXY-bk5piiXG8Xguu3NHrw_ksEWqpeaKNw/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbyhem3KFvkTXzYku1aW115lG8ftO7jCwVsGG0CR-xjZe2a8vlvOfThMGp8worDnz6ARng/exec";
 
 // ═══════════════════════════════════════════════
 // API — Native Google Script Execution
@@ -1316,14 +1327,19 @@ function previewImage(input) {
   if (input.files && input.files[0]) {
     const reader = new FileReader();
     reader.onload = function(e) {
-      // Show the chosen image in the preview circle immediately
-      document.getElementById('profile-preview').src = e.target.result;
-      // Save the result to our global variable to send to the database
-      base64Image = e.target.result; 
+      const imgData = e.target.result;
+
+      document.getElementById('profile-preview').src = imgData;
+      document.getElementById('dash-profile-img').src = imgData;
+
+      base64Image = imgData;
+
+      // SAVE HERE ↓
+      localStorage.setItem("profileImage", imgData);
     };
     reader.readAsDataURL(input.files[0]);
   }
-}
+} 
 
 /**
  * 5. SAVE PROFILE CHANGES (UPDATED)
@@ -1348,29 +1364,37 @@ async function saveProfileChanges() {
     const response = await api('updateProfile', {
       userID: currentUser.ID,
       name: newName,
-      pic: base64Image || currentUser.ProfilePic, // Keep old pic if no new upload
+      pic: base64Image || currentUser.ProfilePic, 
       contact: newContact
     });
 
-    // 2. Update Password if the field isn't empty
-    if (newPass.trim() !== "") {
-      const passResponse = await api('updatePassword', { 
-        userID: currentUser.ID, 
-        newPassword: newPass 
-      });
-      if (passResponse.success) currentUser.Password = newPass;
-    }
-
     if (response.success) {
-      // 3. Sync the live currentUser object
+      // Update local object immediately
       currentUser.Name = newName;
-      if (base64Image) currentUser.ProfilePic = base64Image;
       currentUser.Contact = newContact;
+      if (base64Image) currentUser.ProfilePic = base64Image;
 
-      // 4. CRITICAL: Save to LocalStorage so it stays after refresh
+      // 2. Update Password ONLY if the field isn't empty
+      if (newPass.trim() !== "") {
+        const passResponse = await api('updatePassword', { 
+          userID: currentUser.ID, 
+          newPassword: newPass 
+        });
+        // Only update local memory if the server actually confirmed the password change
+        if (passResponse.success) {
+          currentUser.Password = newPass;
+        } else {
+          console.warn("Password update failed on server, but profile info saved.");
+        }
+      }
+
+      // 3. CRITICAL: Save the fully updated object to LocalStorage
       localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
       
-      // 5. Refresh the Dashboard visuals
+      // 4. Update the visual text in the Profile Settings area manually
+      document.getElementById('profile-display-name').textContent = newName;
+      
+      // 5. Refresh the Dashboard visuals (this updates the header/Welcome text)
       enterDashboard();
       
       if (typeof toast === 'function') toast("Profile & Security Updated!", "success");
@@ -2386,6 +2410,19 @@ window.addEventListener('load', () => {
       
       // Force the system to open the dashboard immediately
       enterDashboard(); 
+
+      // ✅ FIX: wait for dashboard UI to exist
+      setTimeout(() => {
+        const savedImage = localStorage.getItem("profileImage");
+        if (savedImage) {
+          const dashImg = document.getElementById("dash-profile-img");
+          const previewImg = document.getElementById("profile-preview");
+
+          if (dashImg) dashImg.src = savedImage;
+          if (previewImg) previewImg.src = savedImage;
+        }
+      }, 200);
+
     } catch(e) {
       console.error("Session corrupted. Clearing memory.");
       localStorage.removeItem('sansiro_user');
