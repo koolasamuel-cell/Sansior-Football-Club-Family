@@ -651,6 +651,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
       </div>
     </div>
 
+
     <div class="dash-layout">
       
       <div class="dash-sidebar glass" style="padding:1rem;height:fit-content" id="dash-sidebar">
@@ -682,42 +683,49 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           </div>
         </div>
 
-        <div class="dash-module" id="mod-profile">
-          <div class="section-title">Profile Settings</div>
-          <div class="glass" style="padding:2rem;max-width:600px;text-align:center;">
-            
-            <div id="profile-header-container" style="margin-bottom: 2rem;">
-              <div class="glass" style="width: 130px; height: 130px; border-radius: 50%; margin: 0 auto; overflow: hidden; border: 2px solid var(--gold); background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
-                <img id="profile-preview" src="https://via.placeholder.com/150?text=User" style="width: 100%; height: 100%; object-fit: cover;">
-              </div>
-              <h3 id="profile-display-name" style="margin-top: 1rem; color: var(--gold); letter-spacing: 1px;">User Name</h3>
-              <p id="profile-display-role" style="font-size: 0.8rem; opacity: 0.7; margin-top: -5px;">Role</p>
-            </div>
+       <div class="dash-module" id="mod-profile">
+  <div class="section-title">Profile Settings</div>
+  <div class="glass" style="padding:2rem; max-width:600px; margin: 0 auto; text-align:center;">
+    
+    <div id="profile-header-container" style="margin-bottom: 2rem;">
+      <div class="glass" style="width: 130px; height: 130px; border-radius: 50%; margin: 0 auto; overflow: hidden; border: 2px solid var(--gold); background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
+        <img id="profile-preview" src="https://via.placeholder.com/150?text=User" style="width: 100%; height: 100%; object-fit: cover;">
+      </div>
+      <h3 id="profile-display-name" style="margin-top: 1rem; color: var(--gold); letter-spacing: 1px; font-family: 'Bebas Neue'; font-size: 1.5rem;">User Name</h3>
+      <p id="profile-display-role" style="font-size: 0.8rem; opacity: 0.7; margin-top: -5px; text-transform: uppercase;">Role</p>
+    </div>
 
-            <div id="profile-edit-form" style="text-align: left;">
-              <div class="form-group">
-                <label>Upload Profile Picture</label>
-                <input type="file" id="edit-pic-file" accept="image/*" onchange="previewImage(this)" style="padding: 10px 0; font-size: 0.8rem; color: var(--muted);">
-              </div>
+    <div id="profile-edit-form" style="text-align: left;">
+      <div class="form-group">
+        <label>Update Profile Picture</label>
+        <input type="file" id="edit-pic-file" accept="image/*" onchange="previewImage(this)" style="padding: 10px 0; font-size: 0.8rem; color: var(--muted);">
+      </div>
 
-              <div class="form-group">
-                <label>Display Name</label>
-                <input type="text" id="edit-display-name" placeholder="Enter full name">
-              </div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="edit-display-name" placeholder="Enter full name">
+      </div>
 
-              <div class="form-group">
-                <label>Contact (WhatsApp/Phone)</label>
-                <input type="text" id="edit-contact" placeholder="e.g. +233 24 000 0000">
-              </div>
+      <div class="form-group">
+        <label>Contact (WhatsApp/Phone)</label>
+        <input type="text" id="edit-contact" placeholder="e.g. +233 24 000 0000">
+      </div>
 
-              <p style="font-size: 0.7rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.4;">
-                * Your profile picture will be saved as a high-quality asset in the database and visible to all members.
-              </p>
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password" id="edit-password" placeholder="Leave blank to keep current password" style="background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--border);">
+      </div>
 
-              <button onclick="saveProfileChanges()" id="save-profile-btn" class="btn btn-gold" style="width:100%; border-radius: 2px; clip-path: none;">Save Changes</button>
-            </div>
-          </div>
-        </div>
+      <p style="font-size: 0.7rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.4;">
+        * Note: Changes to your name or contact info will be updated across the entire Sansiro system immediately.
+      </p>
+
+      <button onclick="saveProfileChanges()" id="save-profile-btn" class="btn btn-gold" style="width:100%; border-radius: 2px; clip-path: none; justify-content: center;">
+        Save All Changes
+      </button>
+    </div>
+  </div>
+</div>
 
         <div class="dash-module" id="mod-chat">
           <div class="section-title">Live Chat</div>
@@ -979,7 +987,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const APP_URL = "https://script.google.com/macros/s/AKfycbxgcjxsJyE5qIUCTD5ulCdKbYfKDO0JOJB1c6wCQ9LScW6ZZs0GATvtPBRwpEH28kn2Pg/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbwagdFnbEjTvOW-tF9g8fsJmYttjJRTGeMwjXY-bk5piiXG8Xguu3NHrw_ksEWqpeaKNw/exec";
 
 // ═══════════════════════════════════════════════
 // API — Native Google Script Execution
@@ -1182,6 +1190,7 @@ async function api(action, data = {}) {
   try {
     const finalAction = action === 'register' ? 'registerUser' : action;
     
+    // NOTE: Ensure your APP_URL is set to your LATEST 'Anyone' deployment link
     const response = await fetch(APP_URL, {
       method: "POST",
       mode: "cors", 
@@ -1191,19 +1200,18 @@ async function api(action, data = {}) {
       body: JSON.stringify({
         action: finalAction,
         data: data
-      })
+      }),
+      redirect: "follow" // Allows the browser to follow Google's internal redirect
     });
 
     if (!response.ok) throw new Error('Network response was not ok');
     
-    const result = await response.json();
-    return result;
+    return await response.json();
   } catch (error) {
     console.error("API Error:", error);
     return { success: false, message: "Server connection failed." };
   }
 }
-
 /**
  * 2. LOGIN LOGIC
  */
@@ -1318,77 +1326,253 @@ function previewImage(input) {
 }
 
 /**
- * 5. SAVE PROFILE CHANGES
+ * 5. SAVE PROFILE CHANGES (UPDATED)
  * Sends the updated Name, Contact, and Image to the Google Sheet
+ * and updates local memory immediately.
+ */
+/**
+ * 5. SAVE PROFILE CHANGES (UPDATED FOR PERSISTENCE & PASSWORD)
  */
 async function saveProfileChanges() {
   const btn = document.getElementById('save-profile-btn');
   const newName = document.getElementById('edit-display-name').value;
   const newContact = document.getElementById('edit-contact').value;
+  const newPass = document.getElementById('edit-password').value;
   
   const originalText = btn.innerText;
   btn.disabled = true;
   btn.innerHTML = 'Saving...';
 
-  const response = await api('updateProfile', {
-    userID: currentUser.ID,
-    name: newName,
-    pic: base64Image, // The base64 string from the device upload
-    contact: newContact
-  });
+  try {
+    // 1. Update Profile Info (Name, Pic, Contact)
+    const response = await api('updateProfile', {
+      userID: currentUser.ID,
+      name: newName,
+      pic: base64Image || currentUser.ProfilePic, // Keep old pic if no new upload
+      contact: newContact
+    });
 
-  if (response.success) {
-    // Update local storage so changes persist after refresh
-    currentUser.Name = newName;
-    if (base64Image) currentUser.ProfilePic = base64Image;
-    currentUser.Contact = newContact;
-    localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
-    
-    // Update the visual dashboard header labels
-    document.getElementById('profile-display-name').innerText = newName;
-    document.getElementById('dash-name').innerText = newName;
-    
-    if (typeof toast === 'function') toast("Profile Updated Successfully!", "success");
-  } else {
-    alert("Update failed: " + response.message);
+    // 2. Update Password if the field isn't empty
+  // 1. Handle Password Update
+    if (newPass.trim() !== "") {
+      const passResponse = await api('updatePassword', { 
+        userID: currentUser.ID, 
+        newPassword: newPass 
+      });
+      if (passResponse.success) {
+        currentUser.Password = newPass;
+      }
+    }
+
+    // 2. Handle Profile Info Update (Name, Pic, Contact)
+    if (response.success) {
+      // Sync the live currentUser object in the code
+      currentUser.Name = newName;
+      if (base64Image) currentUser.ProfilePic = base64Image;
+      currentUser.Contact = newContact;
+
+      // CRITICAL: Save everything to LocalStorage so it stays after you refresh
+      localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
+      
+      // Refresh the Dashboard visuals immediately
+      enterDashboard();
+      
+      if (typeof toast === 'function') {
+        toast("Profile & Security Updated!", "success");
+      }
+      
+      // Clear fields and variables
+      document.getElementById('edit-password').value = "";
+      base64Image = null; 
+    } else {
+      alert("Update failed: " + response.message);
+    }
+
+      // 4. CRITICAL: Save to LocalStorage so it stays after refresh
+      localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
+      
+      // 5. Refresh the Dashboard visuals
+      enterDashboard();
+      
+      if (typeof toast === 'function') toast("Profile & Security Updated!", "success");
+      
+      // Clear password field for security
+      document.getElementById('edit-password').value = "";
+      base64Image = null; 
+    } else {
+      alert("Update failed: " + response.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Connection Error. Check console.");
   }
   
   btn.disabled = false;
   btn.innerText = originalText;
 }
+/**
+ * DASHBOARD INIT (FIXED)
+ * This handles the top profile area and ensures data persistence.
+ */
+function enterDashboard() {
+  if (!currentUser) return;
+
+  // 1. Update Navigation Info
+  const info = document.getElementById('nav-user-info');
+  if (info) {
+    info.textContent = currentUser.Name + ' (' + currentUser.Role + ')';
+    info.style.display = 'inline';
+  }
+  document.getElementById('nav-enter-btn').textContent = '📊 Dashboard';
+
+  // 2. Update Top Dashboard Header Area (The part from your screenshot)
+  const dashName = document.getElementById('dash-name');
+  const dashRole = document.getElementById('dash-role-tag');
+  const dashPic = document.getElementById('dash-user-pic');
+
+  if (dashName) dashName.textContent = currentUser.Name;
+  if (dashRole) dashRole.textContent = (currentUser.Role || 'Member') + ' · ' + (currentUser.Team || 'Sansiro');
+  
+  if (dashPic) {
+      dashPic.src = currentUser.ProfilePic || "https://via.placeholder.com/80?text=⚽";
+  }
+
+  // 3. Synchronize Profile Module Fields (The "My Profile" Section)
+  const editNameField = document.getElementById('edit-display-name');
+  const editContactField = document.getElementById('edit-contact');
+  const previewImg = document.getElementById('profile-preview');
+  const profileHeaderName = document.getElementById('profile-display-name');
+
+  if (editNameField) editNameField.value = currentUser.Name || "";
+  if (editContactField) editContactField.value = currentUser.Contact || "";
+  
+  if (previewImg) previewImg.src = currentUser.ProfilePic || "https://via.placeholder.com/150?text=User";
+  if (profileHeaderName) profileHeaderName.innerText = currentUser.Name || "User Name";
+
+  // 4. System Navigation
+  applyRolePermissions();
+  showPage('dashboard');
+  
+  // Load initial dashboard content
+  showModule('overview', document.querySelector('.dash-nav-btn'));
+  loadDashboardOverview();
+}/**
+ * DASHBOARD INIT (FIXED)
+ * This handles the top profile area and ensures data persistence.
+ */
+function enterDashboard() {
+  if (!currentUser) return;
+
+  // 1. Update Navigation Info
+  const info = document.getElementById('nav-user-info');
+  if (info) {
+    info.textContent = currentUser.Name + ' (' + currentUser.Role + ')';
+    info.style.display = 'inline';
+  }
+  document.getElementById('nav-enter-btn').textContent = '📊 Dashboard';
+
+  // 2. Update Top Dashboard Header Area (The part from your screenshot)
+  const dashName = document.getElementById('dash-name');
+  const dashRole = document.getElementById('dash-role-tag');
+  const dashPic = document.getElementById('dash-user-pic');
+
+  if (dashName) dashName.textContent = currentUser.Name;
+  if (dashRole) dashRole.textContent = (currentUser.Role || 'Member') + ' · ' + (currentUser.Team || 'Sansiro');
+  
+  if (dashPic) {
+      dashPic.src = currentUser.ProfilePic || "https://via.placeholder.com/80?text=⚽";
+  }
+
+  // 3. Synchronize Profile Module Fields (The "My Profile" Section)
+  const editNameField = document.getElementById('edit-display-name');
+  const editContactField = document.getElementById('edit-contact');
+  const previewImg = document.getElementById('profile-preview');
+  const profileHeaderName = document.getElementById('profile-display-name');
+
+  if (editNameField) editNameField.value = currentUser.Name || "";
+  if (editContactField) editContactField.value = currentUser.Contact || "";
+  
+  if (previewImg) previewImg.src = currentUser.ProfilePic || "https://via.placeholder.com/150?text=User";
+  if (profileHeaderName) profileHeaderName.innerText = currentUser.Name || "User Name";
+
+  // 4. System Navigation
+  applyRolePermissions();
+  showPage('dashboard');
+  
+  // Load initial dashboard content
+  showModule('overview', document.querySelector('.dash-nav-btn'));
+  loadDashboardOverview();
+}
 // ═══════════════════════════════════════════════
-// LOGOUT
+// LOGOUT (SECURED & CLEANED)
 // ═══════════════════════════════════════════════
 function doLogout() {
+  // 1. Ask for confirmation so users don't log out by mistake
+  if (!confirm("Are you sure you want to exit the system?")) return;
+
+  // 2. Clear the live user variable
   currentUser = null;
-  if (chatInterval) { clearInterval(chatInterval); chatInterval = null; }
-  document.getElementById('nav-user-info').style.display = 'none';
-  document.getElementById('nav-enter-btn').textContent = '🔑 Enter System';
-  toast('Logged out.', 'info');
+
+  // 3. IMPORTANT: Clear the browser memory (LocalStorage)
+  // This prevents the system from auto-logging them in on refresh
+  localStorage.removeItem('sansiro_user');
+
+  // 4. Stop any background processes (like Chat)
+  if (chatInterval) { 
+    clearInterval(chatInterval); 
+    chatInterval = null; 
+  }
+
+  // 5. Reset Navigation UI
+  const navInfo = document.getElementById('nav-user-info');
+  if (navInfo) {
+    navInfo.textContent = '';
+    navInfo.style.display = 'none';
+  }
+  
+  const enterBtn = document.getElementById('nav-enter-btn');
+  if (enterBtn) {
+    enterBtn.textContent = '🔑 Enter System';
+  }
+
+  // 6. Wipe Dashboard strings so they are blank for the next login
+  if (document.getElementById('dash-name')) document.getElementById('dash-name').textContent = '...';
+  if (document.getElementById('dash-user-pic')) {
+      document.getElementById('dash-user-pic').src = "https://via.placeholder.com/80?text=⚽";
+  }
+
+  // 7. Show feedback and redirect
+  if (typeof toast === 'function') {
+    toast('Logged out successfully.', 'info');
+  } else {
+    alert('Logged out.');
+  }
+  
   showPage('home');
 }
-
 // ═══════════════════════════════════════════════
-// DASHBOARD INIT
+// DASHBOARD INIT (UPDATED WITH TOP PROFILE PIC)
 // ═══════════════════════════════════════════════
-/* ============================================================
-   🚀 ENTER DASHBOARD (UPDATED FOR PROFILE SYNC)
-   ============================================================ */
 function enterDashboard() {
   // 1. Basic UI Header Updates
   document.getElementById('dash-name').textContent = currentUser.Name;
   document.getElementById('dash-role-tag').textContent = currentUser.Role + ' · ' + currentUser.Team;
   document.getElementById('dash-team-tag').textContent = currentUser.Team;
   
+  // --- ADDED: TOP DASHBOARD PROFILE IMAGE SYNC ---
+  const dashTopPic = document.getElementById('dash-user-pic'); // Make sure your HTML has this ID
+  if (dashTopPic) {
+      dashTopPic.src = currentUser.ProfilePic || "https://via.placeholder.com/80?text=⚽";
+  }
+  // -----------------------------------------------
+
   const info = document.getElementById('nav-user-info');
   info.textContent = currentUser.Name + ' (' + currentUser.Role + ')';
   info.style.display = 'inline';
   document.getElementById('nav-enter-btn').textContent = '📊 Dashboard';
 
-  // 2. NEW: Synchronize Profile Module Fields
-  // This makes sure the "My Profile" section isn't empty when you open it
+  // 2. Synchronize Profile Module Fields
   if (currentUser) {
-    // Fill the input fields
     const editNameField = document.getElementById('edit-display-name');
     const editContactField = document.getElementById('edit-contact');
     const previewImg = document.getElementById('profile-preview');
@@ -1412,6 +1596,7 @@ function enterDashboard() {
   showModule('overview', document.querySelector('.dash-nav-btn'));
   loadDashboardOverview();
 }
+
 // ═══════════════════════════════════════════════
 // ROLE PERMISSIONS
 // ═══════════════════════════════════════════════
@@ -2187,17 +2372,50 @@ function deleteNews(index) {
     toast("Deleted locally", "success");
   }
 }
+// ═══════════════════════════════════════════════
+// MASTER SYSTEM INITIALIZATION
+// ═══════════════════════════════════════════════
 
-// ═══════════════════════════════════════════════
-// DATA INITIALIZATION (Standalone)
-// ═══════════════════════════════════════════════
-// This function must be what your Google Script success handler calls
+/**
+ * 1. DATA HANDLER: Called when the Google Script finishes fetching the Sheet data.
+ */
 function onDataLoaded(data) {
+  console.log("Database synchronized.");
   dbData = data; 
-  renderNews(); 
-  // If you have other UI updates like updateStats(), call them here
+  
+  // Update all UI components that depend on the database
+  if (typeof renderNews === 'function') renderNews(); 
   if (typeof updateStats === 'function') updateStats();
+  
+  // If we are already logged in and on the dashboard, refresh those stats too
+  if (currentUser && typeof loadDashboardOverview === 'function') {
+    loadDashboardOverview();
+  }
 }
+
+/**
+ * 2. AUTO-LOGIN & WINDOW LOAD: Runs as soon as the page is ready.
+ */
+window.addEventListener('load', () => {
+  // Check browser memory for a saved session
+  const savedUser = localStorage.getItem('sansiro_user');
+  
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
+      console.log("Session Restored for: " + currentUser.Name);
+      
+      // Force the system to open the dashboard immediately
+      enterDashboard(); 
+    } catch(e) {
+      console.error("Session corrupted. Clearing memory.");
+      localStorage.removeItem('sansiro_user');
+    }
+  } else {
+    console.log("No active session found. Showing Home Page.");
+    showPage('home');
+  }
+});
 </script>
 </body>
 </html>
