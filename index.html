@@ -979,7 +979,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const APP_URL = "https://script.google.com/macros/s/AKfycbx0CuTzB1rPL4JWslJrxmbbgf9gCQqq6bww50NDl5mJhOZJBRU7QAyXO3SIK-g9tKY0WQ/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbxgcjxsJyE5qIUCTD5ulCdKbYfKDO0JOJB1c6wCQ9LScW6ZZs0GATvtPBRwpEH28kn2Pg/exec";
 
 // ═══════════════════════════════════════════════
 // API — Native Google Script Execution
@@ -1178,7 +1178,7 @@ let base64Image = "";
  * UPDATED API WRAPPER
  * This version uses 'text/plain' to minimize CORS issues when testing.
  */
-async function api(action, data) {
+async function api(action, data = {}) {
   try {
     const finalAction = action === 'register' ? 'registerUser' : action;
     
@@ -1186,23 +1186,24 @@ async function api(action, data) {
       method: "POST",
       mode: "cors", 
       headers: {
-        // 'text/plain' is less likely to trigger strict CORS pre-flight checks in GAS
-        "Content-Type": "text/plain;charset=utf-8", 
+        "Content-Type": "text/plain;charset=utf-8"
       },
       body: JSON.stringify({
         action: finalAction,
         data: data
       })
     });
-    
+
     if (!response.ok) throw new Error('Network response was not ok');
-    return await response.json();
+    
+    const result = await response.json();
+    return result;
   } catch (error) {
     console.error("API Error:", error);
-    // This message triggers your "Server connection failed" alert
     return { success: false, message: "Server connection failed." };
   }
 }
+
 /**
  * 2. LOGIN LOGIC
  */
