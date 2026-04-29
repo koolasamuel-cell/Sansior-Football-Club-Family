@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SANSIRO SPECIAL — AC Milan vs Inter Milan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#ff1e1e;--blue:#0053a0;--gold:#c9a84c;
+  --dark:#050505;--glass:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.1);--text:#e8e8e8;--muted:rgba(255,255,255,0.45);
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0a0a0a}::-webkit-scrollbar-thumb{background:var(--gold)}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+
+/* ─── PAGES ─── */
+.page{display:none;min-height:100vh;position:relative;z-index:1}
+.page.active{display:block}
+
+/* ─── NAVBAR ─── */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(18px);background:rgba(5,5,5,0.9);border-bottom:1px solid var(--border)}
+.nav-brand{font-family:'Bebas Neue';font-size:1.3rem;letter-spacing:3px;background:linear-gradient(135deg,var(--red),var(--gold),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+.nav-links a{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s;font-weight:600;text-decoration:none}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-links a.active{border-bottom:1px solid var(--gold);padding-bottom:2px}
+.nav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.nav-enter{background:linear-gradient(135deg,var(--red),var(--blue));border:none;color:#fff;padding:.5rem 1.4rem;font-family:'Rajdhani';font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:opacity .2s}
+.nav-enter:hover{opacity:.85}
+#nav-user-info{font-size:.75rem;color:var(--gold);letter-spacing:1px;display:none}
+
+/* ─── ACHIEVEMENTS ─── */
+.achievements-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media(max-width: 768px) {
+  .achievements-split { grid-template-columns: 1fr; }
+}
+
+.team-achievements {
+  padding: 2rem;
+  border-top: 2px solid var(--border);
+}
+
+.team-achievements.red-theme { border-top-color: var(--red); }
+.team-achievements.blue-theme { border-top-color: var(--blue); }
+
+.ach-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.ach-crest-sm {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  background: var(--glass);
+  border: 1px solid var(--border);
+}
+
+.ach-club-name {
+  font-family: 'Bebas Neue';
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+}
+
+.ach-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ach-item {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem;
+  background: rgba(255,255,255,0.02);
+  border-radius: 2px;
+  transition: background 0.2s;
+}
+
+.ach-item:hover { background: var(--glass); }
+
+.ach-icon { font-size: 1.5rem; opacity: 0.8; }
+
+.ach-count {
+  font-family: 'Bebas Neue';
+  font-size: 1.8rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.ach-name {
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.section-line {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin-top: 0.5rem;
+  width: 100px;
+}
+/* ─── GLASS ─── */
+.glass{background:var(--glass);backdrop-filter:blur(18px);border:1px solid var(--border);border-radius:2px}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.8rem;font-family:'Rajdhani';font-size:.85rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all .2s}
+.btn-red{background:linear-gradient(135deg,var(--red),#8b0000);color:#fff}
+.btn-blue{background:linear-gradient(135deg,var(--blue),#001f3f);color:#fff}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#7a5c1e);color:#000}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);clip-path:none;border-radius:2px}
+.btn-sm{padding:.4rem 1rem;font-size:.75rem}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.15)}
+.btn:active{transform:translateY(0)}
+
+/* ─── FORMS ─── */
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:#fff;padding:.7rem 1rem;font-family:'Rajdhani';font-size:.95rem;border-radius:2px;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group select{cursor:pointer;appearance:none}
+.form-group select option{background:#111;color:#fff}
+.form-group textarea{min-height:100px;resize:vertical}
+
+/* ─── AUTH MODAL ─── */
+#auth-modal{position:fixed;inset:0;z-index:9998;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
+#auth-modal.open{display:flex}
+.auth-box{width:100%;max-width:480px;padding:2.5rem;position:relative;animation:fadeUp .3s ease}
+.auth-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.2rem;cursor:pointer;transition:color .2s}
+.auth-close:hover{color:#fff}
+.auth-logo{font-family:'Bebas Neue';font-size:2rem;letter-spacing:4px;text-align:center;margin-bottom:.3rem;background:linear-gradient(135deg,var(--red),var(--gold),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.auth-sub{text-align:center;font-size:.7rem;letter-spacing:3px;color:var(--muted);margin-bottom:1.5rem}
+.auth-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
+.auth-tab{flex:1;padding:.7rem;text-align:center;cursor:pointer;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);transition:all .2s;border-bottom:2px solid transparent}
+.auth-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+.auth-form{display:none}.auth-form.active{display:block}
+.auth-msg{padding:.6rem 1rem;border-radius:2px;font-size:.85rem;margin-bottom:.8rem;display:none}
+.auth-msg.error{background:rgba(255,30,30,0.1);border:1px solid var(--red);color:var(--red)}
+.auth-msg.success{background:rgba(0,200,100,0.1);border:1px solid #00c864;color:#00c864}
+
+/* ─── HERO ─── */
+#home-page{position:relative;overflow:hidden}
+.hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:64px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 25% 50%,rgba(255,30,30,0.12) 0%,transparent 60%),radial-gradient(ellipse at 75% 50%,rgba(0,83,160,0.12) 0%,transparent 60%),radial-gradient(ellipse at 50% 50%,rgba(201,168,76,0.04) 0%,transparent 70%)}
+.hero-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px}
+.hero-content{position:relative;text-align:center;z-index:2;animation:fadeUp .8s ease both}
+.hero-eyebrow{font-size:.7rem;letter-spacing:6px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.hero-title{font-family:'Bebas Neue';font-size:clamp(5rem,14vw,12rem);line-height:.9;letter-spacing:4px;margin-bottom:.5rem}
+.hero-title .line1{display:block;color:#fff}
+.hero-title .line2{display:block;background:linear-gradient(135deg,var(--red),var(--gold),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(1rem,3vw,1.8rem);font-weight:300;color:var(--muted);letter-spacing:4px;text-transform:uppercase;margin-bottom:2.5rem}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.match-vs{padding:5rem 2rem;text-align:center;position:relative}
+.match-vs::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.match-teams{display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+.team-side{display:flex;flex-direction:column;align-items:center;gap:1rem}
+.team-crest{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:2.5rem;border:2px solid}
+.team-crest.red{border-color:var(--red);background:radial-gradient(circle,rgba(255,30,30,0.15),transparent);color:var(--red)}
+.team-crest.blue{border-color:var(--blue);background:radial-gradient(circle,rgba(0,83,160,0.15),transparent);color:var(--blue)}
+.team-name{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:4px}
+.vs-badge{font-family:'Bebas Neue';font-size:3rem;color:var(--gold)}
+.scroll-hint{text-align:center;padding:2rem;font-size:.75rem;letter-spacing:4px;color:var(--muted);text-transform:uppercase;animation:pulse 2s infinite}
+
+/* ─── INNER PAGES ─── */
+.inner-page{padding:100px 2rem 4rem;max-width:1200px;margin:0 auto}
+.page-header{margin-bottom:3rem}
+.page-header .eyebrow{font-size:.7rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem}
+.page-header h1{font-family:'Bebas Neue';font-size:clamp(3rem,8vw,6rem);letter-spacing:3px;line-height:1}
+.page-header p{color:var(--muted);max-width:600px;line-height:1.7;margin-top:.8rem}
+
+/* ─── ABOUT ─── */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem}
+@media(max-width:768px){.about-grid{grid-template-columns:1fr}}
+.about-card{padding:2rem;border-left:2px solid var(--gold)}
+.about-card h3{font-family:'Bebas Neue';font-size:2rem;letter-spacing:2px;margin-bottom:1rem}
+.about-card p{color:var(--muted);line-height:1.8}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem}
+@media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+.stat-box{padding:1.5rem;text-align:center}
+.stat-num{font-family:'Bebas Neue';font-size:3rem;background:linear-gradient(135deg,var(--gold),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+
+/* ─── TEAM PAGE (CLUB MEMBERS) ─── */
+.team-section-title{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:3px;margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);color:var(--gold)}
+.member-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.2rem;margin-bottom:1.5rem}
+.member-card{padding:1.5rem 1rem;text-align:center;transition:transform .2s,border-color .2s;position:relative}
+.member-card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.member-avatar{width:72px;height:72px;border-radius:50%;margin:0 auto .8rem;object-fit:cover;border:2px solid var(--border);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:1.8rem;color:var(--gold)}
+.member-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.member-name{font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:2px;line-height:1.2}
+.member-role{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:.3rem}
+.member-team{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+.edit-member-btn{position:absolute;top:.5rem;right:.5rem;background:none;border:1px solid var(--border);color:var(--muted);font-size:.6rem;padding:.2rem .5rem;cursor:pointer;border-radius:2px;display:none;font-family:'Rajdhani';letter-spacing:1px;text-transform:uppercase;transition:all .2s}
+.edit-member-btn:hover{border-color:var(--gold);color:var(--gold)}
+.member-card:hover .edit-member-btn{display:block}
+
+/* ─── CAPTAIN BAND ─── */
+.captain-badge{display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold);color:var(--gold);font-size:.55rem;letter-spacing:2px;padding:.15rem .4rem;border-radius:2px;text-transform:uppercase;margin-top:.3rem}
+
+/* ─── NEWS ─── */
+.news-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+@media(max-width:700px){.news-grid{grid-template-columns:1fr}}
+.news-card{padding:1.5rem;cursor:pointer;transition:border-color .2s}
+.news-card:hover{border-color:var(--gold)}
+.news-date{font-size:.7rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem}
+.news-card h3{font-family:'Bebas Neue';font-size:1.6rem;letter-spacing:2px;margin-bottom:.5rem}
+.news-card p{color:var(--muted);font-size:.9rem;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.news-author{font-size:.75rem;color:var(--muted);margin-top:.8rem}
+
+/* ─── MEDIA ─── */
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem}
+.media-item{border-radius:2px;overflow:hidden;position:relative;aspect-ratio:16/9;background:rgba(255,255,255,0.03);display:flex;align-items:center;justify-content:center}
+.media-item img{width:100%;height:100%;object-fit:cover}
+.media-item video{width:100%;height:100%;object-fit:cover}
+.media-item-label{position:absolute;bottom:0;left:0;right:0;padding:.5rem 1rem;background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:.75rem;color:var(--muted)}
+
+/* ─── CONTACT ─── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+@media(max-width:700px){.contact-grid{grid-template-columns:1fr}}
+.contact-detail{display:flex;align-items:flex-start;gap:1rem;margin-top:1.2rem;padding:1rem;border-left:2px solid var(--gold)}
+.contact-detail-label{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+.contact-detail-val{font-size:.95rem;color:var(--text)}
+
+/* ─── DASHBOARD ─── */
+#dashboard-page{padding:80px 1.5rem 3rem}
+#dashboard-page.active{display:block}
+.dash-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.dash-welcome{font-family:'Bebas Neue';font-size:2rem;letter-spacing:3px}
+.dash-welcome span{background:linear-gradient(135deg,var(--red),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dash-role-tag{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+.dash-layout{display:grid;grid-template-columns:220px 1fr;gap:1.5rem;max-width:1400px;margin:0 auto}
+@media(max-width:900px){.dash-layout{grid-template-columns:1fr}}
+.dash-sidebar{display:flex;flex-direction:column;gap:.3rem}
+.dash-nav-btn{width:100%;text-align:left;padding:.75rem 1.2rem;background:transparent;border:1px solid transparent;color:var(--muted);font-family:'Rajdhani';font-size:.82rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .2s;display:flex;align-items:center;gap:.7rem}
+.dash-nav-btn:hover{border-color:var(--border);color:#fff}
+.dash-nav-btn.active{background:rgba(201,168,76,0.08);border-color:var(--gold);color:var(--gold)}
+.dash-content{min-height:60vh}
+.dash-module{display:none}.dash-module.active{display:block}
+
+/* ─── STATS CARDS ─── */
+.stats-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+@media(max-width:600px){.stats-cards{grid-template-columns:1fr}}
+.stat-card{padding:1.5rem;position:relative;overflow:hidden}
+.stat-card-label{font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.stat-card-value{font-family:'Bebas Neue';font-size:3rem;letter-spacing:2px}
+
+/* ─── TABLE ─── */
+.table-wrap{overflow-x:auto}
+.data-table{width:100%;border-collapse:collapse;min-width:500px}
+.data-table th{padding:.7rem 1rem;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);border-bottom:1px solid var(--border);text-align:left;white-space:nowrap}
+.data-table td{padding:.75rem 1rem;font-size:.85rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,0.03)}
+.data-table tr:hover td{color:#fff;background:rgba(255,255,255,0.02)}
+.badge{display:inline-block;padding:.2rem .6rem;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;border-radius:2px}
+.badge-red{background:rgba(255,30,30,0.1);color:var(--red);border:1px solid rgba(255,30,30,0.2)}
+.badge-blue{background:rgba(0,83,160,0.1);color:#4d94ff;border:1px solid rgba(0,83,160,0.3)}
+.badge-gold{background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2)}
+.badge-green{background:rgba(0,200,100,0.1);color:#00c864;border:1px solid rgba(0,200,100,0.2)}
+.badge-muted{background:rgba(255,255,255,0.04);color:var(--muted);border:1px solid var(--border)}
+
+/* ─── CHAT ─── */
+.chat-layout{display:grid;grid-template-columns:150px 1fr;gap:0;height:500px;overflow:hidden}
+.chat-channels{display:flex;flex-direction:column;gap:.4rem;padding:1rem;border-right:1px solid var(--border)}
+.chat-channels-label{font-size:.6rem;letter-spacing:3px;color:var(--muted);margin-bottom:.3rem}
+.chat-channel-btn{padding:.55rem .8rem;background:transparent;border:1px solid transparent;color:var(--muted);font-family:'Rajdhani';font-size:.78rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:all .2s;text-align:left}
+.chat-channel-btn.active{border-color:var(--gold);color:var(--gold)}
+.chat-main{display:flex;flex-direction:column;overflow:hidden}
+.chat-messages{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem}
+.chat-msg{display:flex;gap:.7rem;align-items:flex-start}
+.chat-msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.chat-msg-body{flex:1;min-width:0}
+.chat-msg-meta{display:flex;align-items:center;gap:.5rem;margin-bottom:.15rem}
+.chat-msg-name{font-size:.72rem;font-weight:700;letter-spacing:1px}
+.chat-msg-time{font-size:.62rem;color:var(--muted)}
+.chat-msg-text{font-size:.85rem;color:var(--muted);line-height:1.5;word-break:break-word}
+.chat-input-row{display:flex;gap:.5rem;padding:.8rem 1rem;border-top:1px solid var(--border)}
+.chat-input-row input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:#fff;padding:.55rem .9rem;font-family:'Rajdhani';font-size:.9rem;border-radius:2px;outline:none}
+.chat-input-row input:focus{border-color:var(--gold)}
+
+/* ─── PITCH ─── */
+.pitch{background:linear-gradient(180deg,#173a17,#0b200b);border-radius:4px;padding:1.5rem;position:relative;min-height:460px;border:1px solid rgba(255,255,255,0.08)}
+.pitch-lines{position:absolute;inset:12px;border:2px solid rgba(255,255,255,0.15);border-radius:2px;pointer-events:none}
+.pitch-lines::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:rgba(255,255,255,0.15)}
+.pitch-lines::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:70px;border:1px solid rgba(255,255,255,0.15);border-radius:50%}
+.pitch-players{position:relative;z-index:2;display:flex;flex-direction:column;gap:.8rem;padding:.5rem}
+.pitch-row{display:flex;justify-content:center;gap:.8rem;flex-wrap:wrap}
+.pitch-slot{background:rgba(0,0,0,.5);border:2px solid rgba(255,255,255,0.2);border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:.5rem;font-weight:700;text-align:center;cursor:pointer;position:relative;color:var(--muted);flex-direction:column;transition:all .2s}
+.pitch-slot.filled{border-color:var(--gold);background:rgba(201,168,76,0.2);color:#fff}
+.pitch-slot .slot-num{font-family:'Bebas Neue';font-size:.9rem;color:var(--gold)}
+.pitch-slot .slot-name{font-size:.42rem;line-height:1.1;max-width:48px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pitch-pool{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
+.pool-player{background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-size:.72rem;letter-spacing:1px;padding:.3rem .7rem;border-radius:2px;cursor:pointer;font-family:'Rajdhani';transition:all .2s}
+.pool-player:hover{background:rgba(201,168,76,0.2)}
+.pool-player.used{opacity:.35;pointer-events:none}
+
+/* ─── EDIT MEMBER MODAL ─── */
+#edit-modal{position:fixed;inset:0;z-index:9997;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
+#edit-modal.open{display:flex}
+.edit-box{width:100%;max-width:440px;padding:2rem;position:relative;animation:fadeUp .3s ease}
+.edit-box .modal-close{position:absolute;top:.8rem;right:.8rem;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer}
+
+/* ─── SECTION TITLE ─── */
+.section-title{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:3px;margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem;color:#fff}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ─── TOAST ─── */
+#toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
+.toast-item{padding:.9rem 1.4rem;background:rgba(15,15,15,.97);border-radius:2px;font-size:.83rem;letter-spacing:1px;animation:slideIn .3s ease;min-width:240px;max-width:340px;pointer-events:auto}
+.toast-item.success{border-left:3px solid #00c864;color:#00c864}
+.toast-item.error{border-left:3px solid var(--red);color:var(--red)}
+.toast-item.info{border-left:3px solid var(--gold);color:var(--gold)}
+
+/* ─── LOADER ─── */
+.loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.1);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite}
+
+/* ─── EMPTY STATE ─── */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.empty-state .icon{font-size:3rem;margin-bottom:1rem}
+
+/* ─── PRINT STYLES ─── */
+@media print{
+  body{background:#fff;color:#000}
+  #navbar,#toast,#auth-modal,#edit-modal,.dash-sidebar,.no-print{display:none!important}
+  .pitch{background:#2d7a2d;border-color:#1a5a1a}
+  .pitch-slot{border-color:#fff;background:rgba(0,0,0,.3);color:#fff}
+  .pitch-slot .slot-num,.pitch-slot .slot-name{color:#fff}
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .nav-brand{font-size:1rem}
+}
+@media(max-width:500px){
+  .stats-cards{grid-template-columns:1fr 1fr}
+  .news-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ─── NAVBAR ─── -->
+<nav id="navbar">
+  <div class="nav-brand" onclick="showPage('home')">SANSIRO FOOTBALL FAMILY</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" data-page="home">Home</a></li>
+    <li><a onclick="showPage('about')" data-page="about">About</a></li>
+    <li><a onclick="showPage('team')" data-page="team">Team</a></li>
+    <li><a onclick="showPage('media')" data-page="media">Media</a></li>
+    <li><a onclick="showPage('news')" data-page="news">News</a></li>
+    <li><a onclick="showPage('ahievements')" data-page="news">Achievements</a></li>
+      <li><a onclick="showPage('contact')" data-page="contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <span id="nav-user-info"></span>
+    <button class="nav-enter" id="nav-enter-btn" onclick="openAuth()">🔑 Enter System</button>
+  </div>
+</nav>
+
+<!-- ─── AUTH MODAL ─── -->
+<div id="auth-modal">
+  <div class="auth-box glass">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-logo">SANSIRO SPECIAL</div>
+    <div class="auth-sub">MEMBER ACCESS</div>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login',this)">Login</div>
+      <div class="auth-tab" onclick="switchAuthTab('register',this)">Register</div>
+    </div>
+    <!-- LOGIN -->
+    <div class="auth-form active" id="login-form">
+      <div class="auth-msg" id="login-msg"></div>
+      <div class="form-group"><label>Email</label><input id="l-email" type="email" placeholder="your@email.com" autocomplete="email"/></div>
+      <div class="form-group"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn btn-red" style="width:100%;justify-content:center;clip-path:none;border-radius:2px" onclick="doLogin()" id="login-btn">Login</button>
+      <p style="text-align:center;margin-top:1rem;font-size:.8rem;color:var(--muted)">No account? <a style="color:var(--gold);cursor:pointer" onclick="switchAuthTab('register',null)">Register here</a></p>
+    </div>
+    <!-- REGISTER -->
+    <div class="auth-form" id="register-form">
+      <div class="auth-msg" id="reg-msg"></div>
+      <div class="form-group"><label>Full Name</label><input id="r-name" type="text" placeholder="Full name" autocomplete="name"/></div>
+      <div class="form-group"><label>Email</label><input id="r-email" type="email" placeholder="your@email.com" autocomplete="email"/></div>
+      <div class="form-group"><label>Password</label><input id="r-pass" type="password" placeholder="Create password" autocomplete="new-password"/></div>
+      <div class="form-group"><label>Role</label>
+        <select id="r-role">
+          <option value="">— Select role —</option>
+          <option value="Player">Player</option>
+          <option value="Coach">Coach</option>
+          <option value="Secretary">Secretary</option>
+          <option value="President">President</option>
+          <option value="Admin">Admin (Developer)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Team</label>
+        <select id="r-team">
+          <option value="">— Select team —</option>
+          <option value="AC Milan">AC Milan</option>
+          <option value="Inter Milan">Inter Milan</option>
+        </select>
+      </div>
+      <button class="btn btn-blue" style="width:100%;justify-content:center;clip-path:none;border-radius:2px" onclick="doRegister()" id="reg-btn">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── EDIT MEMBER MODAL ─── -->
+<div id="edit-modal">
+  <div class="edit-box glass">
+    <button class="modal-close" onclick="closeEditModal()">✕</button>
+    <div class="section-title">Edit Member</div>
+    <input type="hidden" id="edit-member-id"/>
+    <div class="form-group"><label>Name</label><input id="edit-member-name" type="text"/></div>
+    <div class="form-group"><label>Role</label>
+      <select id="edit-member-role">
+        <option>Player</option><option>Coach</option><option>Secretary</option>
+        <option>President</option><option>Admin</option><option>Vice President</option>
+        <option>Patron</option><option>Organizer</option><option>Captain</option>
+        <option>Welfare</option><option>Official</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Profile Image URL</label><input id="edit-member-img" type="url" placeholder="https://…"/></div>
+    <div class="form-group"><label>Team</label>
+      <select id="edit-member-team">
+        <option value="AC Milan">AC Milan</option>
+        <option value="Inter Milan">Inter Milan</option>
+        <option value="Both">Both / Management</option>
+      </select>
+    </div>
+    <button class="btn btn-gold" style="clip-path:none;border-radius:2px;width:100%;justify-content:center" onclick="saveEditMember()">Save Changes</button>
+  </div>
+</div>
+
+<!-- ─── HOME ─── -->
+<div id="home-page" class="page active">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-lines"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">⚽ Elite Football Community Platform</p>
+      <h1 class="hero-title">
+        <span class="line1">SANSIRO</span>
+        <span class="line2">SPECIAL</span>
+      </h1>
+      <p class="hero-sub">Where Champions Are Built</p>
+      <div class="hero-btns">
+        <button class="btn btn-red" onclick="openAuth()">Enter System</button>
+        <button class="btn btn-outline" onclick="document.getElementById('match-vs').scrollIntoView({behavior:'smooth'})">Discover More</button>
+      </div>
+    </div>
+  </section>
+  <section class="match-vs" id="match-vs">
+    <div class="match-teams">
+      <div class="team-side">
+        <div class="team-crest red">M</div>
+        <div class="team-name" style="color:var(--red)">AC MILAN</div>
+        <div style="font-size:.7rem;letter-spacing:2px;color:var(--muted)">ROSSONERI</div>
+      </div>
+      <div class="vs-badge">VS</div>
+      <div class="team-side">
+        <div class="team-crest blue">I</div>
+        <div class="team-name" style="color:var(--blue)">INTER MILAN</div>
+        <div style="font-size:.7rem;letter-spacing:2px;color:var(--muted)">NERAZZURRI</div>
+      </div>
+    </div>
+  </section>
+  <div class="scroll-hint">↓ Scroll to explore · The Elite</div>
+</div>
+
+<!-- ─── ABOUT ─── -->
+<div id="about-page" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">About Us</p>
+      <h1>SANSIRO<br/>FAMILY</h1>
+      <p>An elite football management platform uniting the rivals of San Siro under one powerful system — tracking players, matches, finances, and the pulse of the beautiful game.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card glass"><h3>Our Mission</h3><p>To deliver a world-class digital infrastructure for football communities, enabling seamless collaboration between players, coaches, and administrators of AC Milan and Inter Milan.</p></div>
+      <div class="about-card glass"><h3>The Platform</h3><p>Sansiro Special is built on real-time data, transparent communication, and role-based access — ensuring every stakeholder from Player to President has the right tools at their fingertips.</p></div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-box glass"><div class="stat-num" id="about-players">—</div><div class="stat-label">Players</div></div>
+      <div class="stat-box glass"><div class="stat-num" id="about-matches">—</div><div class="stat-label">Matches</div></div>
+      <div class="stat-box glass"><div class="stat-num" id="about-news">—</div><div class="stat-label">News Posts</div></div>
+      <div class="stat-box glass"><div class="stat-num" id="about-transfers">—</div><div class="stat-label">Transfers</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── TEAM PAGE ─── -->
+<div id="team-page" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">Club Structure</p>
+      <h1>THE<br/>FAMILY</h1>
+      <p>Meet the leadership, captains, coaches, and officials that run Sansiro Special.</p>
+    </div>
+    <div id="team-page-content">
+      <div class="empty-state"><div class="loader"></div><p style="margin-top:1rem">Loading team...</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MEDIA ─── -->
+<div id="media-page" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">Gallery</p>
+      <h1>MEDIA<br/>HUB</h1>
+    </div>
+    <div class="media-grid" id="public-media-grid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="loader"></div><p>Loading media hub...</p></div>
+    </div>
+  </div>
+</div>
+
+<div id="news-page" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">Latest Updates</p>
+      <h1>NEWS<br/>FEED</h1>
+    </div>
+    <div class="news-grid" id="public-news-grid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="loader"></div><p>Fetching news feed...</p></div>
+    </div>
+  </div>
+</div>
+<!-- ─── NEWS ─── -->
+<div id="news-page" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">Latest</p>
+      <h1>NEWS<br/>FEED</h1>
+    </div>
+    <div class="news-grid" id="public-news-grid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="icon">📰</div><p>Loading news...</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── CONTACT ─── -->
+<div id="contact-page" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">Get In Touch</p>
+      <h1>CONTACT<br/>US</h1>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <div class="glass" style="padding:2rem">
+          <h3 style="font-family:'Bebas Neue';font-size:2rem;letter-spacing:2px;margin-bottom:1rem">Sansiro Special</h3>
+          <p style="color:var(--muted);line-height:1.8">The home of elite football management. Reach out for partnerships, media enquiries, or technical support.</p>
+          <div class="contact-detail"><div><div class="contact-detail-label">Location</div><div class="contact-detail-val">San Siro, Milan, Italy</div></div></div>
+          <div class="contact-detail"><div><div class="contact-detail-label">Email</div><div class="contact-detail-val">admin@sansirospecial.com</div></div></div>
+          <div class="contact-detail"><div><div class="contact-detail-label">Platform</div><div class="contact-detail-val">sansirospecial.com</div></div></div>
+        </div>
+      </div>
+      <div class="glass" style="padding:2rem">
+        <div class="section-title">Send a Message</div>
+        <div class="form-group"><label>Name</label><input id="c-name" type="text" placeholder="Your name"/></div>
+        <div class="form-group"><label>Email</label><input id="c-email" type="email" placeholder="your@email.com"/></div>
+        <div class="form-group"><label>Message</label><textarea id="c-msg" placeholder="Your message..."></textarea></div>
+        <button class="btn btn-gold" style="clip-path:none;border-radius:2px" onclick="sendContact()">Send Message</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="ahievements-page" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">Hall of Fame</p>
+      <h1 style="display:flex; align-items:center; gap:15px;">
+        CLUB <span style="color:var(--gold)">ACHIEVEMENTS</span>
+      </h1>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="achievements-split">
+      <div class="glass team-achievements red-theme">
+        <div class="ach-header">
+          <div class="ach-crest-sm" style="color:var(--red); border-color:var(--red)">M</div>
+          <div>
+            <div class="ach-club-name" style="color:var(--red);">AC MILAN</div>
+            <div style="font-size:12px; color:var(--muted); letter-spacing:1px;">EST. 1899</div>
+          </div>
+        </div>
+        <div class="ach-list">
+          <div class="ach-item"><div class="ach-icon">🏆</div><div><div class="ach-count">19</div><div class="ach-name">Serie A Titles</div></div></div>
+          <div class="ach-item"><div class="ach-icon">⭐</div><div><div class="ach-count">7</div><div class="ach-name">Champions League</div></div></div>
+          <div class="ach-item"><div class="ach-icon">🥇</div><div><div class="ach-count">5</div><div class="ach-name">Coppa Italia</div></div></div>
+          <div class="ach-item"><div class="ach-icon">🌍</div><div><div class="ach-count">5</div><div class="ach-name">UEFA Super Cup</div></div></div>
+        </div>
+      </div>
+
+      <div class="glass team-achievements blue-theme">
+        <div class="ach-header">
+          <div class="ach-crest-sm" style="color:var(--blue); border-color:var(--blue)">I</div>
+          <div>
+            <div class="ach-club-name" style="color:var(--blue);">INTER MILAN</div>
+            <div style="font-size:12px; color:var(--muted); letter-spacing:1px;">EST. 1908</div>
+          </div>
+        </div>
+        <div class="ach-list">
+          <div class="ach-item"><div class="ach-icon">🏆</div><div><div class="ach-count">20</div><div class="ach-name">Serie A Titles</div></div></div>
+          <div class="ach-item"><div class="ach-icon">⭐</div><div><div class="ach-count">3</div><div class="ach-name">Champions League</div></div></div>
+          <div class="ach-item"><div class="ach-icon">🥇</div><div><div class="ach-count">8</div><div class="ach-name">Coppa Italia</div></div></div>
+          <div class="ach-item"><div class="ach-icon">🌍</div><div><div class="ach-count">7</div><div class="ach-name">Supercoppa Italiana</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── DASHBOARD ─── -->
+<div id="dashboard-page" class="page">
+  <div style="max-width:1400px;margin:0 auto;padding:0 1.5rem">
+    
+    <div class="dash-header">
+      <div>
+        <div class="dash-welcome">Welcome, <span id="dash-name">—</span></div>
+        <div class="dash-role-tag" id="dash-role-tag">—</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+        <div style="font-size:.8rem;color:var(--muted)" id="dash-team-tag">—</div>
+        <button class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+
+    <div class="dash-layout">
+      
+      <div class="dash-sidebar glass" style="padding:1rem;height:fit-content" id="dash-sidebar">
+        <button class="dash-nav-btn active" onclick="showModule('overview',this)">📊 Overview</button>
+        <button class="dash-nav-btn" onclick="showModule('profile',this)">👤 My Profile</button> 
+        <button class="dash-nav-btn" onclick="showModule('chat',this)">💬 Chat</button>
+        <button class="dash-nav-btn" id="btn-teamsheet" onclick="showModule('teamsheet',this)">📋 Team Sheet</button>
+        <button class="dash-nav-btn" id="btn-coach-req" onclick="showModule('coach-request',this)">📨 Player Request</button>
+        <button class="dash-nav-btn" onclick="showModule('matches',this)">⚽ Matches</button>
+        <button class="dash-nav-btn" id="btn-finance" onclick="showModule('finance',this)">💰 Finance</button>
+        <button class="dash-nav-btn" id="btn-transfers" onclick="showModule('transfers',this)">🔁 Transfers</button>
+        <button class="dash-nav-btn" id="btn-news-post" onclick="showModule('news-post',this)">📰 Post News</button>
+        <button class="dash-nav-btn" id="btn-media-upload" onclick="showModule('media-upload',this)">🎬 Upload Media</button>
+        <button class="dash-nav-btn" id="btn-coach-inbox" onclick="showModule('coach-inbox',this)">📥 Coach Inbox</button>
+        <button class="dash-nav-btn" id="btn-team-mgmt" onclick="showModule('team-mgmt',this)">👥 Team Mgmt</button>
+      </div>
+
+      <div class="dash-content">
+
+        <div class="dash-module active" id="mod-overview">
+          <div class="stats-cards">
+            <div class="stat-card glass"><div class="stat-card-label">Total Players</div><div class="stat-card-value" id="stat-players">—</div></div>
+            <div class="stat-card glass"><div class="stat-card-label">Matches Played</div><div class="stat-card-value" id="stat-matches">—</div></div>
+            <div class="stat-card glass"><div class="stat-card-label">Revenue</div><div class="stat-card-value" id="stat-revenue">—</div></div>
+          </div>
+          <div class="section-title">Activity Feed</div>
+          <div class="glass" style="padding:1.5rem">
+            <div id="activity-feed"><div style="color:var(--muted);font-size:.85rem">Loading activity...</div></div>
+          </div>
+        </div>
+
+        <div class="dash-module" id="mod-profile">
+          <div class="section-title">Profile Settings</div>
+          <div class="glass" style="padding:2rem;max-width:600px;text-align:center;">
+            
+            <div id="profile-header-container" style="margin-bottom: 2rem;">
+              <div class="glass" style="width: 130px; height: 130px; border-radius: 50%; margin: 0 auto; overflow: hidden; border: 2px solid var(--gold); background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center;">
+                <img id="profile-preview" src="https://via.placeholder.com/150?text=User" style="width: 100%; height: 100%; object-fit: cover;">
+              </div>
+              <h3 id="profile-display-name" style="margin-top: 1rem; color: var(--gold); letter-spacing: 1px;">User Name</h3>
+              <p id="profile-display-role" style="font-size: 0.8rem; opacity: 0.7; margin-top: -5px;">Role</p>
+            </div>
+
+            <div id="profile-edit-form" style="text-align: left;">
+              <div class="form-group">
+                <label>Upload Profile Picture</label>
+                <input type="file" id="edit-pic-file" accept="image/*" onchange="previewImage(this)" style="padding: 10px 0; font-size: 0.8rem; color: var(--muted);">
+              </div>
+
+              <div class="form-group">
+                <label>Display Name</label>
+                <input type="text" id="edit-display-name" placeholder="Enter full name">
+              </div>
+
+              <div class="form-group">
+                <label>Contact (WhatsApp/Phone)</label>
+                <input type="text" id="edit-contact" placeholder="e.g. +233 24 000 0000">
+              </div>
+
+              <p style="font-size: 0.7rem; color: var(--muted); margin-bottom: 1.5rem; line-height: 1.4;">
+                * Your profile picture will be saved as a high-quality asset in the database and visible to all members.
+              </p>
+
+              <button onclick="saveProfileChanges()" id="save-profile-btn" class="btn btn-gold" style="width:100%; border-radius: 2px; clip-path: none;">Save Changes</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-module" id="mod-chat">
+          <div class="section-title">Live Chat</div>
+          <div class="glass chat-layout">
+            <div class="chat-channels">
+              <div class="chat-channels-label">CHANNELS</div>
+              <button class="chat-channel-btn active" onclick="switchChannel('General',this)">🌐 General</button>
+              <button class="chat-channel-btn" onclick="switchChannel('Team',this)">👥 Team</button>
+            </div>
+            <div class="chat-main">
+              <div class="chat-messages" id="chat-messages"><div style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem">Loading messages...</div></div>
+              <div class="chat-input-row">
+                <input id="chat-input" type="text" placeholder="Type a message…" onkeydown="if(event.key==='Enter')sendMsg()"/>
+                <button class="btn btn-gold btn-sm" style="clip-path:none;border-radius:2px" onclick="sendMsg()">Send</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-module" id="mod-news-post">
+          <div class="section-title">Publish News</div>
+          <div class="glass" style="padding:2rem;max-width:700px;margin-bottom:2rem">
+            <div class="form-group"><label>Headline</label><input id="n-title" type="text" placeholder="Breaking: …"/></div>
+            <div class="form-group"><label>Content</label><textarea id="n-content" placeholder="Write your news article…" style="min-height:160px"></textarea></div>
+            <button class="btn btn-red" style="clip-path:none;border-radius:2px" onclick="postNews()">Publish</button>
+          </div>
+          <div class="section-title">Published News Feed</div>
+          <div class="news-grid" id="dash-news-grid"></div>
+        </div>
+
+        <div class="dash-module" id="mod-media-upload">
+          <div class="section-title">Upload Media</div>
+          <div class="glass" style="padding:2rem;max-width:600px;margin-bottom:2rem">
+            <div class="form-group"><label>Media URL (Image or Video)</label><input id="med-url" type="url" placeholder="https://…"/></div>
+            <div class="form-group"><label>Type</label>
+              <select id="med-type">
+                <option value="Image">Image</option>
+                <option value="Video">Video</option>
+              </select>
+            </div>
+            <button class="btn btn-blue" style="clip-path:none;border-radius:2px" onclick="uploadMedia()">Upload to Gallery</button>
+          </div>
+          <div class="section-title">Gallery Management</div>
+          <div class="media-grid" id="dash-media-grid"></div>
+        </div>
+
+        <div class="dash-module" id="mod-coach-inbox">
+          <div class="section-title">Coach Requests Inbox</div>
+          <div class="glass" style="padding:1.5rem">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr><th>Date</th><th>Coach</th><th>Player</th><th>Position</th><th>Notes</th></tr>
+                </thead>
+                <tbody id="coach-req-tbody">
+                  <tr><td colspan="5" style="text-align:center">Loading requests...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-module" id="mod-teamsheet"> <div class="section-title">Team Sheet</div> <div id="dash-teamsheet-container"></div> </div>
+        <div class="dash-module" id="mod-coach-request"> <div class="section-title">Submit Player Request</div> <div class="glass" style="padding:2rem">Request form loading...</div> </div>
+        <div class="dash-module" id="mod-matches"> <div class="section-title">Match Management</div> <div id="dash-matches-container"></div> </div>
+        <div class="dash-module" id="mod-finance"> <div class="section-title">Financial Ledger</div> <div id="dash-finance-container"></div> </div>
+        <div class="dash-module" id="mod-transfers"> <div class="section-title">Transfer Market</div> <div id="dash-transfers-container"></div> </div>
+        <div class="dash-module" id="mod-team-mgmt"> <div class="section-title">System Users & Teams</div> <div id="dash-team-mgmt-container"></div> </div>
+
+      </div> 
+    </div> 
+  </div>
+</div>        <!-- TEAM SHEET -->
+        <div class="dash-module" id="mod-teamsheet">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+            <div class="section-title" style="margin:0">Team Sheet Builder</div>
+            <div style="display:flex;gap:.5rem">
+              <button class="btn btn-gold btn-sm no-print" style="clip-path:none;border-radius:2px" onclick="saveLineup()">💾 Save Lineup</button>
+              <button class="btn btn-outline btn-sm no-print" style="clip-path:none;border-radius:2px" onclick="printLineup()">🖨️ Download PDF</button>
+            </div>
+          </div>
+          <div class="glass" style="padding:1.5rem">
+            <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:.8rem">AVAILABLE PLAYERS — Click to place on pitch</div>
+            <div class="pitch-pool" id="player-pool"><div style="color:var(--muted);font-size:.85rem">Loading players...</div></div>
+            <div class="pitch" id="pitch-container">
+              <div class="pitch-lines"></div>
+              <div class="pitch-players">
+                <div class="pitch-row" id="pitch-fwd"></div>
+                <div class="pitch-row" id="pitch-mid"></div>
+                <div class="pitch-row" id="pitch-def"></div>
+                <div class="pitch-row" id="pitch-gk"></div>
+              </div>
+            </div>
+            <div style="margin-top:1rem;font-size:.75rem;color:var(--muted)">
+              Formation: <span id="lineup-label" style="color:var(--gold)">4-3-3</span> &nbsp;|&nbsp;
+              XI selected: <span id="xi-count" style="color:var(--gold)">0</span>/11
+            </div>
+          </div>
+        </div>
+
+        <!-- COACH REQUEST -->
+        <div class="dash-module" id="mod-coach-request">
+          <div class="section-title">Request a Player</div>
+          <div class="glass" style="padding:1.5rem;max-width:600px;margin-bottom:1.5rem">
+            <div class="form-group"><label>Player Name</label><input id="req-player" type="text" placeholder="Player's full name"/></div>
+            <div class="form-group"><label>Position Needed</label>
+              <select id="req-pos">
+                <option value="GK">Goalkeeper</option><option value="DEF">Defender</option>
+                <option value="MID">Midfielder</option><option value="FWD">Forward</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Notes</label><textarea id="req-notes" placeholder="Why this player is needed, urgency, etc." style="min-height:80px"></textarea></div>
+            <button class="btn btn-blue" style="clip-path:none;border-radius:2px" onclick="submitPlayerRequest()">📨 Send Request</button>
+          </div>
+        </div>
+
+        <!-- MATCHES -->
+        <div class="dash-module" id="mod-matches">
+          <div class="section-title">Match Reports</div>
+          <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem" id="match-form-wrap">
+            <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">ADD MATCH REPORT</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+              <div class="form-group"><label>Home Team</label>
+                <select id="m-home"><option value="AC Milan">AC Milan</option><option value="Inter Milan">Inter Milan</option></select>
+              </div>
+              <div class="form-group"><label>Away Team</label>
+                <select id="m-away"><option value="Inter Milan">Inter Milan</option><option value="AC Milan">AC Milan</option></select>
+              </div>
+              <div class="form-group"><label>Score (e.g. 2-1)</label><input id="m-score" type="text" placeholder="2-1"/></div>
+              <div class="form-group"><label>Date</label><input id="m-date" type="date"/></div>
+              <div class="form-group"><label>Scorers</label><input id="m-scorers" type="text" placeholder="Giroud 45', Leao 78'"/></div>
+              <div class="form-group"><label>Cards</label><input id="m-cards" type="text" placeholder="Tonali Y 30'"/></div>
+            </div>
+            <button class="btn btn-gold" style="clip-path:none;border-radius:2px" onclick="submitMatch()">Save Match Report</button>
+          </div>
+          <div class="glass" style="padding:1.5rem">
+            <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">MATCH HISTORY</div>
+            <div class="table-wrap">
+              <table class="data-table"><thead><tr><th>Date</th><th>Home</th><th>Score</th><th>Away</th><th>Scorers</th></tr></thead>
+              <tbody id="match-tbody"><tr><td colspan="5" style="text-align:center">Loading...</td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- FINANCE -->
+        <div class="dash-module" id="mod-finance">
+          <div class="section-title">Finance Manager</div>
+          <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem">
+            <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">ADD PAYMENT</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+              <div class="form-group"><label>Member</label><input id="f-user" type="text" placeholder="Member name"/></div>
+              <div class="form-group"><label>Type</label>
+                <select id="f-type"><option value="Dues">Dues</option><option value="Donation">Donation</option><option value="Fine">Fine</option></select>
+              </div>
+              <div class="form-group"><label>Amount (€)</label><input id="f-amount" type="number" placeholder="100" min="0"/></div>
+            </div>
+            <button class="btn btn-gold" style="clip-path:none;border-radius:2px" onclick="submitPayment()">Record Payment</button>
+          </div>
+          <div class="glass" style="padding:1.5rem;margin-bottom:1rem">
+            <div style="font-size:.65rem;letter-spacing:3px;color:var(--muted)">TOTAL REVENUE</div>
+            <div style="font-family:'Bebas Neue';font-size:2.8rem;color:var(--gold)" id="total-revenue">€0</div>
+          </div>
+          <div class="glass" style="padding:1.5rem">
+            <div class="table-wrap">
+              <table class="data-table"><thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>
+              <tbody id="finance-tbody"><tr><td colspan="5" style="text-align:center">Loading...</td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TRANSFERS -->
+        <div class="dash-module" id="mod-transfers">
+          <div class="section-title">Transfer Board</div>
+          <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem" id="transfer-request-wrap">
+            <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">REQUEST TRANSFER</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
+              <div class="form-group"><label>Player</label><input id="t-player" type="text" placeholder="Player name"/></div>
+              <div class="form-group"><label>From Team</label>
+                <select id="t-from"><option value="AC Milan">AC Milan</option><option value="Inter Milan">Inter Milan</option></select>
+              </div>
+              <div class="form-group"><label>To Team</label>
+                <select id="t-to"><option value="Inter Milan">Inter Milan</option><option value="AC Milan">AC Milan</option></select>
+              </div>
+            </div>
+            <button class="btn btn-blue" style="clip-path:none;border-radius:2px" onclick="requestTransfer()">Submit Request</button>
+          </div>
+          <div class="glass" style="padding:1.5rem">
+            <div class="table-wrap">
+              <table class="data-table"><thead><tr><th>Date</th><th>Player</th><th>From</th><th>To</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="transfer-tbody"><tr><td colspan="6" style="text-align:center">Loading...</td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEWS POST -->
+<div id="news" class="page">
+  <div class="inner-page">
+    <div class="page-header">
+      <p class="eyebrow">Announcements</p>
+      <h1>LATEST <span style="color:var(--gold)">NEWS</span></h1>
+      <div class="section-line"></div>
+    </div>
+    
+    <div class="news-grid" id="news-grid">
+      <div class="glass" style="padding:2rem; text-align:center; grid-column: 1/-1;">
+        <p style="color:var(--muted)">Fetching latest updates...</p>
+      </div>
+    </div>
+  </div>
+</div>
+        <!-- MEDIA UPLOAD -->
+        <div class="dash-module" id="mod-media-upload">
+          <div class="section-title">Upload Media</div>
+          <div class="glass" style="padding:2rem;max-width:600px;margin-bottom:2rem">
+            <div class="form-group"><label>Media URL (image or video)</label><input id="med-url" type="url" placeholder="https://…"/></div>
+            <div class="form-group"><label>Type</label>
+              <select id="med-type"><option value="Image">Image</option><option value="Video">Video</option></select>
+            </div>
+            <button class="btn btn-blue" style="clip-path:none;border-radius:2px" onclick="uploadMedia()">Upload</button>
+          </div>
+          <div class="section-title">Gallery</div>
+          <div class="media-grid" id="dash-media-grid"></div>
+        </div>
+
+        <!-- COACH INBOX (for Secretary/President/Admin) -->
+        <div class="dash-module" id="mod-coach-inbox">
+          <div class="section-title">Coach Requests Inbox</div>
+          <div class="glass" style="padding:1.5rem">
+            <div class="table-wrap">
+              <table class="data-table"><thead><tr><th>Date</th><th>Coach</th><th>Player</th><th>Position</th><th>Notes</th></tr></thead>
+              <tbody id="coach-req-tbody"><tr><td colspan="5" style="text-align:center">Loading...</td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TEAM MANAGEMENT (President/Admin) -->
+        <div class="dash-module" id="mod-team-mgmt">
+          <div class="section-title">Team Management</div>
+          <p style="color:var(--muted);font-size:.85rem;margin-bottom:1.5rem">Edit member profiles directly from the Team page. Members are listed below for quick reference.</p>
+          <div class="glass" style="padding:1.5rem">
+            <div class="table-wrap">
+              <table class="data-table"><thead><tr><th>Name</th><th>Role</th><th>Team</th><th>Actions</th></tr></thead>
+              <tbody id="team-mgmt-tbody"><tr><td colspan="4" style="text-align:center">Loading...</td></tr></tbody></table>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /dash-content -->
+    </div>
+  </div>
+</div>
+
+<!-- ─── TOAST ─── -->
+<div id="toast"></div>
+
+<script>
+'use strict';
+
+// ═══════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════
+const APP_URL = "https://script.google.com/macros/s/AKfycbx0CuTzB1rPL4JWslJrxmbbgf9gCQqq6bww50NDl5mJhOZJBRU7QAyXO3SIK-g9tKY0WQ/exec";
+
+// ═══════════════════════════════════════════════
+// API — Native Google Script Execution
+// ═══════════════════════════════════════════════
+function api(action, data = {}) {
+  return new Promise((resolve, reject) => {
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      google.script.run
+        .withSuccessHandler(res => resolve(res))
+        .withFailureHandler(err => reject(err))
+        .handleApiRequest(action, data);
+    } else {
+      reject("Google Script environment not detected");
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════
+let dbData = { players: [], matches: [], news: [], finance: [], transfers: [] };
+let currentUser = null;
+let currentChannel = 'General';
+let chatInterval = null;
+let allPlayers = [];
+let pitchLineup = { GK:[], DEF:[], MID:[], FWD:[] };
+let pitchUsed = new Set();
+
+// ═══════════════════════════════════════════════
+// INITIALIZATION & DATA SYNC
+// ═══════════════════════════════════════════════
+
+// This runs automatically when the page loads
+async function refreshData() {
+  try {
+    // 1. Fetch data from Google Sheets
+    const data = await api('getAllData'); 
+    
+    // 2. Pass data to the handler to fill UI (News, Stats, etc.)
+    onDataLoaded(data); 
+    
+    console.log("Database synchronized.");
+  } catch (err) {
+    console.error("Sync Error:", err);
+    // Even if it fails, run renderNews to show dummy/local data
+    renderNews(); 
+  }
+}
+
+// Start the sync process
+refreshData();
+
+// ═══════════════════════════════════════════════
+// THE REST OF YOUR FUNCTIONS (showPage, etc.) FOLLOW BELOW
+// ═══════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+// DUMMY DATA — UI display only (Team, Media, News)
+// ═══════════════════════════════════════════════
+const DUMMY_MEMBERS = [
+  { id:'m1', name:'Marco Rossi', role:'Admin', team:'Both', img:'', captain:false },
+  { id:'m2', name:'Giovanni Bianchi', role:'President', team:'Both', img:'', captain:false },
+  { id:'m3', name:'Luca Ferrara', role:'Vice President', team:'Both', img:'', captain:false },
+  { id:'m4', name:'Alessandro Conte', role:'Patron', team:'AC Milan', img:'', captain:false },
+  { id:'m5', name:'Riccardo Mancini', role:'Patron', team:'Inter Milan', img:'', captain:false },
+  { id:'m6', name:'Sofia Romano', role:'Secretary', team:'Both', img:'', captain:false },
+  { id:'m7', name:'Fabio Greco', role:'Organizer', team:'Both', img:'', captain:false },
+  { id:'m8', name:'Antonio Esposito', role:'Coach', team:'AC Milan', img:'', captain:false },
+  { id:'m9', name:'Matteo Colombo', role:'Coach', team:'Inter Milan', img:'', captain:false },
+  { id:'m10', name:'Francesco De Luca', role:'Captain', team:'AC Milan', img:'', captain:true },
+  { id:'m11', name:'Roberto Ricci', role:'Captain', team:'AC Milan', img:'', captain:true },
+  { id:'m12', name:'Davide Bruno', role:'Captain', team:'AC Milan', img:'', captain:true },
+  { id:'m13', name:'Emanuele Costa', role:'Captain', team:'Inter Milan', img:'', captain:true },
+  { id:'m14', name:'Andrea Galli', role:'Captain', team:'Inter Milan', img:'', captain:true },
+  { id:'m15', name:'Simone Fontana', role:'Captain', team:'Inter Milan', img:'', captain:true },
+  { id:'m16', name:'Chiara Moretti', role:'Welfare', team:'Both', img:'', captain:false },
+  { id:'m17', name:'Paolo Barbieri', role:'Official', team:'Both', img:'', captain:false },
+  { id:'m18', name:'Nicola Lombardi', role:'Official', team:'Both', img:'', captain:false },
+];
+
+const DUMMY_NEWS = [
+  { ID:'n1', Title:'AC Milan Dominates Pre-Season', Content:'The Rossoneri showed incredible form in their pre-season friendly, defeating local rivals with a commanding performance. Head coach praised the squad depth and tactical discipline throughout the 90 minutes.', Author:'Secretary', Date:'2025-07-01' },
+  { ID:'n2', Title:'Inter Milan Signs New Midfielder', Content:'Inter Milan have completed the signing of a dynamic midfielder on a two-year deal. The player comes highly recommended and is expected to bolster the squad for the upcoming season.', Author:'President', Date:'2025-07-05' },
+  { ID:'n3', Title:'Sansiro Special Annual Gala Tonight', Content:'The annual Sansiro Special gala brings together players, coaches and patrons for a night of celebration. Awards for best player, top scorer, and coach of the year will be presented.', Author:'Secretary', Date:'2025-07-10' },
+  { ID:'n4', Title:'Fitness Camp Announced for August', Content:'Both squads will report for a joint pre-season fitness camp in the first week of August. Full itinerary and schedules will be shared through the platform.', Author:'Secretary', Date:'2025-07-12' },
+];
+
+const DUMMY_MEDIA = [
+  { ID:'med1', Type:'Image', URL:'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=600', UploadedBy:'Secretary', Date:'2025-07-01' },
+  { ID:'med2', Type:'Image', URL:'https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=600', UploadedBy:'Secretary', Date:'2025-07-02' },
+  { ID:'med3', Type:'Image', URL:'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=600', UploadedBy:'Secretary', Date:'2025-07-03' },
+  { ID:'med4', Type:'Image', URL:'https://images.unsplash.com/photo-1553778263-73a83bab9b0c?w=600', UploadedBy:'Secretary', Date:'2025-07-04' },
+  { ID:'med5', Type:'Image', URL:'https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=600', UploadedBy:'Secretary', Date:'2025-07-05' },
+  { ID:'med6', Type:'Image', URL:'https://images.unsplash.com/photo-1551958219-acbc595d5b29?w=600', UploadedBy:'Secretary', Date:'2025-07-06' },
+];
+
+// In-memory editable members (extends dummy; production would use API)
+let clubMembers = JSON.parse(JSON.stringify(DUMMY_MEMBERS));
+
+// ═══════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════
+function toast(msg, type = 'info') {
+  const el = document.createElement('div');
+  el.className = `toast-item ${type}`;
+  el.textContent = msg;
+  document.getElementById('toast').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+// ═══════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════
+function showPage(name) {
+  // 1. Hide all pages and deactivate all navbar links
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  
+  // 2. Find and show the correct page
+  // We check for 'name-page' (e.g., 'news-page') OR just 'name' (e.g., 'news')
+  const pg = document.getElementById(name + '-page') || document.getElementById(name);
+  
+  if (pg) {
+    pg.classList.add('active');
+  } else {
+    console.warn("Page not found:", name);
+  }
+  
+  // 3. Highlight the correct link in the navbar
+  const lnk = document.querySelector(`[data-page="${name}"]`);
+  if (lnk) lnk.classList.add('active');
+  
+  // 4. Scroll to top of the screen
+  window.scrollTo(0, 0);
+  
+  // 5. Trigger Data Renders
+  if (name === 'team') renderTeamPage();
+  if (name === 'news') renderNews(); // Unified function name
+  if (name === 'media') renderPublicMedia();
+  if (name === 'about') loadAboutStats();
+  
+  // No special loader needed for Achievements or Contact as they are static HTML,
+  // but the script now properly switches to them.
+}
+
+// ═══════════════════════════════════════════════
+// AUTH MODAL
+// ═══════════════════════════════════════════════
+function openAuth() {
+  if (currentUser) { showPage('dashboard'); return; }
+  document.getElementById('auth-modal').classList.add('open');
+}
+
+function closeAuth() {
+  document.getElementById('auth-modal').classList.remove('open');
+}
+
+function switchAuthTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  if (el) el.classList.add('active');
+  else document.querySelectorAll('.auth-tab')[tab === 'login' ? 0 : 1].classList.add('active');
+  document.getElementById(tab === 'login' ? 'login-form' : 'register-form').classList.add('active');
+}
+
+function showAuthMsg(id, msg, type = 'error') {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = `auth-msg ${type}`;
+  el.style.display = 'block';
+}
+
+function clearAuthMsgs() {
+  ['login-msg','reg-msg'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.display = 'none';
+    el.textContent = '';
+  });
+}
+
+// ═══════════════════════════════════════════════
+// LOGIN (UPDATED FOR GOOGLE SHEETS)
+// ═══════════════════════════════════════════════
+// Updated doLogin in index.html
+/* ============================================================
+   👤 USER AUTHENTICATION & PROFILE SYSTEM (FRONTEND)
+   ============================================================ */
+
+// Global variable to store the image string for profile updates
+let base64Image = "";
+
+/**
+ * 1. UNIVERSAL API WRAPPER
+ * This function sends all requests to your Google Apps Script Backend.
+ */
+/**
+ * UPDATED API WRAPPER
+ * This version uses 'text/plain' to minimize CORS issues when testing.
+ */
+async function api(action, data) {
+  try {
+    const finalAction = action === 'register' ? 'registerUser' : action;
+    
+    const response = await fetch(APP_URL, {
+      method: "POST",
+      mode: "cors", 
+      headers: {
+        // 'text/plain' is less likely to trigger strict CORS pre-flight checks in GAS
+        "Content-Type": "text/plain;charset=utf-8", 
+      },
+      body: JSON.stringify({
+        action: finalAction,
+        data: data
+      })
+    });
+    
+    if (!response.ok) throw new Error('Network response was not ok');
+    return await response.json();
+  } catch (error) {
+    console.error("API Error:", error);
+    // This message triggers your "Server connection failed" alert
+    return { success: false, message: "Server connection failed." };
+  }
+}
+/**
+ * 2. LOGIN LOGIC
+ */
+async function doLogin() {
+  clearAuthMsgs();
+  const email = document.getElementById('l-email').value.trim();
+  const pass = document.getElementById('l-pass').value;
+  
+  if (!email || !pass) { 
+    showAuthMsg('login-msg', 'Please fill all fields.'); 
+    return; 
+  }
+  
+  const btn = document.getElementById('login-btn');
+  const originalText = btn.textContent;
+  
+  btn.innerHTML = '<span class="loader"></span> Logging in…';
+  btn.disabled = true;
+
+  try {
+    const r = await api('loginUser', { email: email, password: pass }); 
+    
+    if (r && r.success) {
+      currentUser = r.user; 
+      localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
+      
+      closeAuth();
+      if (typeof toast === 'function') toast(`Welcome back, ${currentUser.Name}!`, 'success');
+      
+      enterDashboard(); 
+    } else {
+      showAuthMsg('login-msg', r.message || 'Invalid email or password.');
+    }
+  } catch (err) {
+    console.error("Login Error:", err);
+    showAuthMsg('login-msg', 'Server Error: ' + err);
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
+/**
+ * 3. REGISTRATION LOGIC
+ */
+async function doRegister() {
+  clearAuthMsgs();
+  const name = document.getElementById('r-name').value.trim();
+  const email = document.getElementById('r-email').value.trim();
+  const pass = document.getElementById('r-pass').value;
+  const role = document.getElementById('r-role').value;
+  const team = document.getElementById('r-team').value;
+  
+  if (!name || !email || !pass || !role || !team) { 
+    showAuthMsg('reg-msg', 'Please fill all fields.'); 
+    return; 
+  }
+  
+  const btn = document.getElementById('reg-btn');
+  const originalText = btn.textContent;
+  
+  btn.innerHTML = '<span class="loader"></span> Creating…';
+  btn.disabled = true;
+
+  const userData = { 
+    Name: name, 
+    Email: email, 
+    Password: pass, 
+    Role: role, 
+    Team: team, 
+    ProfilePic: "" 
+  };
+
+  try {
+    const r = await api('register', userData);
+    
+    if (r && r.success) {
+      showAuthMsg('reg-msg', 'Account created! Please login.', 'success');
+      setTimeout(() => {
+        if (typeof switchAuthTab === 'function') switchAuthTab('login', null);
+        document.getElementById('r-name').value = '';
+        document.getElementById('r-email').value = '';
+        document.getElementById('r-pass').value = '';
+      }, 1800);
+    } else {
+      showAuthMsg('reg-msg', r.message || 'Registration failed.');
+    }
+  } catch (err) {
+    console.error("Registration Error:", err);
+    showAuthMsg('reg-msg', 'Connection Error: ' + err);
+  } finally {
+    btn.textContent = originalText;
+    btn.disabled = false;
+  }
+}
+
+/**
+ * 4. PROFILE IMAGE PREVIEW (Local Device Upload)
+ * Triggers when the user selects a file from their phone/computer
+ */
+function previewImage(input) {
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      // Show the chosen image in the preview circle immediately
+      document.getElementById('profile-preview').src = e.target.result;
+      // Save the result to our global variable to send to the database
+      base64Image = e.target.result; 
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+/**
+ * 5. SAVE PROFILE CHANGES
+ * Sends the updated Name, Contact, and Image to the Google Sheet
+ */
+async function saveProfileChanges() {
+  const btn = document.getElementById('save-profile-btn');
+  const newName = document.getElementById('edit-display-name').value;
+  const newContact = document.getElementById('edit-contact').value;
+  
+  const originalText = btn.innerText;
+  btn.disabled = true;
+  btn.innerHTML = 'Saving...';
+
+  const response = await api('updateProfile', {
+    userID: currentUser.ID,
+    name: newName,
+    pic: base64Image, // The base64 string from the device upload
+    contact: newContact
+  });
+
+  if (response.success) {
+    // Update local storage so changes persist after refresh
+    currentUser.Name = newName;
+    if (base64Image) currentUser.ProfilePic = base64Image;
+    currentUser.Contact = newContact;
+    localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
+    
+    // Update the visual dashboard header labels
+    document.getElementById('profile-display-name').innerText = newName;
+    document.getElementById('dash-name').innerText = newName;
+    
+    if (typeof toast === 'function') toast("Profile Updated Successfully!", "success");
+  } else {
+    alert("Update failed: " + response.message);
+  }
+  
+  btn.disabled = false;
+  btn.innerText = originalText;
+}
+// ═══════════════════════════════════════════════
+// LOGOUT
+// ═══════════════════════════════════════════════
+function doLogout() {
+  currentUser = null;
+  if (chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+  document.getElementById('nav-user-info').style.display = 'none';
+  document.getElementById('nav-enter-btn').textContent = '🔑 Enter System';
+  toast('Logged out.', 'info');
+  showPage('home');
+}
+
+// ═══════════════════════════════════════════════
+// DASHBOARD INIT
+// ═══════════════════════════════════════════════
+/* ============================================================
+   🚀 ENTER DASHBOARD (UPDATED FOR PROFILE SYNC)
+   ============================================================ */
+function enterDashboard() {
+  // 1. Basic UI Header Updates
+  document.getElementById('dash-name').textContent = currentUser.Name;
+  document.getElementById('dash-role-tag').textContent = currentUser.Role + ' · ' + currentUser.Team;
+  document.getElementById('dash-team-tag').textContent = currentUser.Team;
+  
+  const info = document.getElementById('nav-user-info');
+  info.textContent = currentUser.Name + ' (' + currentUser.Role + ')';
+  info.style.display = 'inline';
+  document.getElementById('nav-enter-btn').textContent = '📊 Dashboard';
+
+  // 2. NEW: Synchronize Profile Module Fields
+  // This makes sure the "My Profile" section isn't empty when you open it
+  if (currentUser) {
+    // Fill the input fields
+    const editNameField = document.getElementById('edit-display-name');
+    const editContactField = document.getElementById('edit-contact');
+    const previewImg = document.getElementById('profile-preview');
+    const headerName = document.getElementById('profile-display-name');
+    const headerRole = document.getElementById('profile-display-role');
+
+    if (editNameField) editNameField.value = currentUser.Name || "";
+    if (editContactField) editContactField.value = currentUser.Contact || "";
+    
+    // Update the Profile Header visual container
+    if (previewImg) previewImg.src = currentUser.ProfilePic || "https://via.placeholder.com/150?text=User";
+    if (headerName) headerName.innerText = currentUser.Name || "User Name";
+    if (headerRole) headerRole.innerText = currentUser.Role || "Member";
+  }
+
+  // 3. System Navigation
+  applyRolePermissions();
+  showPage('dashboard');
+  
+  // Default to the Overview module
+  showModule('overview', document.querySelector('.dash-nav-btn'));
+  loadDashboardOverview();
+}
+// ═══════════════════════════════════════════════
+// ROLE PERMISSIONS
+// ═══════════════════════════════════════════════
+function applyRolePermissions() {
+  const role = currentUser.Role;
+  const isAdmin = role === 'Admin';
+  const isPresident = role === 'President';
+  const isSecretary = role === 'Secretary';
+  const isCoach = role === 'Coach';
+
+  // Visibility map: elementId → allowed roles (empty = all)
+  const vis = {
+    'btn-teamsheet':    isCoach || isAdmin,
+    'btn-coach-req':    isCoach || isAdmin,
+    'btn-finance':      isSecretary || isPresident || isAdmin,
+    'btn-transfers':    isSecretary || isPresident || isAdmin,
+    'btn-news-post':    isSecretary || isPresident || isAdmin,
+    'btn-media-upload': isSecretary || isAdmin,
+    'btn-coach-inbox':  isSecretary || isPresident || isAdmin,
+    'btn-team-mgmt':    isPresident || isAdmin,
+  };
+  Object.entries(vis).forEach(([id, show]) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = show ? 'flex' : 'none';
+  });
+
+  // Match report form — coaches and above
+  const mfw = document.getElementById('match-form-wrap');
+  if (mfw) mfw.style.display = (isCoach || isSecretary || isPresident || isAdmin) ? 'block' : 'none';
+
+  // Transfer request — secretary, president, admin only
+  const trw = document.getElementById('transfer-request-wrap');
+  if (trw) trw.style.display = (isSecretary || isPresident || isAdmin) ? 'block' : 'none';
+
+  // Edit buttons on team cards (only shown in dash team-mgmt)
+}
+
+// ═══════════════════════════════════════════════
+// MODULE SWITCHING
+// ═══════════════════════════════════════════════
+function showModule(name, btn) {
+  document.querySelectorAll('.dash-module').forEach(m => m.classList.remove('active'));
+  document.querySelectorAll('.dash-nav-btn').forEach(b => b.classList.remove('active'));
+  const mod = document.getElementById('mod-' + name);
+  if (mod) mod.classList.add('active');
+  if (btn) btn.classList.add('active');
+  const loaders = {
+    chat: loadChat,
+    matches: loadMatches,
+    finance: loadPayments,
+    transfers: loadTransfers,
+    'news-post': loadDashNews,
+    'media-upload': loadDashMedia,
+    'coach-inbox': loadCoachInbox,
+    'team-mgmt': loadTeamMgmt,
+    teamsheet: loadTeamSheet,
+  };
+  if (loaders[name]) loaders[name]();
+}
+
+// ═══════════════════════════════════════════════
+// OVERVIEW
+// ═══════════════════════════════════════════════
+async function loadDashboardOverview() {
+  const [pr, mr, fr, nr, msgr] = await Promise.all([
+    api('getPlayers'),
+    api('getMatches'),
+    api('getPayments'),
+    api('getNews'),
+    api('getMessages'),
+  ]);
+  const players = pr.players || [];
+  const matches = mr.matches || [];
+  const payments = fr.payments || [];
+  allPlayers = players;
+  const rev = payments.reduce((s, p) => s + (parseFloat(p.Amount) || 0), 0);
+  document.getElementById('stat-players').textContent = players.length;
+  document.getElementById('stat-matches').textContent = matches.length;
+  document.getElementById('stat-revenue').textContent = '€' + rev.toFixed(0);
+  // Activity feed
+  const feed = document.getElementById('activity-feed');
+  const items = [];
+  (nr.news || []).slice(-3).reverse().forEach(n => items.push({ icon: '📰', text: n.Title, time: n.Date }));
+  (msgr.messages || []).slice(-3).reverse().forEach(m => items.push({ icon: '💬', text: m.User + ': ' + m.Message, time: m.Time }));
+  if (!items.length) {
+    feed.innerHTML = '<p style="color:var(--muted);font-size:.85rem">No recent activity.</p>';
+  } else {
+    feed.innerHTML = items.map(a =>
+      `<div style="display:flex;gap:.8rem;padding:.6rem 0;border-bottom:1px solid var(--border)"><span style="font-size:1.1rem">${a.icon}</span><div><div style="font-size:.85rem">${a.text}</div><div style="font-size:.68rem;color:var(--muted)">${a.time || ''}</div></div></div>`
+    ).join('');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// CHAT
+// ═══════════════════════════════════════════════
+async function loadChat() {
+  if (chatInterval) { clearInterval(chatInterval); chatInterval = null; }
+  await fetchMessages();
+  chatInterval = setInterval(fetchMessages, 8000);
+}
+
+async function fetchMessages() {
+  const r = await api('getMessages');
+  const messages = (r.messages || []).filter(m => m.Channel === currentChannel);
+  const container = document.getElementById('chat-messages');
+  if (!messages.length) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:.85rem;text-align:center;padding:2rem">No messages in this channel yet.</p>';
+    return;
+  }
+  container.innerHTML = messages.map(m => {
+    const isMe = currentUser && m.User === currentUser.Name;
+    const col = isMe ? 'var(--gold)' : 'var(--blue)';
+    return `<div class="chat-msg"><div class="chat-msg-avatar" style="background:${col}22;color:${col}">${(m.User || '?')[0].toUpperCase()}</div><div class="chat-msg-body"><div class="chat-msg-meta"><span class="chat-msg-name" style="color:${col}">${m.User || 'Unknown'}</span><span class="chat-msg-time">${m.Time || ''}</span></div><div class="chat-msg-text">${m.Message || ''}</div></div></div>`;
+  }).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMsg() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg || !currentUser) return;
+  input.value = '';
+  const r = await api('sendMessage', { user: currentUser.Name, channel: currentChannel, message: msg });
+  if (r.success) await fetchMessages();
+  else toast('Message failed to send.', 'error');
+}
+
+function switchChannel(ch, btn) {
+  currentChannel = ch;
+  document.querySelectorAll('.chat-channel-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  fetchMessages();
+}
+
+// ═══════════════════════════════════════════════
+// TEAM SHEET (Coach)
+// ═══════════════════════════════════════════════
+async function loadTeamSheet() {
+  pitchLineup = { GK: [], DEF: [], MID: [], FWD: [] };
+  pitchUsed = new Set();
+  // Get fresh players
+  const r = await api('getPlayers');
+  allPlayers = r.players || [];
+  const myPlayers = allPlayers.filter(p => p.Team === currentUser.Team && p.Status !== 'Suspended');
+  // Pool
+  const pool = document.getElementById('player-pool');
+  if (!myPlayers.length) {
+    pool.innerHTML = '<span style="color:var(--muted);font-size:.85rem">No available players for your team.</span>';
+  } else {
+    pool.innerHTML = myPlayers.map(p =>
+      `<span class="pool-player" id="pool-${p.ID || p.Name.replace(/\s/g,'_')}" onclick="assignToSlot('${p.Name}','${p.Position || 'MID'}','${p.ID || p.Name}')">${p.Name} <span style="opacity:.6;font-size:.65rem">${p.Position || '?'}</span></span>`
+    ).join('');
+  }
+  // Build pitch slots
+  buildPitch();
+  updateXICount();
+}
+
+function buildPitch() {
+  const formations = { GK:1, DEF:4, MID:3, FWD:3 };
+  Object.entries(formations).forEach(([pos, count]) => {
+    const row = document.getElementById('pitch-' + pos);
+    row.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'pitch-slot';
+      slot.dataset.pos = pos;
+      slot.dataset.index = i;
+      slot.innerHTML = `<span class="slot-num">${pos}</span>`;
+      slot.onclick = () => clearSlot(slot);
+      row.appendChild(slot);
+    }
+  });
+}
+
+function assignToSlot(name, pos, playerId) {
+  const posMap = { GK:'GK', DEF:'DEF', MID:'MID', FWD:'FWD', ATT:'FWD', WG:'FWD', AM:'MID', DM:'MID', CB:'DEF', LB:'DEF', RB:'DEF', WB:'DEF' };
+  const targetPos = posMap[pos] || 'MID';
+  const row = document.getElementById('pitch-' + targetPos);
+  const emptySlot = row ? row.querySelector('.pitch-slot:not(.filled)') : null;
+  if (!emptySlot) {
+    // Try any empty slot
+    const anyEmpty = document.querySelector('.pitch-slot:not(.filled)');
+    if (!anyEmpty) { toast('Pitch is full!', 'error'); return; }
+    fillSlot(anyEmpty, name, playerId);
+  } else {
+    fillSlot(emptySlot, name, playerId);
+  }
+}
+
+function fillSlot(slot, name, playerId) {
+  slot.classList.add('filled');
+  slot.dataset.player = name;
+  slot.dataset.playerId = playerId;
+  const short = name.split(' ').pop();
+  slot.innerHTML = `<span class="slot-num">${slot.dataset.pos}</span><span class="slot-name">${short}</span>`;
+  pitchUsed.add(playerId);
+  const poolEl = document.getElementById('pool-' + playerId);
+  if (poolEl) poolEl.classList.add('used');
+  updateXICount();
+}
+
+function clearSlot(slot) {
+  if (!slot.dataset.player) return;
+  const pid = slot.dataset.playerId;
+  const pos = slot.dataset.pos;
+  pitchUsed.delete(pid);
+  const poolEl = document.getElementById('pool-' + pid);
+  if (poolEl) poolEl.classList.remove('used');
+  slot.classList.remove('filled');
+  delete slot.dataset.player;
+  delete slot.dataset.playerId;
+  slot.innerHTML = `<span class="slot-num">${pos}</span>`;
+  updateXICount();
+}
+
+function updateXICount() {
+  const count = document.querySelectorAll('.pitch-slot.filled').length;
+  document.getElementById('xi-count').textContent = count;
+}
+
+async function saveLineup() {
+  const slots = document.querySelectorAll('.pitch-slot.filled');
+  if (!slots.length) { toast('No players placed on pitch.', 'error'); return; }
+  const lineup = [];
+  slots.forEach(s => lineup.push({ player: s.dataset.player, position: s.dataset.pos }));
+  const r = await api('saveLineup', { coach: currentUser.Name, team: currentUser.Team, lineup });
+  if (r.success) toast('Lineup saved!', 'success');
+  else toast(r.error || 'Failed to save lineup.', 'error');
+}
+
+function printLineup() {
+  window.print();
+}
+
+// ═══════════════════════════════════════════════
+// COACH PLAYER REQUEST
+// ═══════════════════════════════════════════════
+async function submitPlayerRequest() {
+  const player = document.getElementById('req-player').value.trim();
+  const pos = document.getElementById('req-pos').value;
+  const notes = document.getElementById('req-notes').value.trim();
+  if (!player) { toast('Enter player name.', 'error'); return; }
+  const r = await api('requestPlayer', {
+    coach: currentUser.Name,
+    team: currentUser.Team,
+    player,
+    position: pos,
+    notes,
+  });
+  if (r.success) {
+    toast('Request sent!', 'success');
+    document.getElementById('req-player').value = '';
+    document.getElementById('req-notes').value = '';
+  } else {
+    toast(r.error || 'Request failed.', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// COACH INBOX (Secretary/President/Admin)
+// ═══════════════════════════════════════════════
+async function loadCoachInbox() {
+  const r = await api('getPlayerRequests');
+  const reqs = r.requests || r.playerRequests || [];
+  const tbody = document.getElementById('coach-req-tbody');
+  if (!reqs.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted)">No coach requests yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = reqs.map(req =>
+    `<tr><td>${req.Date || ''}</td><td>${req.Coach || ''}</td><td>${req.Player || ''}</td><td><span class="badge badge-gold">${req.Position || ''}</span></td><td style="max-width:200px;font-size:.8rem">${req.Notes || '—'}</td></tr>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════════
+// MATCHES
+// ═══════════════════════════════════════════════
+async function loadMatches() {
+  const r = await api('getMatches');
+  const matches = r.matches || [];
+  const rows = matches.slice().reverse().map(m =>
+    `<tr><td>${m.Date || ''}</td><td>${m.HomeTeam || ''}</td><td style="color:var(--gold);font-family:'Bebas Neue';font-size:1.1rem">${m.Score || '—'}</td><td>${m.AwayTeam || ''}</td><td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.Scorers || ''}</td></tr>`
+  );
+  document.getElementById('match-tbody').innerHTML = rows.join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted)">No matches recorded.</td></tr>';
+}
+
+async function submitMatch() {
+  const home = document.getElementById('m-home').value;
+  const away = document.getElementById('m-away').value;
+  const score = document.getElementById('m-score').value.trim();
+  const date = document.getElementById('m-date').value;
+  const scorers = document.getElementById('m-scorers').value.trim();
+  const cards = document.getElementById('m-cards').value.trim();
+  if (!score || !date) { toast('Fill score and date.', 'error'); return; }
+  const r = await api('addMatch', { homeTeam: home, awayTeam: away, score, scorers, cards, date });
+  if (r.success) {
+    toast('Match report saved!', 'success');
+    ['m-score','m-scorers','m-cards','m-date'].forEach(id => document.getElementById(id).value = '');
+    loadMatches();
+  } else {
+    toast(r.error || 'Failed to save match.', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// FINANCE
+// ═══════════════════════════════════════════════
+async function loadPayments() {
+  const r = await api('getPayments');
+  const payments = r.payments || [];
+  const total = payments.reduce((s, p) => s + (parseFloat(p.Amount) || 0), 0);
+  document.getElementById('total-revenue').textContent = '€' + total.toFixed(2);
+  document.getElementById('stat-revenue').textContent = '€' + total.toFixed(0);
+  const rows = payments.slice().reverse().map(p =>
+    `<tr><td>${p.Date || ''}</td><td>${p.User || ''}</td><td><span class="badge badge-gold">${p.Type || ''}</span></td><td>€${parseFloat(p.Amount || 0).toFixed(2)}</td><td><span class="badge badge-green">${p.Status || 'Recorded'}</span></td></tr>`
+  );
+  document.getElementById('finance-tbody').innerHTML = rows.join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted)">No payments recorded.</td></tr>';
+}
+
+async function submitPayment() {
+  const user = document.getElementById('f-user').value.trim();
+  const type = document.getElementById('f-type').value;
+  const amount = document.getElementById('f-amount').value;
+  if (!user || !amount) { toast('Fill member and amount.', 'error'); return; }
+  const r = await api('addPayment', { user, type, amount: parseFloat(amount), status: 'Recorded' });
+  if (r.success) {
+    toast('Payment recorded!', 'success');
+    document.getElementById('f-user').value = '';
+    document.getElementById('f-amount').value = '';
+    loadPayments();
+  } else {
+    toast(r.error || 'Failed to record payment.', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// TRANSFERS — Secretary, President, Admin
+// ═══════════════════════════════════════════════
+async function loadTransfers() {
+  const r = await api('getTransfers');
+  const transfers = r.transfers || [];
+  const canApprove = currentUser && ['President', 'Admin'].includes(currentUser.Role);
+  const rows = transfers.slice().reverse().map(t => {
+    const badgeMap = { Approved: 'badge-green', Rejected: 'badge-red', Pending: 'badge-gold' };
+    const badge = badgeMap[t.Status] || 'badge-muted';
+    const actions = (canApprove && t.Status === 'Pending')
+      ? `<div style="display:flex;gap:.4rem"><button class="btn btn-gold btn-sm" style="clip-path:none;border-radius:2px;padding:.25rem .6rem;font-size:.65rem" onclick="approveTransfer('${t.ID}','Approved')">✓ Approve</button><button class="btn btn-red btn-sm" style="clip-path:none;border-radius:2px;padding:.25rem .6rem;font-size:.65rem" onclick="approveTransfer('${t.ID}','Rejected')">✗ Reject</button></div>`
+      : `<span style="color:var(--muted);font-size:.8rem">—</span>`;
+    return `<tr><td>${t.Date || ''}</td><td>${t.Player || ''}</td><td><span class="badge badge-red">${t.FromTeam || ''}</span></td><td><span class="badge badge-blue">${t.ToTeam || ''}</span></td><td><span class="badge ${badge}">${t.Status || 'Pending'}</span></td><td>${actions}</td></tr>`;
+  });
+  document.getElementById('transfer-tbody').innerHTML = rows.join('') || '<tr><td colspan="6" style="text-align:center;color:var(--muted)">No transfers recorded.</td></tr>';
+}
+
+async function requestTransfer() {
+  const player = document.getElementById('t-player').value.trim();
+  const from = document.getElementById('t-from').value;
+  const to = document.getElementById('t-to').value;
+  if (!player) { toast('Enter player name.', 'error'); return; }
+  if (from === to) { toast('From and To teams must differ.', 'error'); return; }
+  const r = await api('requestTransfer', { player, fromTeam: from, toTeam: to, status: 'Pending' });
+  if (r.success) {
+    toast('Transfer request submitted!', 'success');
+    document.getElementById('t-player').value = '';
+    loadTransfers();
+  } else {
+    toast(r.error || 'Failed to submit transfer.', 'error');
+  }
+}
+
+async function approveTransfer(id, status) {
+  const r = await api('updateTransfer', { id, status });
+  if (r.success) {
+    toast('Transfer ' + status.toLowerCase() + '!', status === 'Approved' ? 'success' : 'error');
+    loadTransfers();
+  } else {
+    toast(r.error || 'Update failed.', 'error');
+  }
+}
+
+
+
+
+// ═══════════════════════════════════════════════
+// NEWS (UPDATED FOR GOOGLE SHEETS)
+// ═══════════════════════════════════════════════
+function loadDashNews() {
+  google.script.run
+    .withSuccessHandler((rows) => {
+      // Map sheet rows to objects
+      const news = rows.slice(1).map(r => ({ ID: r[0], Title: r[1], Content: r[2], Author: r[3], Date: r[4] }));
+      renderNewsGrid('dash-news-grid', news.length ? news : DUMMY_NEWS);
+    })
+    .getNews();
+}
+
+function postNews() {
+  const title = document.getElementById('n-title').value.trim();
+  const content = document.getElementById('n-content').value.trim();
+  if (!title || !content) { toast('Fill title and content.', 'error'); return; }
+
+  const data = { title, content, author: currentUser.name };
+
+  google.script.run
+    .withSuccessHandler((r) => {
+      if (r.success) {
+        toast('News published!', 'success');
+        document.getElementById('n-title').value = '';
+        document.getElementById('n-content').value = '';
+        loadDashNews();
+      }
+    })
+    .addNews(data);
+}
+
+// ═══════════════════════════════════════════════
+// NEWS SYSTEM LOGIC
+// ═══════════════════════════════════════════════
+
+/**
+ * Renders news to both the public site and the admin dashboard
+ */
+function renderNews() {
+  const publicGrid = document.getElementById('news-grid');
+  const adminGrid = document.getElementById('dash-news-grid');
+  
+  // Try to get data from the database, fallback to DUMMY_NEWS if empty
+  const newsItems = (dbData && dbData.news && dbData.news.length > 0) 
+                    ? dbData.news 
+                    : (typeof DUMMY_NEWS !== 'undefined' ? DUMMY_NEWS : []);
+
+  if (!publicGrid && !adminGrid) return;
+
+  let html = '';
+  // Sort: Newest posts first
+  const displayList = [...newsItems].reverse();
+
+  displayList.forEach((item, index) => {
+    // Generate the HTML for a news card
+    const cardHtml = `
+      <div class="glass news-card" style="margin-bottom:1rem; border-left:2px solid var(--gold);">
+        <div class="news-date" style="color:var(--gold); font-size:0.75rem; font-weight:600;">
+          ${item.date || 'LATEST UPDATE'}
+        </div>
+        <h3 class="news-title" style="font-family:'Bebas Neue'; font-size:1.4rem; letter-spacing:1px; margin:5px 0;">
+          ${item.title}
+        </h3>
+        <p class="news-excerpt" style="font-size:0.9rem; opacity:0.8; line-height:1.4;">
+          ${item.content}
+        </p>
+        ${adminGrid ? `
+          <button onclick="deleteNews(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:0.7rem; margin-top:10px; padding:0;">
+            [ DELETE POST ]
+          </button>` : ''}
+      </div>
+    `;
+    html += cardHtml;
+  });
+
+  if (publicGrid) publicGrid.innerHTML = html || '<p style="color:var(--muted)">No news available.</p>';
+  if (adminGrid) adminGrid.innerHTML = html || '<p style="color:var(--muted)">No news published yet.</p>';
+}
+
+
+/**
+ * Saves a news post to your Google Sheet
+ */
+function addNews(newsObject) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheetByName('News'); // Ensure you have a sheet named 'News'
+    
+    // Append the data: [Date, Title, Content]
+    sheet.appendRow([
+      newsObject.date, 
+      newsObject.title, 
+      newsObject.content
+    ]);
+    
+    return true;
+  } catch (e) {
+    throw "Error saving news: " + e.toString();
+  }
+}
+/**
+ * Logic for the Publish Button
+ */
+function postNews() {
+  const titleInput = document.getElementById('n-title');
+  const contentInput = document.getElementById('n-content');
+  
+  const title = titleInput.value.trim();
+  const content = contentInput.value.trim();
+
+  // Validation
+  if (!title || !content) {
+    toast("Headline and Content cannot be empty!", "error");
+    return;
+  }
+
+  // Create the News Object
+  const newPost = {
+    title: title,
+    content: content,
+    date: new Date().toLocaleDateString('en-GB', { 
+      day: '2-digit', 
+      month: 'short', 
+      year: 'numeric' 
+    })
+  };
+
+  toast("Publishing your story...", "info");
+
+  // Send to Google Apps Script (Server Side)
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run
+      .withSuccessHandler(() => {
+        toast("Published to the Feed!", "success");
+        // Clear inputs
+        titleInput.value = '';
+        contentInput.value = '';
+        // Refresh the data so it appears immediately
+        refreshData(); 
+      })
+      .withFailureHandler(err => {
+        toast("Publishing failed: " + err, "error");
+      })
+      .addNews(newPost); // This calls the function in your Code.gs
+  } else {
+    // Local Testing Mode (if not running in Google Sheets)
+    if(!dbData.news) dbData.news = [];
+    dbData.news.push(newPost);
+    renderNews();
+    toast("Local update successful (Demo)", "success");
+    titleInput.value = '';
+    contentInput.value = '';
+
+  }
+}
+
+
+// ═══════════════════════════════════════════════
+// MEDIA (UPDATED FOR GOOGLE SHEETS)
+// ═══════════════════════════════════════════════
+function loadDashMedia() {
+  google.script.run
+    .withSuccessHandler((rows) => {
+      const media = rows.slice(1).map(r => ({ ID: r[0], Type: r[1], URL: r[2], UploadedBy: r[3], Date: r[4] }));
+      renderMediaGrid('dash-media-grid', media.length ? media : DUMMY_MEDIA);
+    })
+    .getMedia();
+}
+
+function renderPublicMedia() {
+  const grid = document.getElementById('public-media-grid');
+  grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="loader"></div></div>';
+
+  google.script.run
+    .withSuccessHandler((rows) => {
+      const media = rows.slice(1).map(r => ({ ID: r[0], Type: r[1], URL: r[2], UploadedBy: r[3], Date: r[4] }));
+      renderMediaGrid('public-media-grid', media.length ? media : DUMMY_MEDIA);
+    })
+    .getMedia();
+}
+
+function uploadMedia() {
+  const url = document.getElementById('med-url').value.trim();
+  const type = document.getElementById('med-type').value;
+  if (!url) { toast('Enter a URL.', 'error'); return; }
+
+  const data = { type, url, user: currentUser.name };
+
+  google.script.run
+    .withSuccessHandler((r) => {
+      if (r.success) {
+        toast('Media uploaded!', 'success');
+        document.getElementById('med-url').value = '';
+        loadDashMedia();
+      }
+    })
+    .addMedia(data);
+}
+// ═══════════════════════════════════════════════
+// TEAM PAGE — Club Members (Dummy UI display)
+// ═══════════════════════════════════════════════
+function renderTeamPage() {
+  const container = document.getElementById('team-page-content');
+  const canEdit = currentUser && ['President', 'Admin'].includes(currentUser.Role);
+
+  const groups = [
+    { label: 'Developer (IT)', roles: ['Admin'] },
+    { label: 'Leadership', roles: ['President', 'Vice President'] },
+    { label: 'Patrons', roles: ['Patron'] },
+    { label: 'Administration', roles: ['Secretary', 'Organizer'] },
+    { label: 'Coaches', roles: ['Coach'] },
+    { label: 'AC Milan Captains', roles: ['Captain'], team: 'AC Milan' },
+    { label: 'Inter Milan Captains', roles: ['Captain'], team: 'Inter Milan' },
+    { label: 'Welfare & Officials', roles: ['Welfare', 'Official'] },
+  ];
+
+  let html = '';
+  groups.forEach(grp => {
+    let members = clubMembers.filter(m => grp.roles.includes(m.role));
+    if (grp.team) members = members.filter(m => m.team === grp.team);
+    if (!members.length) return;
+    html += `<div class="team-section-title">${grp.label}</div><div class="member-grid">`;
+    members.forEach(m => {
+      const initial = m.name[0].toUpperCase();
+      const teamCol = m.team === 'AC Milan' ? 'var(--red)' : m.team === 'Inter Milan' ? 'var(--blue)' : 'var(--gold)';
+      const teamLabel = m.team === 'Both' ? 'Management' : m.team;
+      const imgHTML = m.img
+        ? `<img src="${m.img}" alt="${m.name}" onerror="this.style.display='none'"/>`
+        : initial;
+      html += `
+        <div class="member-card glass" data-id="${m.id}">
+          ${canEdit ? `<button class="edit-member-btn" onclick="openEditModal('${m.id}')">✎ Edit</button>` : ''}
+          <div class="member-avatar" style="border-color:${teamCol}">${imgHTML}</div>
+          <div class="member-name">${m.name}</div>
+          <div class="member-role">${m.role}</div>
+          <div class="member-team" style="color:${teamCol};font-size:.7rem;letter-spacing:1px">${teamLabel}</div>
+          ${m.captain ? '<div class="captain-badge">⭐ Captain</div>' : ''}
+        </div>`;
+    });
+    html += '</div>';
+  });
+
+  container.innerHTML = html || '<div class="empty-state"><div class="icon">👥</div><p>No members found.</p></div>';
+}
+
+// ═══════════════════════════════════════════════
+// EDIT MEMBER MODAL
+// ═══════════════════════════════════════════════
+function openEditModal(memberId) {
+  const m = clubMembers.find(x => x.id === memberId);
+  if (!m) return;
+  document.getElementById('edit-member-id').value = m.id;
+  document.getElementById('edit-member-name').value = m.name;
+  document.getElementById('edit-member-role').value = m.role;
+  document.getElementById('edit-member-img').value = m.img || '';
+  document.getElementById('edit-member-team').value = m.team;
+  document.getElementById('edit-modal').classList.add('open');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-modal').classList.remove('open');
+}
+
+async function saveEditMember() {
+  const id = document.getElementById('edit-member-id').value;
+  const name = document.getElementById('edit-member-name').value.trim();
+  const role = document.getElementById('edit-member-role').value;
+  const img = document.getElementById('edit-member-img').value.trim();
+  const team = document.getElementById('edit-member-team').value;
+  if (!name) { toast('Name is required.', 'error'); return; }
+  // Update via API
+  const r = await api('updateTeam', { id, name, role, img, team });
+  // Update local state regardless (UI reflects immediately)
+  const idx = clubMembers.findIndex(m => m.id === id);
+  if (idx > -1) { clubMembers[idx] = { ...clubMembers[idx], name, role, img, team, captain: role === 'Captain' }; }
+  closeEditModal();
+  toast('Member updated!', 'success');
+  renderTeamPage();
+}
+
+// ═══════════════════════════════════════════════
+// TEAM MANAGEMENT (Dashboard Module)
+// ═══════════════════════════════════════════════
+function loadTeamMgmt() {
+  const tbody = document.getElementById('team-mgmt-tbody');
+  tbody.innerHTML = clubMembers.map(m =>
+    `<tr><td>${m.name}</td><td><span class="badge badge-gold">${m.role}</span></td><td>${m.team}</td><td><button class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px;font-size:.65rem" onclick="openEditModal('${m.id}')">✎ Edit</button></td></tr>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════════
+// ABOUT STATS
+// ═══════════════════════════════════════════════
+async function loadAboutStats() {
+  const [pr, mr, nr, tr] = await Promise.all([
+    api('getPlayers'),
+    api('getMatches'),
+    api('getNews'),
+    api('getTransfers'),
+  ]);
+  document.getElementById('about-players').textContent = (pr.players || []).length;
+  document.getElementById('about-matches').textContent = (mr.matches || []).length;
+  const newsCount = (nr.news || []).length || DUMMY_NEWS.length;
+  document.getElementById('about-news').textContent = newsCount;
+  document.getElementById('about-transfers').textContent = (tr.transfers || []).length;
+}
+
+// ═══════════════════════════════════════════════
+// CONTACT
+// ═══════════════════════════════════════════════
+function sendContact() {
+  const name = document.getElementById('c-name').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const msg = document.getElementById('c-msg').value.trim();
+  if (!name || !email || !msg) { toast('Please fill all fields.', 'error'); return; }
+  toast(`Message sent! We'll be in touch, ${name}.`, 'success');
+  document.getElementById('c-name').value = '';
+  document.getElementById('c-email').value = '';
+  document.getElementById('c-msg').value = '';
+}
+
+// ═══════════════════════════════════════════════
+// CLOSE MODALS ON BACKDROP CLICK
+// ═══════════════════════════════════════════════
+document.getElementById('auth-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeAuth();
+});
+document.getElementById('edit-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeEditModal();
+});
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+(function init() {
+  showPage('home');
+})();
+// ═══════════════════════════════════════════════
+// NEWS FEED RENDERING (Standalone)
+// ═══════════════════════════════════════════════
+function renderNews() {
+  const publicGrid = document.getElementById('news-grid');
+  const adminGrid = document.getElementById('dash-news-grid');
+  
+  // Use data from dbData if available, otherwise use DUMMY_NEWS
+  const newsItems = (dbData && dbData.news && dbData.news.length > 0) ? dbData.news : (typeof DUMMY_NEWS !== 'undefined' ? DUMMY_NEWS : []);
+
+  let html = '';
+  // Sort: Newest first
+  const displayList = [...newsItems].reverse();
+
+  displayList.forEach((item, index) => {
+    const cardHtml = `
+      <div class="glass news-card" style="margin-bottom:1rem; border-left:2px solid var(--gold); padding:1.5rem; border-radius:4px;">
+        <div class="news-date" style="color:var(--gold); font-size:0.75rem;">${item.date || 'LATEST'}</div>
+        <h3 style="font-family:'Bebas Neue'; font-size:1.5rem; letter-spacing:1px; margin:5px 0;">${item.title}</h3>
+        <p style="font-size:0.9rem; opacity:0.8;">${item.content}</p>
+        ${adminGrid ? `
+          <button onclick="deleteNews(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:0.7rem; margin-top:10px; padding:0; text-transform:uppercase;">
+            [ Delete Post ]
+          </button>` : ''}
+      </div>
+    `;
+    html += cardHtml;
+  });
+
+  if (publicGrid) publicGrid.innerHTML = html || '<p>No news available.</p>';
+  if (adminGrid) adminGrid.innerHTML = html || '<p>No news published yet.</p>';
+}
+
+// ═══════════════════════════════════════════════
+// DELETE NEWS FUNCTION (Standalone)
+// ═══════════════════════════════════════════════
+function deleteNews(index) {
+  if (!confirm("Delete this news post?")) return;
+  toast("Deleting...", "info");
+
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run.withSuccessHandler(() => {
+      toast("Post Removed", "success");
+      refreshData();
+    }).deleteNewsFromSheet(index); 
+  } else {
+    // Local demo delete
+    const realIndex = dbData.news.length - 1 - index;
+    dbData.news.splice(realIndex, 1);
+    renderNews();
+    toast("Deleted locally", "success");
+  }
+}
+
+// ═══════════════════════════════════════════════
+// DATA INITIALIZATION (Standalone)
+// ═══════════════════════════════════════════════
+// This function must be what your Google Script success handler calls
+function onDataLoaded(data) {
+  dbData = data; 
+  renderNews(); 
+  // If you have other UI updates like updateStats(), call them here
+  if (typeof updateStats === 'function') updateStats();
+}
+</script>
+</body>
+</html>
