@@ -201,18 +201,164 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .stat-label{font-size:.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
 
 /* ─── TEAM PAGE (CLUB MEMBERS) ─── */
-.team-section-title{font-family:'Bebas Neue';font-size:1.8rem;letter-spacing:3px;margin:2rem 0 1rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);color:var(--gold)}
-.member-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.2rem;margin-bottom:1.5rem}
-.member-card{padding:1.5rem 1rem;text-align:center;transition:transform .2s,border-color .2s;position:relative}
-.member-card:hover{transform:translateY(-4px);border-color:var(--gold)}
-.member-avatar{width:72px;height:72px;border-radius:50%;margin:0 auto .8rem;object-fit:cover;border:2px solid var(--border);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:1.8rem;color:var(--gold)}
-.member-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
-.member-name{font-family:'Bebas Neue';font-size:1.1rem;letter-spacing:2px;line-height:1.2}
-.member-role{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-top:.3rem}
-.member-team{font-size:.7rem;color:var(--muted);margin-top:.2rem}
-.edit-member-btn{position:absolute;top:.5rem;right:.5rem;background:none;border:1px solid var(--border);color:var(--muted);font-size:.6rem;padding:.2rem .5rem;cursor:pointer;border-radius:2px;display:none;font-family:'Rajdhani';letter-spacing:1px;text-transform:uppercase;transition:all .2s}
-.edit-member-btn:hover{border-color:var(--gold);color:var(--gold)}
-.member-card:hover .edit-member-btn{display:block}
+/* HEADER ROW */
+.team-header-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:2rem;
+  margin-bottom:2rem;
+}
+
+/* LEFT TEXT ALIGN */
+.text-left{
+  text-align:left;
+}
+
+/* IT CARD AREA */
+#it-highlight{
+  display:flex;
+  justify-content:flex-end;
+}
+
+/* SPECIAL IT CARD STYLE */
+.it-card{
+  width:180px;
+  padding:1.2rem;
+  border:1px solid var(--gold);
+  border-radius:10px;
+  text-align:center;
+  background:rgba(255,215,0,0.05);
+  box-shadow:0 0 20px rgba(255,215,0,0.15);
+}
+
+/* SMALLER HEADER ON THIS PAGE */
+.compact-header h1{
+  font-size:2.2rem;
+}
+/* ─── TEAM PAGE (CLUB MEMBERS) ─── */
+
+/* SECTION TITLE */
+.team-section-title{
+  font-family:'Bebas Neue';
+  font-size:2rem;
+  letter-spacing:4px;
+  margin:2.5rem 0 1.5rem;
+  text-transform:uppercase;
+  color:var(--gold);
+  text-align:center;
+}
+
+/* EACH SECTION BLOCK */
+.vertical-block{
+  text-align:center;
+  margin-bottom:3rem;
+}
+
+/* GRID (FIXED → FLEX FOR PERFECT CENTERING) */
+.member-grid{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:1.5rem;
+  margin-bottom:1.5rem;
+}
+
+/* CARD */
+.member-card{
+  width:180px;
+  padding:1.5rem 1rem;
+  text-align:center;
+  transition:transform .2s, border-color .2s;
+  position:relative;
+}
+
+.member-card:hover{
+  transform:translateY(-5px);
+  border-color:var(--gold);
+}
+
+/* AVATAR */
+.member-avatar{
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  margin:0 auto .8rem;
+  object-fit:cover;
+  border:2px solid var(--border);
+  background:rgba(255,255,255,0.05);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Bebas Neue';
+  font-size:1.8rem;
+  color:var(--gold);
+}
+
+.member-avatar img{
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+/* TEXT */
+.member-name{
+  font-family:'Bebas Neue';
+  font-size:1.1rem;
+  letter-spacing:2px;
+  line-height:1.2;
+}
+
+.member-role{
+  font-size:.65rem;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-top:.3rem;
+}
+
+.member-team{
+  font-size:.7rem;
+  color:var(--muted);
+  margin-top:.2rem;
+}
+
+/* EDIT BUTTON */
+.edit-member-btn{
+  position:absolute;
+  top:.5rem;
+  right:.5rem;
+  background:none;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:.6rem;
+  padding:.2rem .5rem;
+  cursor:pointer;
+  border-radius:2px;
+  display:none;
+  font-family:'Rajdhani';
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:all .2s;
+}
+
+.edit-member-btn:hover{
+  border-color:var(--gold);
+  color:var(--gold);
+}
+
+.member-card:hover .edit-member-btn{
+  display:block;
+}
+
+/* CAPTAIN BADGE */
+.captain-badge{
+  margin-top:.5rem;
+  font-size:.65rem;
+  color:var(--gold);
+  letter-spacing:1px;
+}
 
 /* ─── CAPTAIN BAND ─── */
 .captain-badge{display:inline-block;background:rgba(201,168,76,0.15);border:1px solid var(--gold);color:var(--gold);font-size:.55rem;letter-spacing:2px;padding:.15rem .4rem;border-radius:2px;text-transform:uppercase;margin-top:.3rem}
@@ -413,8 +559,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           <option value="Coach">Coach</option>
           <option value="Secretary">Secretary</option>
           <option value="President">President</option>
-          <option value="Admin">Admin (Developer)</option>
-        </select>
+          </select>
       </div>
       <div class="form-group"><label>Team</label>
         <select id="r-team">
@@ -492,17 +637,70 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 </div>
 
 <!-- ─── ABOUT ─── -->
+
 <div id="about-page" class="page">
   <div class="inner-page">
+    
     <div class="page-header">
       <p class="eyebrow">About Us</p>
-      <h1>SANSIRO<br/>FAMILY</h1>
-      <p>An elite football management platform uniting the rivals of San Siro under one powerful system — tracking players, matches, finances, and the pulse of the beautiful game.</p>
+      <h1>SANSIRO<br/>FOOTBALL FAMILY</h1>
+      <p>
+        Established on <strong>10th January 2000</strong>, SANSIRO FOOTBALL FAMILY is a vibrant community-based football group located at <strong>Buokrom Estate / Sore Nkwanta</strong>. 
+        With over <strong>120 members</strong> and no age limits, we come together every Saturday not just to play football, but to build unity, friendship, and lifelong support for one another.
+      </p>
     </div>
+
     <div class="about-grid">
-      <div class="about-card glass"><h3>Our Mission</h3><p>To deliver a world-class digital infrastructure for football communities, enabling seamless collaboration between players, coaches, and administrators of AC Milan and Inter Milan.</p></div>
-      <div class="about-card glass"><h3>The Platform</h3><p>Sansiro Special is built on real-time data, transparent communication, and role-based access — ensuring every stakeholder from Player to President has the right tools at their fingertips.</p></div>
+
+      <div class="about-card glass">
+        <h3>Our Identity</h3>
+        <p>
+          The name <strong>“SANSIRO”</strong> was inspired by the famous AC Milan and Inter Milan derby — a symbol of passion, intensity, and competition. 
+          Today, our family is proudly divided into <strong>AC Milan</strong> and <strong>Inter Milan</strong>, competing in seasonal leagues that bring excitement and unity to our community.
+        </p>
+      </div>
+
+      <div class="about-card glass">
+        <h3>Our Activities</h3>
+        <p>
+          We organize weekly football matches every <strong>Saturday</strong>, alongside seasonal competitions. 
+          In the recently concluded <strong>2025–2026 season</strong>, <strong>Inter Milan</strong> emerged champions with <strong>[POINTS]</strong> points.
+        </p>
+      </div>
+
+      <div class="about-card glass">
+        <h3>Community & Values</h3>
+        <p>
+          We are more than football — we are family. We support members during important life events such as weddings and funerals, and operate as a self-sponsored group driven by unity, respect, and togetherness.
+        </p>
+      </div>
+
+      <div class="about-card glass">
+        <h3>Achievements</h3>
+        <p>
+          Our journey includes winning <strong>1 major trophy</strong>, finishing as <strong>runners-up 3 times</strong> in community galas, and producing <strong>2 players who have featured in the U-17 National Team</strong>.
+        </p>
+      </div>
+
+      <div class="about-card glass">
+        <h3>Leadership</h3>
+        <p>
+          The family is guided by a dedicated team including our secretaries: 
+          <strong>Fosu (Oguamaa), Sarforo, Asibey, and Lampard</strong>, ensuring smooth organization and growth of the group.
+        </p>
+      </div>
+
+      <div class="about-card glass">
+        <h3>Honoring a Legend</h3>
+        <p>
+          We honor the memory of <strong>Coach Pepe</strong>, whose dedication and leadership played a vital role in building and sustaining SANSIRO FOOTBALL FAMILY. His legacy continues to inspire us.
+        </p>
+      </div>
+
     </div>
+
+  </div>
+</div>
     <div class="stats-row">
       <div class="stat-box glass"><div class="stat-num" id="about-players">—</div><div class="stat-label">Players</div></div>
       <div class="stat-box glass"><div class="stat-num" id="about-matches">—</div><div class="stat-label">Matches</div></div>
@@ -512,20 +710,34 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
 </div>
 
-<!-- ─── TEAM PAGE ─── -->
 <div id="team-page" class="page">
   <div class="inner-page">
-    <div class="page-header">
-      <p class="eyebrow">Club Structure</p>
-      <h1>THE<br/>FAMILY</h1>
-      <p>Meet the leadership, captains, coaches, and officials that run Sansiro Special.</p>
+
+    <div class="team-header-row">
+
+      <!-- LEFT: TEXT -->
+      <div class="page-header compact-header text-left">
+        <p class="eyebrow">Club Structure</p>
+        <h1>THE FAMILY</h1>
+        <p class="sub-text">
+          Leadership, coaches, and captains of Sansiro Football Family.
+        </p>
+      </div>
+
+      <!-- RIGHT: IT DEVELOPER -->
+      <div id="it-highlight"></div>
+
     </div>
+
     <div id="team-page-content">
-      <div class="empty-state"><div class="loader"></div><p style="margin-top:1rem">Loading team...</p></div>
+      <div class="empty-state">
+        <div class="loader"></div>
+        <p style="margin-top:.8rem">Loading team...</p>
+      </div>
     </div>
+
   </div>
 </div>
-
 <!-- ─── MEDIA ─── -->
 <div id="media-page" class="page">
   <div class="inner-page">
@@ -1058,15 +1270,16 @@ refreshData();
 // DUMMY DATA — UI display only (Team, Media, News)
 // ═══════════════════════════════════════════════
 const DUMMY_MEMBERS = [
-  { id:'m1', name:'Marco Rossi', role:'Admin', team:'Both', img:'', captain:false },
-  { id:'m2', name:'Giovanni Bianchi', role:'President', team:'Both', img:'', captain:false },
-  { id:'m3', name:'Luca Ferrara', role:'Vice President', team:'Both', img:'', captain:false },
-  { id:'m4', name:'Alessandro Conte', role:'Patron', team:'AC Milan', img:'', captain:false },
-  { id:'m5', name:'Riccardo Mancini', role:'Patron', team:'Inter Milan', img:'', captain:false },
-  { id:'m6', name:'Sofia Romano', role:'Secretary', team:'Both', img:'', captain:false },
-  { id:'m7', name:'Fabio Greco', role:'Organizer', team:'Both', img:'', captain:false },
-  { id:'m8', name:'Antonio Esposito', role:'Coach', team:'AC Milan', img:'', captain:false },
-  { id:'m9', name:'Matteo Colombo', role:'Coach', team:'Inter Milan', img:'', captain:false },
+  { id:'m1', name:'SAMUEL ATTAH-NTI', role:'Admin', team:'Both', img:'', captain:false },
+  { id:'m2', name:'Saforo', role:'President', team:'Both', img:'', captain:false },
+  { id:'m4', name:'Eye Gyee', role:'Coach', team:'AC Milan', img:'', captain:false },
+  { id:'m5', name:'Smoke', role:'Coach', team:'Inter Milan', img:'', captain:false },
+  { id:'m6', name:'Fosu', role:'Secretary', team:'Both', img:'', captain:false },
+  { id:'m6', name:'Lampard', role:'Organizer', team:'Both', img:'', captain:false },
+  
+  { id:'m6', name:'Oguamaa', role:'Secretary', team:'Both', img:'', captain:false },
+  { id:'m7', name:'Asibey', role:'Organizer', team:'Both', img:'', captain:false },
+  
   { id:'m10', name:'Francesco De Luca', role:'Captain', team:'AC Milan', img:'', captain:true },
   { id:'m11', name:'Roberto Ricci', role:'Captain', team:'AC Milan', img:'', captain:true },
   { id:'m12', name:'Davide Bruno', role:'Captain', team:'AC Milan', img:'', captain:true },
@@ -1081,7 +1294,7 @@ const DUMMY_MEMBERS = [
 const DUMMY_NEWS = [
   { ID:'n1', Title:'AC Milan Dominates Pre-Season', Content:'The Rossoneri showed incredible form in their pre-season friendly, defeating local rivals with a commanding performance. Head coach praised the squad depth and tactical discipline throughout the 90 minutes.', Author:'Secretary', Date:'2025-07-01' },
   { ID:'n2', Title:'Inter Milan Signs New Midfielder', Content:'Inter Milan have completed the signing of a dynamic midfielder on a two-year deal. The player comes highly recommended and is expected to bolster the squad for the upcoming season.', Author:'President', Date:'2025-07-05' },
-  { ID:'n3', Title:'Sansiro Special Annual Gala Tonight', Content:'The annual Sansiro Special gala brings together players, coaches and patrons for a night of celebration. Awards for best player, top scorer, and coach of the year will be presented.', Author:'Secretary', Date:'2025-07-10' },
+  { ID:'n3', Title:'Sansiro Special Annual Gala Tonight', Content:'The annual Sansiro Special gala brings together players and coaches for a night of celebration. Awards for best player, top scorer, and coach of the year will be presented.', Author:'Secretary', Date:'2025-07-10' },
   { ID:'n4', Title:'Fitness Camp Announced for August', Content:'Both squads will report for a joint pre-season fitness camp in the first week of August. Full itinerary and schedules will be shared through the platform.', Author:'Secretary', Date:'2025-07-12' },
 ];
 
@@ -2191,45 +2404,108 @@ function renderTeamPage() {
   const canEdit = currentUser && ['President', 'Admin'].includes(currentUser.Role);
 
   const groups = [
-    { label: 'Developer (IT)', roles: ['Admin'] },
-    { label: 'Leadership', roles: ['President', 'Vice President'] },
-    { label: 'Patrons', roles: ['Patron'] },
-    { label: 'Administration', roles: ['Secretary', 'Organizer'] },
-    { label: 'Coaches', roles: ['Coach'] },
-    { label: 'AC Milan Captains', roles: ['Captain'], team: 'AC Milan' },
-    { label: 'Inter Milan Captains', roles: ['Captain'], team: 'Inter Milan' },
-    { label: 'Welfare & Officials', roles: ['Welfare', 'Official'] },
+    { label: 'EXECUTIVES', roles: ['President', 'Vice President', 'Secretary', 'Organizer'] },
+    { label: 'COACHES', roles: ['Coach'] },
+    { label: 'AC MILAN CAPTAINS', roles: ['Captain'], team: 'AC Milan', color: 'var(--red)' },
+    { label: 'INTER MILAN CAPTAINS', roles: ['Captain'], team: 'Inter Milan', color: 'var(--blue)' }
   ];
 
   let html = '';
+
   groups.forEach(grp => {
     let members = clubMembers.filter(m => grp.roles.includes(m.role));
-    if (grp.team) members = members.filter(m => m.team === grp.team);
+
+    if (grp.team) {
+      members = members.filter(m => m.team === grp.team);
+    }
+
     if (!members.length) return;
-    html += `<div class="team-section-title">${grp.label}</div><div class="member-grid">`;
+
+    html += `
+      <div class="team-block vertical-block">
+        <div class="team-section-title" style="${grp.color ? `color:${grp.color}` : ''}">
+          ${grp.label}
+        </div>
+
+        <div class="member-grid">
+    `;
+
     members.forEach(m => {
-      const initial = m.name[0].toUpperCase();
-      const teamCol = m.team === 'AC Milan' ? 'var(--red)' : m.team === 'Inter Milan' ? 'var(--blue)' : 'var(--gold)';
+      const initial = m.name.charAt(0).toUpperCase();
+
+      const teamCol =
+        m.team === 'AC Milan' ? 'var(--red)' :
+        m.team === 'Inter Milan' ? 'var(--blue)' :
+        'var(--gold)';
+
       const teamLabel = m.team === 'Both' ? 'Management' : m.team;
+
       const imgHTML = m.img
         ? `<img src="${m.img}" alt="${m.name}" onerror="this.style.display='none'"/>`
         : initial;
+
       html += `
         <div class="member-card glass" data-id="${m.id}">
+
           ${canEdit ? `<button class="edit-member-btn" onclick="openEditModal('${m.id}')">✎ Edit</button>` : ''}
-          <div class="member-avatar" style="border-color:${teamCol}">${imgHTML}</div>
+
+          <div class="member-avatar" style="border-color:${teamCol}">
+            ${imgHTML}
+          </div>
+
           <div class="member-name">${m.name}</div>
           <div class="member-role">${m.role}</div>
-          <div class="member-team" style="color:${teamCol};font-size:.7rem;letter-spacing:1px">${teamLabel}</div>
-          ${m.captain ? '<div class="captain-badge">⭐ Captain</div>' : ''}
-        </div>`;
+
+          <div class="member-team" style="color:${teamCol}">
+            ${teamLabel}
+          </div>
+
+          ${m.captain ? `<div class="captain-badge">⭐ Captain</div>` : ''}
+
+        </div>
+      `;
     });
-    html += '</div>';
+
+    html += `
+        </div>
+      </div>
+    `;
   });
 
-  container.innerHTML = html || '<div class="empty-state"><div class="icon">👥</div><p>No members found.</p></div>';
+  container.innerHTML = html || `
+    <div class="empty-state">
+      <div class="icon">👥</div>
+      <p>No members found.</p>
+    </div>
+  `;
+
+  // ✅ THIS IS WHAT YOU WERE MISSING
+  renderITHighlight();
 }
 
+
+
+function renderITHighlight(){
+  const itContainer = document.getElementById('it-highlight');
+
+  const itMember = clubMembers.find(m => m.role === 'Admin');
+
+  if(!itMember) return;
+
+  const initial = itMember.name.charAt(0).toUpperCase();
+
+  const imgHTML = itMember.img
+    ? `<img src="${itMember.img}" alt="${itMember.name}"/>`
+    : initial;
+
+  itContainer.innerHTML = `
+    <div class="it-card">
+      <div class="member-avatar">${imgHTML}</div>
+      <div class="member-name">${itMember.name}</div>
+      <div class="member-role">IT Developer</div>
+    </div>
+  `;
+}
 // ═══════════════════════════════════════════════
 // EDIT MEMBER MODAL
 // ═══════════════════════════════════════════════
