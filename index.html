@@ -1353,40 +1353,19 @@ async function saveProfileChanges() {
     });
 
     // 2. Update Password if the field isn't empty
-  // 1. Handle Password Update
     if (newPass.trim() !== "") {
       const passResponse = await api('updatePassword', { 
         userID: currentUser.ID, 
         newPassword: newPass 
       });
-      if (passResponse.success) {
-        currentUser.Password = newPass;
-      }
+      if (passResponse.success) currentUser.Password = newPass;
     }
 
-    // 2. Handle Profile Info Update (Name, Pic, Contact)
     if (response.success) {
-      // Sync the live currentUser object in the code
+      // 3. Sync the live currentUser object
       currentUser.Name = newName;
       if (base64Image) currentUser.ProfilePic = base64Image;
       currentUser.Contact = newContact;
-
-      // CRITICAL: Save everything to LocalStorage so it stays after you refresh
-      localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
-      
-      // Refresh the Dashboard visuals immediately
-      enterDashboard();
-      
-      if (typeof toast === 'function') {
-        toast("Profile & Security Updated!", "success");
-      }
-      
-      // Clear fields and variables
-      document.getElementById('edit-password').value = "";
-      base64Image = null; 
-    } else {
-      alert("Update failed: " + response.message);
-    }
 
       // 4. CRITICAL: Save to LocalStorage so it stays after refresh
       localStorage.setItem('sansiro_user', JSON.stringify(currentUser));
