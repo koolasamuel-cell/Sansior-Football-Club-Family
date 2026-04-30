@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -15,41 +14,15 @@
   --border:rgba(255,255,255,0.1);--text:#e8e8e8;--muted:rgba(255,255,255,0.45);
 }
 html{scroll-behavior:smooth}
-body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
+body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;padding-bottom:32px}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:#0a0a0a}
 ::-webkit-scrollbar-thumb{background:var(--gold)}
 
-/* LIGHTER BACKGROUND */
-body::before{
-  content:'';position:fixed;inset:0;
-  background:
-    linear-gradient(rgba(0,0,0,0.50),rgba(0,18,0,0.65)),
-    radial-gradient(circle at 50% 10%,rgba(255,255,255,0.15),transparent 55%),
-    url('https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=1920&auto=format&fit=crop');
-  background-size:cover;background-position:center;background-repeat:no-repeat;
-  filter:contrast(1.1) brightness(.85) saturate(1.2);
-  pointer-events:none;z-index:0;opacity:.85;
-}
-body::after{
-  content:'';position:fixed;inset:0;
-  background:
-    radial-gradient(circle at 50% 0%,rgba(255,255,255,0.08),transparent 40%),
-    radial-gradient(circle at 20% 10%,rgba(255,255,255,0.05),transparent 30%),
-    radial-gradient(circle at 80% 10%,rgba(255,255,255,0.05),transparent 30%);
-  pointer-events:none;z-index:0;
-}
-#dashboard-page.active::before{
-  content:'';position:fixed;inset:0;
-  background:
-    linear-gradient(rgba(0,0,10,0.60),rgba(0,0,20,0.75)),
-    radial-gradient(circle at 30% 70%,rgba(255,30,30,0.07),transparent 50%),
-    radial-gradient(circle at 70% 30%,rgba(0,83,160,0.07),transparent 50%),
-    url('https://images.unsplash.com/photo-1431324155629-1a6dda1988f5?q=80&w=1920&auto=format&fit=crop');
-  background-size:cover;background-position:center top;background-repeat:no-repeat;
-  filter:contrast(1.05) brightness(.75) saturate(1.1);
-  pointer-events:none;z-index:0;opacity:1;
-}
+/* LIGHTER BACKGROUND — managed by #bg-rotator */
+body::before{display:none}
+body::after{display:none}
+#dashboard-page.active::before{display:none}
 
 .page{display:none;min-height:100vh;position:relative;z-index:1}
 .page.active{display:block}
@@ -140,7 +113,7 @@ body::after{
 .stat-num{font-family:'Bebas Neue';font-size:3rem;background:linear-gradient(135deg,var(--gold),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .stat-label{font-size:.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
 
-.team-header-container{max-width:1100px;margin:-70px auto 2rem;padding:2rem 2.5rem;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border:1px solid rgba(255,215,0,0.15);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.4);position:relative;z-index:10}
+.team-header-container{max-width:1100px;margin:0 auto 2rem;padding:2rem 2.5rem;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border:1px solid rgba(255,215,0,0.15);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.4);position:relative;z-index:10}
 .team-header-row{display:flex;justify-content:space-between;align-items:center;gap:2rem}
 .team-header-row .page-header{max-width:65%}
 .it-card{width:210px;padding:1.5rem 1.2rem;border:1px solid var(--gold);border-radius:12px;text-align:center;background:rgba(255,215,0,0.06);box-shadow:0 0 30px rgba(255,215,0,0.25);transform:translateY(-10px)}
@@ -336,8 +309,88 @@ strong{color:var(--gold)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .new-item{animation:slideDown .3s ease}
 
+/* ── HAMBURGER MENU ── */
+.hamburger{display:none;flex-direction:column;justify-content:space-between;width:26px;height:18px;background:none;border:none;cursor:pointer;padding:0;z-index:1010}
+.hamburger span{display:block;height:2px;background:#fff;border-radius:2px;transition:all .3s ease}
+.hamburger.open span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+.mobile-nav{display:none;position:fixed;top:64px;left:0;right:0;background:rgba(5,5,5,0.98);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);z-index:999;padding:1rem 2rem;animation:slideDown .2s ease}
+.mobile-nav.open{display:block}
+.mobile-nav ul{list-style:none;display:flex;flex-direction:column;gap:.2rem}
+.mobile-nav ul li a{display:block;padding:.75rem 0;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:1px solid var(--border);transition:color .2s}
+.mobile-nav ul li a:hover,.mobile-nav ul li a.active{color:var(--gold)}
+
+/* ── DEVELOPER TICKER ── */
+#dev-ticker-wrap{position:fixed;bottom:0;left:0;right:0;z-index:990;height:32px;display:flex;align-items:stretch;background:rgba(5,5,5,0.96);border-top:1px solid rgba(201,168,76,0.35);backdrop-filter:blur(10px);overflow:hidden;user-select:none}
+#dev-ticker-label{flex-shrink:0;display:flex;align-items:center;padding:0 1rem;font-family:'Bebas Neue';font-size:.75rem;letter-spacing:3px;color:#000;background:linear-gradient(135deg,var(--gold),#7a5c1e);white-space:nowrap;border-right:1px solid rgba(201,168,76,0.5)}
+#dev-ticker-track{flex:1;overflow:hidden;position:relative;display:flex;align-items:center}
+#dev-ticker-content{display:inline-flex;align-items:center;gap:0;white-space:nowrap;animation:ticker-scroll 55s linear infinite;will-change:transform}
+#dev-ticker-wrap:hover #dev-ticker-content{animation-play-state:paused}
+.tkr{font-size:.72rem;letter-spacing:.5px;color:rgba(255,255,255,0.75);padding:0 .5rem}
+.tkr strong{color:var(--gold)}
+.tkr a{color:var(--gold);text-decoration:none}
+.tkr a:hover{text-decoration:underline}
+.tkr-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);opacity:.5;flex-shrink:0;margin:0 .6rem}
+@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ── MEMBER AVATAR SIZE FIX ── */
+.member-avatar{width:96px;height:96px;border-radius:50%;margin:0 auto .8rem;object-fit:cover;border:2px solid var(--border);background:rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:2.2rem;color:var(--gold);overflow:hidden}
+.member-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
+/* IT / Developer profile — larger card and avatar */
+.it-card{width:250px;padding:2rem 1.5rem;border:1px solid var(--gold);border-radius:12px;text-align:center;background:rgba(255,215,0,0.06);box-shadow:0 0 30px rgba(255,215,0,0.25);transform:translateY(-10px)}
+.it-card .member-avatar{width:120px;height:120px;font-size:2.8rem;border-width:3px;border-color:var(--gold)}
+
+/* ── SOCIAL MEDIA ICONS ── */
+.social-links{display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap}
+.social-link{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;border:1px solid var(--border);color:var(--muted);text-decoration:none;font-size:1.1rem;transition:all .25s;background:rgba(255,255,255,0.03)}
+.social-link:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.08);transform:translateY(-2px)}
+.social-link.fb:hover{border-color:#1877f2;color:#1877f2}
+.social-link.wa:hover{border-color:#25d366;color:#25d366}
+.social-link.ig:hover{border-color:#e1306c;color:#e1306c}
+.social-link.tw:hover{border-color:#fff;color:#fff}
+.social-link.yt:hover{border-color:#ff0000;color:#ff0000}
+
+/* ── MEDIA GRID UPGRADE ── */
+.media-section-title{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:3px;color:var(--gold);margin:2rem 0 1rem;border-left:3px solid var(--gold);padding-left:.8rem}
+.media-grid-images{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.2rem;margin-bottom:2rem}
+.media-grid-videos{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin-bottom:2rem}
+.media-item{border-radius:4px;overflow:hidden;position:relative;background:rgba(255,255,255,0.03);cursor:pointer;transition:transform .2s,border-color .2s;border:1px solid var(--border)}
+.media-item:hover{transform:translateY(-3px);border-color:var(--gold)}
+.media-img-wrap{aspect-ratio:4/3;overflow:hidden;position:relative}
+.media-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.media-item:hover .media-img-wrap img{transform:scale(1.05)}
+.media-vid-wrap{aspect-ratio:16/9;overflow:hidden;position:relative}
+.media-vid-wrap iframe,.media-vid-wrap video{width:100%;height:100%;border:none}
+.media-item-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0);transition:background .2s;pointer-events:none}
+.media-item:hover .media-item-overlay{background:rgba(0,0,0,0.3)}
+.media-play-icon{font-size:2.5rem;opacity:0;transition:opacity .2s}
+.media-item:hover .media-play-icon{opacity:1}
+.media-item-footer{padding:.6rem .8rem;display:flex;align-items:center;justify-content:space-between;font-size:.7rem;color:var(--muted)}
+.media-item-actions{display:flex;gap:.4rem}
+.media-item-actions button{background:none;border:1px solid var(--border);color:var(--muted);font-size:.6rem;padding:.2rem .5rem;border-radius:2px;cursor:pointer;font-family:'Rajdhani';letter-spacing:1px;transition:all .2s}
+.media-item-actions button:hover{border-color:var(--gold);color:var(--gold)}
+.media-item-actions .del-btn:hover{border-color:var(--red);color:var(--red)}
+
+/* ── LIGHTBOX ── */
+#media-lightbox{position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;padding:2rem}
+#media-lightbox.open{display:flex}
+#media-lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:4px}
+#lightbox-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:#fff;font-size:1.8rem;cursor:pointer;z-index:10001}
+
+/* ── BACKGROUND ROTATOR ── */
+.bg-rotator{position:fixed;inset:0;z-index:-1}
+.bg-slide{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;opacity:0;transition:opacity 1.5s ease;filter:contrast(1.05) brightness(.45) saturate(0.9)}
+.bg-slide.active{opacity:1}
+.bg-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(rgba(0,0,0,0.65),rgba(0,5,0,0.78)),radial-gradient(circle at 50% 10%,rgba(201,168,76,0.04),transparent 60%)}
+
+/* ── SESSION TIMEOUT BANNER ── */
+#session-warning{position:fixed;top:64px;left:0;right:0;z-index:998;background:rgba(255,30,30,0.9);color:#fff;padding:.6rem 2rem;font-size:.8rem;letter-spacing:1px;text-align:center;display:none}
+#session-warning button{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:.2rem .8rem;font-family:'Rajdhani';font-size:.75rem;letter-spacing:1px;border-radius:2px;cursor:pointer;margin-left:1rem}
+
 @media(max-width:768px){
   .nav-links{display:none}
+  .hamburger{display:flex}
   .team-header-row{flex-direction:column}
   .it-card{width:100%;transform:none}
   .contact-grid{grid-template-columns:1fr}
@@ -345,19 +398,44 @@ strong{color:var(--gold)}
   .chat-channels{flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--border)}
   .dash-layout{grid-template-columns:1fr}
   .inner-page{padding:90px 1rem 3rem}
+  .media-grid-videos{grid-template-columns:1fr}
 }
 @media(max-width:500px){
   .stats-cards{grid-template-columns:1fr 1fr}
   .news-grid{grid-template-columns:1fr}
   .match-teams{gap:1.5rem}
 }
+/* ═══════════════════════════════════════════════════════════ */
+/* COPYRIGHT FOOTER                                           */
+/* ═══════════════════════════════════════════════════════════ */
+#site-footer{
+  position:relative;z-index:1;
+  background:rgba(3,3,3,0.97);
+  border-top:1px solid var(--border);
+  padding:1.5rem 2rem 52px;
+  text-align:center;
+}
+.footer-copy{
+  font-size:.68rem;letter-spacing:2.5px;
+  color:var(--muted);text-transform:uppercase;line-height:2;
+}
+.footer-copy strong{color:var(--gold)}
+.footer-divider{
+  width:60px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:.6rem auto;
+}
+
 </style>
 </head>
 <body>
 
+<!-- SESSION WARNING BANNER -->
+<div id="session-warning">⚠️ Session expiring soon due to inactivity. <button onclick="extendSession()">Stay Logged In</button></div>
+
 <!-- NAVBAR -->
 <nav id="navbar">
-  <div class="nav-brand" onclick="showPage('home')">SANSIRO FOOTBALL FAMILY</div>
+  <div class="nav-brand" onclick="showPage('home');closeMobileNav()">SANSIRO FOOTBALL FAMILY</div>
   <ul class="nav-links">
     <li><a onclick="showPage('home')" data-page="home">Home</a></li>
     <li><a onclick="showPage('about')" data-page="about">About</a></li>
@@ -370,8 +448,46 @@ strong{color:var(--gold)}
   <div class="nav-right">
     <span id="nav-user-info"></span>
     <button class="nav-enter" id="nav-enter-btn" onclick="openAuth()">🔑 Enter System</button>
+    <button class="hamburger" id="hamburger-btn" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobile-nav">
+  <ul>
+    <li><a onclick="showPage('home');closeMobileNav()" data-page="home">Home</a></li>
+    <li><a onclick="showPage('about');closeMobileNav()" data-page="about">About</a></li>
+    <li><a onclick="showPage('team');closeMobileNav()" data-page="team">Team</a></li>
+    <li><a onclick="showPage('media');closeMobileNav()" data-page="media">Media</a></li>
+    <li><a onclick="showPage('news');closeMobileNav()" data-page="news">News</a></li>
+    <li><a onclick="showPage('achievements');closeMobileNav()" data-page="achievements">Achievements</a></li>
+    <li><a onclick="showPage('contact');closeMobileNav()" data-page="contact">Contact</a></li>
+    <li><a onclick="openAuth();closeMobileNav()">🔑 Enter System</a></li>
+  </ul>
+</div>
+
+<!-- BACKGROUND ROTATOR — dark football stadiums -->
+<div class="bg-rotator" id="bg-rotator">
+  <div class="bg-overlay"></div>
+  <!-- Night stadium with floodlights -->
+  <div class="bg-slide active" style="background-image:url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?q=80&w=1920&auto=format&fit=crop')"></div>
+  <!-- Empty stadium at dusk -->
+  <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=1920&auto=format&fit=crop')"></div>
+  <!-- Football on dark pitch -->
+  <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1551958219-acbc595d5b29?q=80&w=1920&auto=format&fit=crop')"></div>
+  <!-- Dark arena crowd -->
+  <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1431324155629-1a6dda1988f5?q=80&w=1920&auto=format&fit=crop')"></div>
+  <!-- Night match aerial -->
+  <div class="bg-slide" style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1920&auto=format&fit=crop')"></div>
+</div>
+
+<!-- MEDIA LIGHTBOX -->
+<div id="media-lightbox">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="Full view"/>
+</div>
 
 <!-- AUTH MODAL -->
 <div id="auth-modal">
@@ -541,7 +657,7 @@ strong{color:var(--gold)}
   <div class="inner-page">
     <div class="page-header">
       <h1><span class="line1">SANSIRO</span><span class="line2">FOOTBALL FAMILY</span></h1>
-      <p>Established on <strong>10th January 2000</strong>, SANSIRO FOOTBALL FAMILY is a vibrant community-based football group at <strong>Buokrom Estate / Sore Nkwanta</strong>. With over <strong>120 members</strong>, we come together every Saturday to build unity, friendship, and lifelong support.</p>
+      <p>Established on <strong>10th January 2000</strong>, SANSIRO FOOTBALL FAMILY is a vibrant community-based football group at <strong>Buokrom Estate / Asore Nkwanta / Ideal College</strong>. With over <strong>120 members</strong>, we come together every Saturday to build unity, friendship, and lifelong support.</p>
     </div>
     <div class="about-grid">
       <div class="about-card glass"><h3>Our Identity</h3><p>The name <strong>"SANSIRO"</strong> was inspired by the famous AC Milan and Inter Milan derby — a symbol of passion, intensity, and competition. Our family is divided into <strong>AC Milan</strong> and <strong>Inter Milan</strong>, competing in seasonal leagues.</p></div>
@@ -584,8 +700,13 @@ strong{color:var(--gold)}
     <div class="page-header">
       <h1><span class="line1">MEDIA</span><span class="line2">HUB</span></h1>
     </div>
-    <div class="media-grid" id="public-media-grid">
-      <div class="empty-state" style="grid-column:1/-1"><div class="loader"></div></div>
+    <div class="media-section-title">🎬 Videos</div>
+    <div class="media-grid-videos" id="public-media-videos">
+      <div class="empty-state" style="grid-column:1/-1;padding:1rem"><div class="loader"></div></div>
+    </div>
+    <div class="media-section-title">📸 Photo Gallery</div>
+    <div class="media-grid-images" id="public-media-images">
+      <div class="empty-state" style="grid-column:1/-1;padding:1rem"><div class="loader"></div></div>
     </div>
   </div>
 </div>
@@ -614,6 +735,27 @@ strong{color:var(--gold)}
         <p style="color:var(--muted);line-height:1.8">The home of elite football management.</p>
         <div class="contact-detail"><div><div class="contact-detail-label">Location</div><div class="contact-detail-val">Buokrom Estate / Sore Nkwanta, Kumasi</div></div></div>
         <div class="contact-detail"><div><div class="contact-detail-label">Email</div><div class="contact-detail-val">koolasamuel@gmail.com</div></div></div>
+        <!-- SOCIAL MEDIA LINKS — update hrefs below to real URLs -->
+        <div style="margin-top:1.5rem">
+          <div style="font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:.8rem">Follow Us</div>
+          <div class="social-links">
+            <a class="social-link fb" href="https://facebook.com" target="_blank" rel="noopener" title="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a class="social-link wa" href="https://wa.me/233000000000" target="_blank" rel="noopener" title="WhatsApp">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </a>
+            <a class="social-link ig" href="https://instagram.com" target="_blank" rel="noopener" title="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a class="social-link tw" href="https://twitter.com" target="_blank" rel="noopener" title="X / Twitter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a class="social-link yt" href="https://youtube.com" target="_blank" rel="noopener" title="YouTube">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="#050505" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            </a>
+          </div>
+        </div>
       </div>
       <div class="glass" style="padding:2rem">
         <div class="section-title"><span class="line1">SEND A</span><span class="line2">MESSAGE</span></div>
@@ -856,7 +998,7 @@ strong{color:var(--gold)}
               </div>
             </div>
             <div class="table-wrap">
-              <table class="data-table"><thead><tr><th>Date</th><th>Home</th><th>Score</th><th>Away</th><th>Scorers</th></tr></thead>
+              <table class="data-table"><thead><tr><th>Date</th><th>Home</th><th>Score</th><th>Away</th><th>Scorers</th><th>Actions</th></tr></thead>
               <tbody id="match-tbody"></tbody></table>
             </div>
           </div>
@@ -868,19 +1010,39 @@ strong{color:var(--gold)}
           <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem">
             <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">ADD PAYMENT</div>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem">
-              <div class="form-group"><label>Member</label><input id="f-user" type="text"/></div>
-              <div class="form-group"><label>Type</label><select id="f-type"><option>Dues</option><option>Donation</option><option>Fine</option></select></div>
+              <div class="form-group"><label>Member</label><input id="f-user" type="text" placeholder="Member name"/></div>
+              <div class="form-group"><label>Type</label>
+                <select id="f-type" onchange="toggleFinanceFields()">
+                  <option>Dues</option>
+                  <option>Donation</option>
+                  <option>Contribution</option>
+                  <option>Fine</option>
+                </select>
+              </div>
               <div class="form-group"><label>Amount (₵)</label><input id="f-amount" type="number" min="0"/></div>
             </div>
-            <button class="btn btn-gold" style="clip-path:none;border-radius:2px" onclick="submitPayment()">Record Payment</button>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem" id="f-extra-fields">
+              <div class="form-group" id="f-month-wrap"><label>Month (for Dues)</label>
+                <select id="f-month">
+                  <option value="">— Month —</option>
+                  <option>January</option><option>February</option><option>March</option><option>April</option>
+                  <option>May</option><option>June</option><option>July</option><option>August</option>
+                  <option>September</option><option>October</option><option>November</option><option>December</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Beneficiary / Purpose</label><input id="f-beneficiary" type="text" placeholder="e.g. General Fund, Equipment"/></div>
+            </div>
+            <div style="display:flex;gap:.8rem;align-items:center">
+              <button class="btn btn-gold" style="clip-path:none;border-radius:2px" onclick="submitPayment()">Record Payment</button>
+            </div>
           </div>
           <div class="glass" style="padding:1.5rem;margin-bottom:1rem">
-            <div style="font-size:.65rem;letter-spacing:3px;color:var(--muted)">TOTAL REVENUE</div>
+            <div style="font-size:.65rem;letter-spacing:3px;color:var(--muted)">TOTAL REVENUE (SUCCESSFUL)</div>
             <div style="font-family:'Bebas Neue';font-size:2.8rem;color:var(--gold)" id="total-revenue">₵0</div>
           </div>
           <div class="glass" style="padding:1.5rem">
             <div class="table-wrap">
-              <table class="data-table"><thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>
+              <table class="data-table"><thead><tr><th>Date</th><th>Member</th><th>Type</th><th>Amount</th><th>Month</th><th>Beneficiary</th><th>Status</th><th>Actions</th></tr></thead>
               <tbody id="finance-tbody"></tbody></table>
             </div>
           </div>
@@ -921,12 +1083,14 @@ strong{color:var(--gold)}
         <div class="dash-module" id="mod-media-upload">
           <div class="section-title">Upload Media</div>
           <div class="glass" style="padding:2rem;max-width:600px;margin-bottom:2rem">
-            <div class="form-group"><label>Media URL</label><input id="med-url" type="url" placeholder="https://…"/></div>
-            <div class="form-group"><label>Type</label><select id="med-type"><option value="Image">Image</option><option value="Video">Video</option></select></div>
+            <div class="form-group"><label>Media URL (YouTube link or direct image/video URL)</label><input id="med-url" type="url" placeholder="https://youtube.com/watch?v=… or https://image.url"/></div>
+            <div class="form-group"><label>Type</label><select id="med-type"><option value="Image">Image</option><option value="Video">Video / YouTube</option></select></div>
             <button class="btn btn-blue" style="clip-path:none;border-radius:2px" id="media-upload-btn" onclick="uploadMedia()">Upload to Gallery</button>
           </div>
-          <div class="section-title">Gallery</div>
-          <div class="media-grid" id="dash-media-grid"></div>
+          <div class="media-section-title">🎬 Videos</div>
+          <div class="media-grid-videos" id="dash-media-videos"></div>
+          <div class="media-section-title">📸 Photo Gallery</div>
+          <div class="media-grid-images" id="dash-media-images"></div>
         </div>
 
         <!-- COACH INBOX -->
@@ -1019,10 +1183,22 @@ strong{color:var(--gold)}
 
 <div id="toast"></div>
 
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- COPYRIGHT FOOTER                                           -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<footer id="site-footer">
+  <div class="footer-divider"></div>
+  <div class="footer-copy">
+    &copy; <strong>KOOLA 2026</strong> &nbsp;&bull;&nbsp; All Rights Reserved &nbsp;&bull;&nbsp; Sansiro Football Family Management System
+  </div>
+  <div class="footer-copy" style="margin-top:.3rem;font-size:.62rem;opacity:.6">
+    Built with passion for the beautiful game &nbsp;&bull;&nbsp; Kumasi, Ghana
+  </div>
+</footer>
 <script>
 'use strict';
 
-const APP_URL = "https://script.google.com/macros/s/AKfycbwEd0A5bEutSPNFZ1TG1qUygEDxJG7OlXPTDSIb__bvTGcLEdZ8hzG86XuuM8ZVJhRD/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbzkqQ95Pyqawm3sPRhbsIDcXEtJaEiG9N-BVNg_flVdmhZc1CzdiNp2XHhuW1afG9QsQQ/exec";
 const DUES_MONTHS = ['August 2025','September 2025','October 2025','November 2025','December 2025','January 2026','February 2026','March 2026','April 2026'];
 const DUES_PER_MONTH = 10;
 
@@ -1212,21 +1388,8 @@ function toast(msg, type = 'info') {
   setTimeout(() => el.remove(), 4000);
 }
 
-// ── NAVIGATION ──
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-  if (name === 'dashboard' && !currentUser) { openAuth(); return; }
-  const pg = document.getElementById(name + '-page');
-  if (pg) pg.classList.add('active');
-  const lnk = document.querySelector('[data-page="'+name+'"]');
-  if (lnk) lnk.classList.add('active');
-  window.scrollTo(0,0);
-  if (name === 'team')  renderTeamPage();
-  if (name === 'news')  renderPublicNews();
-  if (name === 'media') renderPublicMedia();
-  if (name === 'about') loadAboutStats();
-}
+// ── NAVIGATION (see updated showPage below) ──
+function _showPagePlaceholder() {} // old function replaced below
 
 // ── AUTH ──
 function openAuth() { if (currentUser) { showPage('dashboard'); return; } document.getElementById('auth-modal').classList.add('open'); }
@@ -1596,11 +1759,7 @@ async function loadMatches() {
   allMatchesCache=r.matches||[];
   renderMatchTable(allMatchesCache);
 }
-function renderMatchTable(matches) {
-  document.getElementById('match-tbody').innerHTML=matches.length
-    ?[...matches].reverse().map(m=>`<tr><td>${m.Date||''}</td><td>${m.HomeTeam||''}</td><td style="color:var(--gold);font-family:'Bebas Neue';font-size:1.1rem">${m.Score||'—'}</td><td>${m.AwayTeam||''}</td><td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.Scorers||''}</td></tr>`).join('')
-    :'<tr><td colspan="5" style="text-align:center;color:var(--muted)">No matches recorded.</td></tr>';
-}
+// renderMatchTable defined in updated block below
 function filterMatches() {
   const date=document.getElementById('filter-date').value;
   if(!date){renderMatchTable(allMatchesCache);return;}
@@ -1623,23 +1782,7 @@ async function submitMatch() {
   } else toast(r.error||'Failed.','error');
 }
 
-// ── FINANCE ──
-async function loadPayments() {
-  const r=await api('getPayments');
-  const payments=r.payments||[];
-  const total=payments.reduce((s,p)=>s+(parseFloat(p.Amount)||0),0);
-  document.getElementById('total-revenue').textContent='₵'+total.toFixed(2);
-  document.getElementById('finance-tbody').innerHTML=payments.length
-    ?[...payments].reverse().map(p=>`<tr><td>${p.Date||''}</td><td>${p.User||''}</td><td><span class="badge badge-gold">${p.Type||''}</span></td><td>₵${parseFloat(p.Amount||0).toFixed(2)}</td><td><span class="badge badge-green">${p.Status||'Recorded'}</span></td></tr>`).join('')
-    :'<tr><td colspan="5" style="text-align:center;color:var(--muted)">No payments.</td></tr>';
-}
-async function submitPayment() {
-  const user=document.getElementById('f-user').value.trim(), type=document.getElementById('f-type').value, amount=document.getElementById('f-amount').value;
-  if(!user||!amount){toast('Fill member and amount.','error');return;}
-  const r=await api('addPayment',{user,type,amount:parseFloat(amount),status:'Recorded'});
-  if(r.success){toast('Payment recorded!','success');document.getElementById('f-user').value='';document.getElementById('f-amount').value='';delete cache['getPayments{}'];loadPayments();}
-  else toast(r.error||'Failed.','error');
-}
+// ── FINANCE (see updated functions in new block below) ──
 
 // ── TRANSFERS ──
 async function loadTransfers() {
@@ -1722,53 +1865,8 @@ async function deleteNews(id) {
   else toast(r.error||'Failed.','error');
 }
 
-// ── MEDIA ──
-function renderPublicMedia() {
-  const grid=document.getElementById('public-media-grid'); if(!grid) return;
-  grid.innerHTML='<div class="empty-state" style="grid-column:1/-1"><div class="loader"></div></div>';
-  api('getMedia').then(r=>renderMediaGrid(grid,(r.media&&r.media.length)?r.media:DUMMY_MEDIA)).catch(()=>renderMediaGrid(grid,DUMMY_MEDIA));
-}
-function renderMediaGrid(targetEl, mediaList) {
-  if(!targetEl) return;
-  if(!mediaList.length){targetEl.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--muted)">No media yet.</p>';return;}
-  targetEl.innerHTML=mediaList.map(m=>{
-    const isVideo=(m.Type||m.type||'').toLowerCase()==='video';
-    const inner=isVideo?`<video src="${m.URL||m.url}" controls style="width:100%;height:100%;object-fit:cover"></video>`:`<img src="${m.URL||m.url}" alt="media" loading="lazy" onerror="this.style.opacity='.3'">`;
-    return`<div class="glass media-item">${inner}<div class="media-item-label">${m.Type||m.type||'Image'} · ${m.Date||m.date||''}</div></div>`;
-  }).join('');
-}
-async function loadDashMedia() {
-  const r=await api('getMedia');
-  renderMediaGrid(document.getElementById('dash-media-grid'),(r.media&&r.media.length)?r.media:DUMMY_MEDIA);
-}
-async function uploadMedia() {
-  const url=document.getElementById('med-url').value.trim(), type=document.getElementById('med-type').value;
-  if(!url){toast('Enter a URL.','error');return;}
-  const btn=document.getElementById('media-upload-btn');
-  
-  // Optimistic update
-  const dashGrid=document.getElementById('dash-media-grid');
-  const isVideo=type.toLowerCase()==='video';
-  const tempEl=document.createElement('div');
-  tempEl.className='glass media-item new-item';
-  tempEl.style.position='relative';
-  const inner=isVideo?`<video src="${url}" controls style="width:100%;height:100%;object-fit:cover"></video>`:`<img src="${url}" alt="media" onerror="this.style.opacity='.3'">`;
-  tempEl.innerHTML=inner+`<div class="media-item-label" style="display:flex;align-items:center;gap:.5rem"><div class="loader"></div> Uploading…</div>`;
-  dashGrid.insertBefore(tempEl, dashGrid.firstChild);
-  btn.disabled=true; btn.innerHTML='<span class="loader"></span> Uploading…';
-  
-  const r=await api('addMedia',{type,url,user:currentUser.Name});
-  if(r.success){
-    toast('Media uploaded!','success');
-    document.getElementById('med-url').value='';
-    delete cache['getMedia{}'];
-    tempEl.remove(); loadDashMedia(); renderPublicMedia();
-  } else {
-    tempEl.remove();
-    toast(r.error||'Upload failed.','error');
-  }
-  btn.disabled=false; btn.textContent='Upload to Gallery';
-}
+// ── MEDIA (old functions removed — replaced by renderPublicMedia / renderMediaSplit / loadDashMedia below in new block) ──
+// renderPublicMedia, renderMediaSplit, loadDashMedia, uploadMedia are defined later
 
 // ── TEAM PAGE ──
 function renderTeamPage() {
@@ -1996,20 +2094,36 @@ function saveMatchResult() {
   closeMatchResultModal(); openLeagueDetail(lgId);
 }
 
-// ── STANDINGS MODULE ──
+// ── STANDINGS MODULE (UPGRADED) ──
 function loadStandingsModule() {
   loadLeagues();
   const container=document.getElementById('standings-content');
   if(!leagues.length){container.innerHTML='<div class="empty-state"><div class="icon">📊</div><p>No leagues yet.</p></div>';return;}
+  const canEdit=currentUser&&['President','Secretary','Admin'].includes(currentUser.Role);
   container.innerHTML=leagues.map(lg=>{
     recalcStandings(lg);
     const s=lg.standings||{}, sorted=Object.entries(s).sort((a,b)=>b[1].pts-a[1].pts);
+    // Compute goals, assists, MVP, cards from playerStats (league-wide)
+    const topScorer=Object.entries(playerStats).sort((a,b)=>b[1].goals-a[1].goals)[0];
+    const topAssist=Object.entries(playerStats).sort((a,b)=>b[1].assists-a[1].assists)[0];
+    const topMVP=Object.entries(playerStats).sort((a,b)=>b[1].mvp-a[1].mvp)[0];
+    const awardsHtml=`<div style="display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.2rem">
+      ${topScorer?`<div class="glass" style="padding:.8rem 1.2rem;border-left:2px solid var(--gold)"><div style="font-size:.6rem;letter-spacing:2px;color:var(--muted)">TOP SCORER</div><div style="font-family:'Bebas Neue';font-size:1.2rem">${topScorer[0]}</div><div style="font-size:.75rem;color:var(--gold)">${topScorer[1].goals} goals</div></div>`:''}
+      ${topAssist?`<div class="glass" style="padding:.8rem 1.2rem;border-left:2px solid var(--blue)"><div style="font-size:.6rem;letter-spacing:2px;color:var(--muted)">TOP ASSIST</div><div style="font-family:'Bebas Neue';font-size:1.2rem">${topAssist[0]}</div><div style="font-size:.75rem;color:#4d94ff">${topAssist[1].assists} assists</div></div>`:''}
+      ${topMVP?`<div class="glass" style="padding:.8rem 1.2rem;border-left:2px solid var(--red)"><div style="font-size:.6rem;letter-spacing:2px;color:var(--muted)">MVP AWARDS</div><div style="font-family:'Bebas Neue';font-size:1.2rem">${topMVP[0]}</div><div style="font-size:.75rem;color:var(--red)">${topMVP[1].mvp}× MVP</div></div>`:''}
+    </div>`;
+    const editActions=canEdit?`<div style="display:flex;gap:.5rem;margin-top:1rem">
+      <button onclick="openEditLeague('${lg.id}')" class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px;font-size:.65rem">✎ Edit League</button>
+      <button onclick="deleteLeague('${lg.id}')" class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px;font-size:.65rem;color:var(--red)">✕ Delete</button>
+    </div>`:'';
     return`<div class="glass" style="padding:1.5rem;margin-bottom:1.5rem">
       <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">${lg.name}</div>
       <div class="table-wrap"><table class="data-table">
         <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead>
         <tbody>${sorted.map(([team,s],i)=>`<tr><td>${i+1}</td><td><span class="badge ${team==='AC Milan'?'badge-red':'badge-blue'}">${team}</span></td><td>${s.p}</td><td>${s.w}</td><td>${s.d}</td><td>${s.l}</td><td>${s.gf}</td><td>${s.ga}</td><td>${s.gd>=0?'+'+s.gd:s.gd}</td><td style="color:var(--gold);font-family:'Bebas Neue';font-size:1.1rem">${s.pts}</td></tr>`).join('')}</tbody>
       </table></div>
+      ${awardsHtml}
+      ${editActions}
     </div>`;
   }).join('');
 }
@@ -2018,16 +2132,28 @@ function loadStandingsModule() {
 function loadPlayerStatsModule() {
   loadLeagues();
   const container=document.getElementById('player-stats-content');
+  const canEdit=currentUser&&['President','Secretary','Admin','Coach'].includes(currentUser.Role);
   const stats=Object.entries(playerStats).sort((a,b)=>b[1].goals-a[1].goals);
   if(!stats.length){container.innerHTML='<div class="empty-state"><div class="icon">👤</div><p>No player stats recorded yet.</p></div>';return;}
   container.innerHTML=`
     <div class="glass" style="padding:1.5rem;margin-bottom:1.5rem">
-      <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">GOAL SCORERS</div>
+      <div style="font-size:.75rem;letter-spacing:2px;color:var(--gold);margin-bottom:1rem">PLAYER STATISTICS</div>
       <div class="table-wrap"><table class="data-table">
-        <thead><tr><th>#</th><th>Player</th><th>Goals</th><th>Assists</th><th>MVP Awards</th></tr></thead>
-        <tbody>${stats.map(([name,s],i)=>`<tr><td>${i+1}</td><td>${name}</td><td style="color:var(--gold);font-family:'Bebas Neue';font-size:1.1rem">${s.goals}</td><td>${s.assists}</td><td>${s.mvp}</td></tr>`).join('')}</tbody>
+        <thead><tr><th>#</th><th>Player</th><th>Goals ⚽</th><th>Assists 🎯</th><th>MVP ⭐</th><th>Cards 🟨</th>${canEdit?'<th>Actions</th>':''}</tr></thead>
+        <tbody>${stats.map(([name,s],i)=>`<tr>
+          <td>${i+1}</td><td>${name}</td>
+          <td style="color:var(--gold);font-family:'Bebas Neue';font-size:1.1rem">${s.goals}</td>
+          <td>${s.assists}</td><td>${s.mvp}</td>
+          <td style="color:orange">${s.cards||0}</td>
+          ${canEdit?`<td><button onclick="resetPlayerStat('${name}')" class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px;font-size:.6rem;color:var(--red)">Reset</button></td>`:''}
+        </tr>`).join('')}</tbody>
       </table></div>
     </div>`;
+}
+function resetPlayerStat(name) {
+  if(!confirm('Reset all stats for '+name+'?')) return;
+  delete playerStats[name];
+  saveLeagues(); toast(name+' stats reset.','success'); loadPlayerStatsModule();
 }
 
 // ── TEAM OF THE WEEK ──
@@ -2128,28 +2254,310 @@ function sendContact() {
   ['c-name','c-email','c-msg'].forEach(id=>document.getElementById(id).value='');
 }
 
+// ── MOBILE NAV ──
+function toggleMobileNav() {
+  const nav = document.getElementById('mobile-nav');
+  const btn = document.getElementById('hamburger-btn');
+  nav.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+function closeMobileNav() {
+  document.getElementById('mobile-nav').classList.remove('open');
+  document.getElementById('hamburger-btn').classList.remove('open');
+}
+
+// ── BACKGROUND ROTATOR ──
+let bgIndex = 0;
+function startBgRotator() {
+  const slides = document.querySelectorAll('.bg-slide');
+  if (!slides.length) return;
+  setInterval(() => {
+    slides[bgIndex].classList.remove('active');
+    bgIndex = (bgIndex + 1) % slides.length;
+    slides[bgIndex].classList.add('active');
+  }, 6000);
+}
+
+// ── SESSION TIMEOUT ──
+const SESSION_TIMEOUT = 25 * 60 * 1000; // 25 minutes
+const SESSION_WARNING = 23 * 60 * 1000; // warn at 23 min
+let activityTimer = null, warningTimer = null;
+function resetActivityTimer() {
+  clearTimeout(activityTimer); clearTimeout(warningTimer);
+  document.getElementById('session-warning').style.display = 'none';
+  if (!currentUser) return;
+  warningTimer = setTimeout(() => {
+    document.getElementById('session-warning').style.display = 'block';
+  }, SESSION_WARNING);
+  activityTimer = setTimeout(() => {
+    document.getElementById('session-warning').style.display = 'none';
+    toast('Session expired. Please login again.', 'error');
+    doLogout();
+  }, SESSION_TIMEOUT);
+}
+function extendSession() {
+  document.getElementById('session-warning').style.display = 'none';
+  resetActivityTimer();
+  toast('Session extended!', 'success');
+}
+['click','keydown','mousemove','touchstart'].forEach(e => document.addEventListener(e, () => { if (currentUser) resetActivityTimer(); }, { passive: true }));
+
+// ── HASH-BASED ROUTING ──
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  document.querySelectorAll('.mobile-nav ul li a').forEach(a => a.classList.remove('active'));
+  if (name === 'dashboard' && !currentUser) { openAuth(); return; }
+  const pg = document.getElementById(name + '-page');
+  if (pg) pg.classList.add('active');
+  const lnk = document.querySelector('[data-page="'+name+'"]');
+  if (lnk) lnk.classList.add('active');
+  window.scrollTo(0,0);
+  // Update hash for refresh persistence (except dashboard handled by localStorage)
+  if (name !== 'dashboard') window.location.hash = name;
+  if (name === 'team')  renderTeamPage();
+  if (name === 'news')  renderPublicNews();
+  if (name === 'media') renderPublicMedia();
+  if (name === 'about') loadAboutStats();
+}
+
+// ── LIGHTBOX ──
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('media-lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('media-lightbox').classList.remove('open');
+  document.getElementById('lightbox-img').src = '';
+}
+document.getElementById('media-lightbox').addEventListener('click', function(e) { if(e.target===this) closeLightbox(); });
+
+// ── FINANCE FIELDS TOGGLE ──
+function toggleFinanceFields() {
+  const type = document.getElementById('f-type').value;
+  const mw = document.getElementById('f-month-wrap');
+  if (mw) mw.style.opacity = type === 'Dues' ? '1' : '.5';
+}
+
+// ── UPDATED MEDIA RENDERING ──
+function renderPublicMedia() {
+  const vidGrid = document.getElementById('public-media-videos');
+  const imgGrid = document.getElementById('public-media-images');
+  if (!vidGrid || !imgGrid) return;
+  api('getMedia').then(r => {
+    const list = (r.media && r.media.length) ? r.media : DUMMY_MEDIA;
+    renderMediaSplit(vidGrid, imgGrid, list, false);
+  }).catch(() => renderMediaSplit(vidGrid, imgGrid, DUMMY_MEDIA, false));
+}
+
+function getYouTubeId(url) {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function renderMediaSplit(vidEl, imgEl, list, isAdmin) {
+  const videos = list.filter(m => (m.Type||m.type||'').toLowerCase() === 'video');
+  const images = list.filter(m => (m.Type||m.type||'').toLowerCase() !== 'video');
+  
+  if (vidEl) {
+    vidEl.innerHTML = videos.length ? videos.map(m => {
+      const url = m.URL || m.url || '';
+      const ytId = getYouTubeId(url);
+      const mediaEl = ytId
+        ? `<div class="media-vid-wrap"><iframe src="https://www.youtube.com/embed/${ytId}" allowfullscreen loading="lazy"></iframe></div>`
+        : `<div class="media-vid-wrap"><video src="${url}" controls></video></div>`;
+      const actions = isAdmin ? `<div class="media-item-actions"><button onclick="editMedia('${m.ID||m.id}')">✎ Edit</button><button class="del-btn" onclick="deleteMedia('${m.ID||m.id}')">✕ Del</button></div>` : '';
+      return `<div class="glass media-item"><div style="pointer-events:auto">${mediaEl}</div><div class="media-item-footer"><span>${m.Type||'Video'} · ${m.Date||m.date||''}</span>${actions}</div></div>`;
+    }).join('') : '<p style="color:var(--muted);font-size:.85rem;padding:.5rem">No videos yet.</p>';
+  }
+  
+  if (imgEl) {
+    imgEl.innerHTML = images.length ? images.map(m => {
+      const url = m.URL || m.url || '';
+      const actions = isAdmin ? `<div class="media-item-actions"><button onclick="editMedia('${m.ID||m.id}')">✎ Edit</button><button class="del-btn" onclick="deleteMedia('${m.ID||m.id}')">✕ Del</button></div>` : '';
+      return `<div class="glass media-item" onclick="openLightbox('${url}')">
+        <div class="media-img-wrap"><img src="${url}" alt="media" loading="lazy" onerror="this.style.opacity='.3'">
+        <div class="media-item-overlay"><span class="media-play-icon">🔍</span></div></div>
+        <div class="media-item-footer"><span>📸 ${m.Date||m.date||''}</span>${actions}</div>
+      </div>`;
+    }).join('') : '<p style="color:var(--muted);font-size:.85rem;padding:.5rem">No images yet.</p>';
+  }
+}
+
+// ── UPDATED FINANCE LOADING ──
+async function loadPayments() {
+  const r = await api('getPayments');
+  const payments = r.payments || [];
+  const canEdit = currentUser && ['Secretary','President','Admin'].includes(currentUser.Role);
+  const total = payments.filter(p => (p.Status||'').toLowerCase() !== 'rejected').reduce((s,p) => {
+    const raw = (p.Amount||'0').toString().replace(/[₵,]/g,'');
+    return s + (parseFloat(raw) || 0);
+  }, 0);
+  document.getElementById('total-revenue').textContent = '₵' + total.toFixed(2);
+  document.getElementById('finance-tbody').innerHTML = payments.length
+    ? [...payments].reverse().map(p => {
+        const raw = (p.Amount||'0').toString().replace(/[₵,]/g,'');
+        const actions = canEdit ? `<div style="display:flex;gap:.3rem"><button onclick="deletePayment('${p.ID||p.id}')" class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px;font-size:.6rem;color:var(--red)">✕</button></div>` : '—';
+        return `<tr><td>${p.Date||''}</td><td>${p.User||''}</td><td><span class="badge badge-gold">${p.Type||''}</span></td><td>₵${parseFloat(raw).toFixed(2)}</td><td style="font-size:.75rem">${p.Month||'—'}</td><td style="font-size:.75rem;max-width:120px">${p.Beneficiary||'—'}</td><td><span class="badge badge-green">${p.Status||'Recorded'}</span></td><td>${actions}</td></tr>`;
+      }).join('')
+    : '<tr><td colspan="8" style="text-align:center;color:var(--muted)">No payments.</td></tr>';
+}
+
+async function submitPayment() {
+  const user = document.getElementById('f-user').value.trim();
+  const type = document.getElementById('f-type').value;
+  const amount = document.getElementById('f-amount').value;
+  const month = document.getElementById('f-month') ? document.getElementById('f-month').value : '';
+  const beneficiary = document.getElementById('f-beneficiary') ? document.getElementById('f-beneficiary').value.trim() : '';
+  if (!user || !amount) { toast('Fill member and amount.', 'error'); return; }
+  const r = await api('addPayment', { user, type, amount: parseFloat(amount), status: 'Recorded', month, beneficiary });
+  if (r.success) {
+    toast('Payment recorded!', 'success');
+    document.getElementById('f-user').value = '';
+    document.getElementById('f-amount').value = '';
+    if (document.getElementById('f-month')) document.getElementById('f-month').value = '';
+    if (document.getElementById('f-beneficiary')) document.getElementById('f-beneficiary').value = '';
+    delete cache['getPayments{}'];
+    // Auto-sync dues if type is Dues and month is given
+    if (type === 'Dues' && month && user) {
+      const key = user.toLowerCase().trim();
+      loadDuesFromStorage();
+      if (!duesData[key]) { duesData[key] = {}; DUES_MONTHS.forEach(m => { duesData[key][m] = 'Unpaid'; }); }
+      duesData[key][month] = 'Paid';
+      saveDuesToStorage();
+      toast('Dues auto-updated for ' + user + ' — ' + month, 'success');
+    }
+    loadPayments();
+  } else toast(r.error || 'Failed.', 'error');
+}
+
+async function deletePayment(id) {
+  if (!confirm('Delete this payment record?')) return;
+  const r = await api('deletePayment', { id });
+  if (r.success) { toast('Deleted!', 'success'); delete cache['getPayments{}']; loadPayments(); }
+  else { toast('Could not delete from server (local only).', 'info'); loadPayments(); }
+}
+
+// ── UPDATED MATCH TABLE ──
+function renderMatchTable(matches) {
+  const canEdit = currentUser && ['Coach','Secretary','President','Admin'].includes(currentUser.Role);
+  document.getElementById('match-tbody').innerHTML = matches.length
+    ? [...matches].reverse().map(m => {
+        const actions = canEdit ? `<div style="display:flex;gap:.3rem"><button onclick="deleteMatch('${m.ID||m.id}')" class="btn btn-outline btn-sm" style="clip-path:none;border-radius:2px;font-size:.6rem;color:var(--red)">✕ Del</button></div>` : '—';
+        return `<tr><td>${m.Date||''}</td><td>${m.HomeTeam||''}</td><td style="color:var(--gold);font-family:'Bebas Neue';font-size:1.1rem">${m.Score||'—'}</td><td>${m.AwayTeam||''}</td><td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.Scorers||''}</td><td>${actions}</td></tr>`;
+      }).join('')
+    : '<tr><td colspan="6" style="text-align:center;color:var(--muted)">No matches recorded.</td></tr>';
+}
+
+async function deleteMatch(id) {
+  if (!confirm('Delete this match report?')) return;
+  const r = await api('deleteMatch', { id });
+  if (r.success) { toast('Match deleted!', 'success'); delete cache['getMatches{}']; loadMatches(); }
+  else { toast('Could not delete from server.', 'info'); }
+}
+
+// ── UPDATED DASH MEDIA with admin controls ──
+async function loadDashMedia() {
+  const r = await api('getMedia');
+  const list = (r.media && r.media.length) ? r.media : DUMMY_MEDIA;
+  const vidGrid = document.getElementById('dash-media-videos');
+  const imgGrid = document.getElementById('dash-media-images');
+  renderMediaSplit(vidGrid, imgGrid, list, true);
+}
+
+async function editMedia(id) {
+  const newUrl = prompt('Enter new URL for this media item:');
+  if (!newUrl) return;
+  toast('Media editing requires backend support. URL noted locally.', 'info');
+}
+
+async function deleteMedia(id) {
+  if (!confirm('Delete this media item?')) return;
+  const r = await api('deleteMedia', { id });
+  if (r.success) { toast('Deleted!', 'success'); delete cache['getMedia{}']; loadDashMedia(); renderPublicMedia(); }
+  else toast('Could not delete from server.', 'info');
+}
+
 // ── BACKDROP CLOSE ──
 document.getElementById('auth-modal').addEventListener('click',function(e){if(e.target===this)closeAuth();});
 document.getElementById('edit-modal').addEventListener('click',function(e){if(e.target===this)closeEditModal();});
 document.getElementById('league-modal').addEventListener('click',function(e){if(e.target===this)closeLeagueModal();});
 document.getElementById('match-result-modal').addEventListener('click',function(e){if(e.target===this)closeMatchResultModal();});
 
-// ── AUTO-LOGIN ──
-window.addEventListener('load',()=>{
+// ── AUTO-LOGIN + HASH ROUTING ──
+window.addEventListener('load', () => {
   loadDuesFromStorage();
   loadLeagues();
-  const savedUser=localStorage.getItem('sansiro_user');
-  if(savedUser){
-    try{
-      currentUser=JSON.parse(savedUser);
+  startBgRotator();
+  
+  const savedUser = localStorage.getItem('sansiro_user');
+  if (savedUser) {
+    try {
+      currentUser = JSON.parse(savedUser);
       enterDashboard();
-      setTimeout(()=>{
-        const savedImage=localStorage.getItem('profileImage');
-        if(savedImage){['dash-profile-img','profile-preview'].forEach(id=>{const el=document.getElementById(id);if(el)el.src=savedImage;});}
-      },200);
-    }catch(e){localStorage.removeItem('sansiro_user');showPage('home');}
-  }else{showPage('home');}
+      resetActivityTimer();
+      setTimeout(() => {
+        const savedImage = localStorage.getItem('profileImage');
+        if (savedImage) { ['dash-profile-img','profile-preview'].forEach(id => { const el=document.getElementById(id); if(el) el.src=savedImage; }); }
+      }, 200);
+    } catch(e) { localStorage.removeItem('sansiro_user'); routeFromHash(); }
+  } else {
+    routeFromHash();
+  }
+});
+
+function routeFromHash() {
+  const hash = window.location.hash.replace('#','');
+  const validPages = ['home','about','team','media','news','achievements','contact'];
+  if (hash && validPages.includes(hash)) showPage(hash);
+  else showPage('home');
+}
+
+window.addEventListener('hashchange', () => {
+  if (!currentUser) routeFromHash();
 });
 </script>
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SCROLLING DEVELOPER ADVERT TICKER                          -->
+<!-- Hover to pause · Scrolls right → left at steady pace       -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div id="dev-ticker-wrap" title="Hover to pause ticker">
+  <div id="dev-ticker-label">&#x1F4BB; DEV</div>
+  <div id="dev-ticker-track">
+    <div id="dev-ticker-content">
+      <!-- SET A -->
+      <span class="tkr">&#128187;&nbsp; Need a professional website or custom management system?</span>
+      <span class="tkr-dot"></span>
+      <span class="tkr"><strong>Design by Samuel Attah-Nti &nbsp;|&nbsp; KOOLA</strong></span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#128222;&nbsp; Contact: <strong>0554244674</strong></span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#9993;&#65039;&nbsp; Email: <a href="mailto:koolasamuel@gmail.com">koolasamuel@gmail.com</a></span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#127760;&nbsp; Custom football systems &nbsp;&bull;&nbsp; Management platforms &nbsp;&bull;&nbsp; Business websites &nbsp;&bull;&nbsp; Mobile-ready designs</span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#9917;&nbsp; This platform was proudly built by <strong>KOOLA &mdash; Samuel Attah-Nti</strong> &nbsp;&bull;&nbsp; Let&rsquo;s build yours next!</span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#128640;&nbsp; Affordable &bull; Reliable &bull; Professional Web Development</span>
+      <span class="tkr-dot"></span>
+      <!-- SET B — exact duplicate for seamless infinite loop -->
+      <span class="tkr">&#128187;&nbsp; Need a professional website or custom management system?</span>
+      <span class="tkr-dot"></span>
+      <span class="tkr"><strong>Design by Samuel Attah-Nti &nbsp;|&nbsp; KOOLA</strong></span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#128222;&nbsp; Contact: <strong>0554244674</strong></span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#9993;&#65039;&nbsp; Email: <a href="mailto:koolasamuel@gmail.com">koolasamuel@gmail.com</a></span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#127760;&nbsp; Custom football systems &nbsp;&bull;&nbsp; Management platforms &nbsp;&bull;&nbsp; Business websites &nbsp;&bull;&nbsp; Mobile-ready designs</span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#9917;&nbsp; This platform was proudly built by <strong>KOOLA &mdash; Samuel Attah-Nti</strong> &nbsp;&bull;&nbsp; Let&rsquo;s build yours next!</span>
+      <span class="tkr-dot"></span>
+      <span class="tkr">&#128640;&nbsp; Affordable &bull; Reliable &bull; Professional Web Development</span>
+      <span class="tkr-dot"></span>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>'''
