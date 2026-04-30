@@ -16,9 +16,73 @@
 }
 html{scroll-behavior:smooth}
 body{background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0a0a0a}::-webkit-scrollbar-thumb{background:var(--gold)}
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
 
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#0a0a0a}
+::-webkit-scrollbar-thumb{background:var(--gold)}
+
+/* SPORTING BACKGROUND (UPGRADED) */
+body::before{
+content:'';
+position:fixed;
+inset:0;
+
+/* LAYERED STADIUM + LIGHT EFFECT */
+background:
+linear-gradient(rgba(0,0,0,0.75),rgba(0,18,0,0.9)),
+radial-gradient(circle at 50% 10%, rgba(255,255,255,0.15), transparent 55%),
+url('https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=1920&auto=format&fit=crop');
+
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+
+/* DEPTH + SPORTS FEEL */
+filter:contrast(1.15) brightness(.75) saturate(1.3);
+
+pointer-events:none;
+z-index:0;
+opacity:.75;
+}
+
+/* EXTRA LIGHT GLOW (STADIUM LIGHTS) */
+body::after{
+content:'';
+position:fixed;
+inset:0;
+background:
+radial-gradient(circle at 50% 0%, rgba(255,255,255,0.08), transparent 40%),
+radial-gradient(circle at 20% 10%, rgba(255,255,255,0.05), transparent 30%),
+radial-gradient(circle at 80% 10%, rgba(255,255,255,0.05), transparent 30%);
+pointer-events:none;
+z-index:0;
+}
+
+/* ─── PAGES ─── */
+.page{display:none;min-height:100vh;position:relative;z-index:1}
+.page.active{display:block}
+
+/* ─── NAVBAR ─── */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(18px);background:rgba(5,5,5,0.9);border-bottom:1px solid var(--border)}
+
+.nav-brand{font-family:'Bebas Neue';font-size:1.3rem;letter-spacing:3px;background:linear-gradient(135deg,var(--red),var(--gold),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+.nav-links{display:flex;gap:1.5rem;list-style:none}
+
+.nav-links a{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:color .2s;font-weight:600;text-decoration:none}
+
+.nav-links a:hover,.nav-links a.active{color:#fff}
+
+.nav-links a.active{border-bottom:1px solid var(--gold);padding-bottom:2px}
+
+.nav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+
+.nav-enter{background:linear-gradient(135deg,var(--red),var(--blue));border:none;color:#fff;padding:.5rem 1.4rem;font-family:'Rajdhani';font-size:.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:opacity .2s}
+
+.nav-enter:hover{opacity:.85}
+
+#nav-user-info{font-size:.75rem;color:var(--gold);letter-spacing:1px;display:none}
 /* ─── PAGES ─── */
 .page{display:none;min-height:100vh;position:relative;z-index:1}
 .page.active{display:block}
@@ -184,54 +248,215 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 /* ─── INNER PAGES ─── */
 .inner-page{padding:100px 2rem 4rem;max-width:1200px;margin:0 auto}
 .page-header{margin-bottom:3rem}
-.page-header .eyebrow{font-size:.7rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:.5rem}
-.page-header h1{font-family:'Bebas Neue';font-size:clamp(3rem,8vw,6rem);letter-spacing:3px;line-height:1}
+
+/* Container setup for the two-line header */
+.page-header h1 {
+  font-family: 'Bebas Neue';
+  font-size: clamp(3rem, 8vw, 6rem);
+  letter-spacing: 3px;
+  line-height: 0.9; /* Keeps the lines close together like the Home page */
+  margin-bottom: 1rem;
+}
+
+/* First Part: Bright White */
+.page-header h1 .line1 {
+  display: block;
+  color: #ffffff;
+}
+
+/* Second Part: Red-Gold-Blue Gradient */
+.page-header h1 .line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--red), var(--gold), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 .page-header p{color:var(--muted);max-width:600px;line-height:1.7;margin-top:.8rem}
 
 /* ─── ABOUT ─── */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:3rem}
-@media(max-width:768px){.about-grid{grid-template-columns:1fr}}
-.about-card{padding:2rem;border-left:2px solid var(--gold)}
-.about-card h3{font-family:'Bebas Neue';font-size:2rem;letter-spacing:2px;margin-bottom:1rem}
-.about-card p{color:var(--muted);line-height:1.8}
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem}
-@media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}}
-.stat-box{padding:1.5rem;text-align:center}
-.stat-num{font-family:'Bebas Neue';font-size:3rem;background:linear-gradient(135deg,var(--gold),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.stat-label{font-size:.7rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+/* ─── ABOUT ─── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
 
+@media(max-width:768px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+.about-card {
+  padding: 2rem;
+  /* Crystal glass border */
+  border-left: 2px solid var(--gold);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border-radius: 4px;
+}
+
+/* Apply the "Sansiro Special" gradient to Card Headers */
+
+
+.about-card h3 {
+  font-family: 'Bebas Neue';
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  /* Option A: Solid White (Best for readability) */
+  color: #ffffff; 
+  
+  /* Option B: Subtle Gold-to-White (Matches your Stat Numbers) */
+  /* background: linear-gradient(135deg, var(--gold), #fff);
+     -webkit-background-clip: text;
+     -webkit-text-fill-color: transparent; */
+}
+
+.about-card p {
+  color: #ffffff;
+  line-height: 1.8;
+  font-size: 0.9rem;
+}
+
+/* ─── ABOUT ─── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media(max-width:768px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+.about-card {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border-left: 2px solid var(--gold);
+  border-radius: 4px;
+  transition: transform 0.3s ease;
+}
+
+/* Bright White Header for maximum readability */
+.about-card h3 {
+  font-family: 'Bebas Neue';
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  color: #ffffff; 
+  text-transform: uppercase;
+}
+
+/* Muted paragraph text for better visual balance */
+.about-card p {
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+/* Gold Highlights: High contrast and easy to read */
+.about-card p strong {
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Stats section remains consistent with Dashboard */
+.stat-num {
+  font-family: 'Bebas Neue';
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--gold), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media(max-width:600px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-box {
+  padding: 1.5rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.stat-num {
+  font-family: 'Bebas Neue';
+  font-size: 3rem;
+  /* Signature Gold-White gradient */
+  background: linear-gradient(135deg, var(--gold), #fff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.stat-label {
+  font-size: .7rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
 /* ─── TEAM PAGE (CLUB MEMBERS) ─── */
 /* HEADER ROW */
-.team-header-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:2rem;
-  margin-bottom:2rem;
+
+/* GLASS CONTAINER */
+.team-header-container {
+  max-width: 1100px;
+  /* Adjusted from -100px to -70px to provide a small gap */
+  margin: -70px auto 2rem; 
+  padding: 2rem 2.5rem;
+
+  /* Crystal Glassmorphism Style */
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Ice-thin border */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 10;
 }
 
-/* LEFT TEXT ALIGN */
-.text-left{
-  text-align:left;
+/* FLEX ALIGNMENT */
+.team-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
 }
 
-/* IT CARD AREA */
-#it-highlight{
-  display:flex;
-  justify-content:flex-end;
+/* TEXT WIDTH CONTROL */
+.team-header-row .page-header{
+  max-width:65%;
 }
-
-/* SPECIAL IT CARD STYLE */
 .it-card{
-  width:180px;
-  padding:1.2rem;
+  width:210px;              /* increased from 180 */
+  padding:1.5rem 1.2rem;
   border:1px solid var(--gold);
-  border-radius:10px;
+  border-radius:12px;
   text-align:center;
-  background:rgba(255,215,0,0.05);
-  box-shadow:0 0 20px rgba(255,215,0,0.15);
-}
 
+  background:rgba(255,215,0,0.06);
+  box-shadow:0 0 30px rgba(255,215,0,0.25);
+
+  transform:translateY(-10px); /* 👈 LIFT IT UP */
+}
+.team-header-container{
+  border:1px solid rgba(255,215,0,0.15);
+}
 /* SMALLER HEADER ON THIS PAGE */
 .compact-header h1{
   font-size:2.2rem;
@@ -381,6 +606,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .media-item-label{position:absolute;bottom:0;left:0;right:0;padding:.5rem 1rem;background:linear-gradient(transparent,rgba(0,0,0,.85));font-size:.75rem;color:var(--muted)}
 
 /* ─── CONTACT ─── */
+
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
 @media(max-width:700px){.contact-grid{grid-template-columns:1fr}}
 .contact-detail{display:flex;align-items:flex-start;gap:1rem;margin-top:1.2rem;padding:1rem;border-left:2px solid var(--gold)}
@@ -465,9 +691,43 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 .edit-box .modal-close{position:absolute;top:.8rem;right:.8rem;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer}
 
 /* ─── SECTION TITLE ─── */
-.section-title{font-family:'Bebas Neue';font-size:1.4rem;letter-spacing:3px;margin-bottom:1.2rem;display:flex;align-items:center;gap:.8rem;color:#fff}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ─── GLOBAL SANSIRO HEADER & TEXT STYLE ─── */
 
+/* 1. Reset line heights for the stacked look */
+.page-header h1, 
+.glass h3, 
+.section-title {
+  line-height: 0.9 !important;
+  font-family: 'Bebas Neue' !important;
+  text-transform: uppercase;
+}
+
+/* 2. Top Line (Pure White) */
+.line1 {
+  display: block;
+  color: #ffffff !important;
+}
+
+/* 3. Bottom Line (Sansiro Gradient) */
+.line2 {
+  display: block;
+  background: linear-gradient(135deg, var(--red), var(--gold), var(--blue)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* 4. Section Title Underline (Matches your previous style) */
+.section-title {
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  margin-bottom: 1.5rem;
+  display: block; /* Changed to block for stacking spans */
+}
+
+/* 5. Gold Highlights (For body text keywords) */
+strong {
+  color: var(--gold) !important;
+}
 /* ─── TOAST ─── */
 #toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
 .toast-item{padding:.9rem 1.4rem;background:rgba(15,15,15,.97);border-radius:2px;font-size:.83rem;letter-spacing:1px;animation:slideIn .3s ease;min-width:240px;max-width:340px;pointer-events:auto}
@@ -642,9 +902,11 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <div class="inner-page">
     
     <div class="page-header">
-      <p class="eyebrow">About Us</p>
-      <h1>SANSIRO<br/>FOOTBALL FAMILY</h1>
-      <p>
+<p class="eyebrow">About Us</p>
+<h1>
+  <span class="line1">SANSIRO</span>
+  <span class="line2">FOOTBALL FAMILY</span>
+</h1>
         Established on <strong>10th January 2000</strong>, SANSIRO FOOTBALL FAMILY is a vibrant community-based football group located at <strong>Buokrom Estate / Sore Nkwanta</strong>. 
         With over <strong>120 members</strong> and no age limits, we come together every Saturday not just to play football, but to build unity, friendship, and lifelong support for one another.
       </p>
@@ -710,25 +972,32 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   </div>
 </div>
 
+
 <div id="team-page" class="page">
   <div class="inner-page">
 
-    <div class="team-header-row">
+    <!-- 🔥 GLASS CONTAINER -->
+    <div class="team-header-container">
 
-      <!-- LEFT: TEXT -->
-      <div class="page-header compact-header text-left">
-        <p class="eyebrow">Club Structure</p>
-        <h1>THE FAMILY</h1>
-        <p class="sub-text">
-          Leadership, coaches, and captains of Sansiro Football Family.
-        </p>
+      <div class="team-header-row">
+
+        <!-- LEFT: TEXT -->
+        <div class="page-header compact-header text-left">
+          <p class="eyebrow">Club Structure</p>
+          <h1>THE FAMILY</h1>
+          <p class="sub-text">
+            Leadership, coaches, and captains of Sansiro Football Family.
+          </p>
+        </div>
+
+        <!-- RIGHT: IT -->
+        <div id="it-highlight"></div>
+
       </div>
-
-      <!-- RIGHT: IT DEVELOPER -->
-      <div id="it-highlight"></div>
 
     </div>
 
+    <!-- TEAM CONTENT -->
     <div id="team-page-content">
       <div class="empty-state">
         <div class="loader"></div>
@@ -743,7 +1012,10 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <div class="inner-page">
     <div class="page-header">
       <p class="eyebrow">Gallery</p>
-      <h1>MEDIA<br/>HUB</h1>
+     <h1>
+  <span class="line1">MEDIA</span>
+  <span class="line2">HUB</span>
+</h1>
     </div>
     <div class="media-grid" id="public-media-grid">
       <div class="empty-state" style="grid-column:1/-1"><div class="loader"></div><p>Loading media hub...</p></div>
@@ -762,16 +1034,25 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
     </div>
   </div>
 </div>
-<!-- ─── NEWS ─── -->
+
+
+<!-- ─── NEWS PAGE ─── -->
 <div id="news-page" class="page">
   <div class="inner-page">
+
     <div class="page-header">
-      <p class="eyebrow">Latest</p>
-      <h1>NEWS<br/>FEED</h1>
+      <p class="eyebrow">Announcements</p>
+      <h1>LATEST <span style="color:var(--gold)">NEWS</span></h1>
+      <div class="section-line"></div>
     </div>
-    <div class="news-grid" id="public-news-grid">
-      <div class="empty-state" style="grid-column:1/-1"><div class="icon">📰</div><p>Loading news...</p></div>
+
+    <div class="news-grid" id="news-grid">
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="loader"></div>
+        <p>Loading latest updates...</p>
+      </div>
     </div>
+
   </div>
 </div>
 
@@ -780,20 +1061,29 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
   <div class="inner-page">
     <div class="page-header">
       <p class="eyebrow">Get In Touch</p>
-      <h1>CONTACT<br/>US</h1>
+      <h1>
+  <span class="line1">CONTACT</span>
+  <span class="line2">US</span>
+</h1>
     </div>
     <div class="contact-grid">
       <div>
         <div class="glass" style="padding:2rem">
-          <h3 style="font-family:'Bebas Neue';font-size:2rem;letter-spacing:2px;margin-bottom:1rem">Sansiro Special</h3>
+          <h3 style="font-family:'Bebas Neue';font-size:2rem;letter-spacing:2px;margin-bottom:1rem">
+  <span class="line1">SANSIRO</span>
+  <span class="line2">SPECIAL</span>
+</h3>
           <p style="color:var(--muted);line-height:1.8">The home of elite football management. Reach out for partnerships, media enquiries, or technical support.</p>
           <div class="contact-detail"><div><div class="contact-detail-label">Location</div><div class="contact-detail-val">San Siro, Milan, Italy</div></div></div>
-          <div class="contact-detail"><div><div class="contact-detail-label">Email</div><div class="contact-detail-val">admin@sansirospecial.com</div></div></div>
-          <div class="contact-detail"><div><div class="contact-detail-label">Platform</div><div class="contact-detail-val">sansirospecial.com</div></div></div>
+          <div class="contact-detail"><div><div class="contact-detail-label">Email</div><div class="contact-detail-val">koolasamuel@gmail.com</div></div></div>
+          <div class="contact-detail"><div><div class="contact-detail-label">Platform</div><div class="contact-detail-val">  <a href="https://koolasamuel-cell.github.io/Sansior-Football-Club-Family/" style="color: inherit; text-decoration: underline; cursor: pointer;">https://koolasamuel-cell.github.io/Sansior-Football-Club-Family/</a></div></div></div>
         </div>
       </div>
       <div class="glass" style="padding:2rem">
-        <div class="section-title">Send a Message</div>
+       <div class="section-title">
+  <span class="line1">SEND A</span>
+  <span class="line2">MESSAGE</span>
+</div>
         <div class="form-group"><label>Name</label><input id="c-name" type="text" placeholder="Your name"/></div>
         <div class="form-group"><label>Email</label><input id="c-email" type="email" placeholder="your@email.com"/></div>
         <div class="form-group"><label>Message</label><textarea id="c-msg" placeholder="Your message..."></textarea></div>
@@ -1143,22 +1433,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
           </div>
         </div>
 
-        <!-- NEWS POST -->
-<div id="news" class="page">
-  <div class="inner-page">
-    <div class="page-header">
-      <p class="eyebrow">Announcements</p>
-      <h1>LATEST <span style="color:var(--gold)">NEWS</span></h1>
-      <div class="section-line"></div>
-    </div>
-    
-    <div class="news-grid" id="news-grid">
-      <div class="glass" style="padding:2rem; text-align:center; grid-column: 1/-1;">
-        <p style="color:var(--muted)">Fetching latest updates...</p>
-      </div>
-    </div>
-  </div>
-</div>
+ 
         <!-- MEDIA UPLOAD -->
         <div class="dash-module" id="mod-media-upload">
           <div class="section-title">Upload Media</div>
@@ -1210,7 +1485,7 @@ body::before{content:'';position:fixed;inset:0;background-image:url("data:image/
 // ═══════════════════════════════════════════════
 // CONFIG
 // ═══════════════════════════════════════════════
-const APP_URL = "https://script.google.com/macros/s/AKfycbyhem3KFvkTXzYku1aW115lG8ftO7jCwVsGG0CR-xjZe2a8vlvOfThMGp8worDnz6ARng/exec";
+const APP_URL = "https://script.google.com/macros/s/AKfycbzjojUyYyMBuqWxqk_YuTJusb4xEOYkDcg6-DE_-ct1BwXjswKvHWUdpUBwN_N2_s7Bcw/exec";
 
 // ═══════════════════════════════════════════════
 // API — Native Google Script Execution
@@ -1271,13 +1546,13 @@ refreshData();
 // ═══════════════════════════════════════════════
 const DUMMY_MEMBERS = [
   { id:'m1', name:'SAMUEL ATTAH-NTI', role:'Admin', team:'Both', img:'', captain:false },
-  { id:'m2', name:'Saforo', role:'President', team:'Both', img:'', captain:false },
+  { id:'m2', name:'Saforo', role:'President', team:'Inter Milan', img:'', captain:false },
   { id:'m4', name:'Eye Gyee', role:'Coach', team:'AC Milan', img:'', captain:false },
   { id:'m5', name:'Smoke', role:'Coach', team:'Inter Milan', img:'', captain:false },
   { id:'m6', name:'Fosu', role:'Secretary', team:'Both', img:'', captain:false },
   { id:'m6', name:'Lampard', role:'Organizer', team:'Both', img:'', captain:false },
   
-  { id:'m6', name:'Oguamaa', role:'Secretary', team:'Both', img:'', captain:false },
+  { id:'m6', name:'Oguamaa', role:'Secretary', team:'Inter Milan', img:'', captain:false },
   { id:'m7', name:'Asibey', role:'Organizer', team:'Both', img:'', captain:false },
   
   { id:'m10', name:'Francesco De Luca', role:'Captain', team:'AC Milan', img:'', captain:true },
@@ -1348,7 +1623,7 @@ function showPage(name) {
   
   // 5. Trigger Data Renders
   if (name === 'team') renderTeamPage();
-  if (name === 'news') renderNews(); // Unified function name
+if (name === 'news') loadPublicNews();
   if (name === 'media') renderPublicMedia();
   if (name === 'about') loadAboutStats();
   
@@ -2230,128 +2505,195 @@ function postNews() {
 }
 
 // ═══════════════════════════════════════════════
-// NEWS SYSTEM LOGIC
+// NEWS SYSTEM (CLEAN + FINAL)
 // ═══════════════════════════════════════════════
-
 /**
- * Renders news to both the public site and the admin dashboard
+ * LOAD PUBLIC NEWS FROM GOOGLE SHEETS
  */
-function renderNews() {
-  const publicGrid = document.getElementById('news-grid');
-  const adminGrid = document.getElementById('dash-news-grid');
-  
-  // Try to get data from the database, fallback to DUMMY_NEWS if empty
-  const newsItems = (dbData && dbData.news && dbData.news.length > 0) 
-                    ? dbData.news 
-                    : (typeof DUMMY_NEWS !== 'undefined' ? DUMMY_NEWS : []);
+function loadPublicNews() {
+  const grid = document.getElementById('news-grid');
 
-  if (!publicGrid && !adminGrid) return;
-
-  let html = '';
-  // Sort: Newest posts first
-  const displayList = [...newsItems].reverse();
-
-  displayList.forEach((item, index) => {
-    // Generate the HTML for a news card
-    const cardHtml = `
-      <div class="glass news-card" style="margin-bottom:1rem; border-left:2px solid var(--gold);">
-        <div class="news-date" style="color:var(--gold); font-size:0.75rem; font-weight:600;">
-          ${item.date || 'LATEST UPDATE'}
-        </div>
-        <h3 class="news-title" style="font-family:'Bebas Neue'; font-size:1.4rem; letter-spacing:1px; margin:5px 0;">
-          ${item.title}
-        </h3>
-        <p class="news-excerpt" style="font-size:0.9rem; opacity:0.8; line-height:1.4;">
-          ${item.content}
-        </p>
-        ${adminGrid ? `
-          <button onclick="deleteNews(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:0.7rem; margin-top:10px; padding:0;">
-            [ DELETE POST ]
-          </button>` : ''}
+  if (grid) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="loader"></div>
+        <p>Loading latest news...</p>
       </div>
     `;
-    html += cardHtml;
-  });
+  }
 
-  if (publicGrid) publicGrid.innerHTML = html || '<p style="color:var(--muted)">No news available.</p>';
-  if (adminGrid) adminGrid.innerHTML = html || '<p style="color:var(--muted)">No news published yet.</p>';
-}
+  // Check if running in Google environment
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run
+      .withSuccessHandler((rows) => {
+        if (!rows || rows.length <= 1) {
+          if (grid) grid.innerHTML = `<p>No news available at the moment.</p>`;
+          return;
+        }
 
+        const news = rows.slice(1).map(r => ({
+          id: r[0],      // ✅ ID
+          title: r[1],   // ✅ Title
+          content: r[2], // ✅ Content
+          author: r[3],  // ✅ Author
+          date: r[4]     // ✅ Date
+        }));
 
-/**
- * Saves a news post to your Google Sheet
- */
-function addNews(newsObject) {
-  try {
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-    const sheet = ss.getSheetByName('News'); // Ensure you have a sheet named 'News'
-    
-    // Append the data: [Date, Title, Content]
-    sheet.appendRow([
-      newsObject.date, 
-      newsObject.title, 
-      newsObject.content
-    ]);
-    
-    return true;
-  } catch (e) {
-    throw "Error saving news: " + e.toString();
+        renderNews(news);
+      })
+      .withFailureHandler((err) => {
+        console.error("Script error:", err);
+        if (grid) grid.innerHTML = `<p>⚠️ Failed to load news from server</p>`;
+      })
+      .getNews();
+  } else {
+    // FALLBACK: If running locally without Google context
+    console.warn("Not running in Google Apps Script environment.");
+    if (grid) {
+      grid.innerHTML = `
+        <div style="grid-column:1/-1; text-align:center; padding:20px;">
+          <p>⚠️ <strong>Local Preview Mode:</strong> Cannot connect to Google Sheets directly from a local file.</p>
+          <p style="font-size: 0.8em;">Please deploy as a Web App or use a local server to test features.</p>
+        </div>
+      `;
+    }
   }
 }
 /**
- * Logic for the Publish Button
+ * RENDER NEWS (PUBLIC + ADMIN)
+ */
+function renderNews(newsList = []) {
+  const publicGrid = document.getElementById('news-grid');
+  const adminGrid = document.getElementById('dash-news-grid');
+
+  if (!publicGrid && !adminGrid) return;
+
+  if (!newsList.length) {
+    const emptyHTML = `
+      <div class="empty-state" style="grid-column:1/-1">
+        <div class="icon">📰</div>
+        <p>No news available yet.</p>
+      </div>
+    `;
+    if (publicGrid) publicGrid.innerHTML = emptyHTML;
+    if (adminGrid) adminGrid.innerHTML = emptyHTML;
+    return;
+  }
+
+  const html = newsList.reverse().map(item => `
+    <div class="glass news-card" style="
+      border-left:3px solid var(--gold);
+      padding:1.5rem;
+      border-radius:6px;
+      margin-bottom:1rem;
+    ">
+
+      <div class="news-date" style="
+        color:var(--gold);
+        font-size:0.75rem;
+        font-weight:600;
+        margin-bottom:5px;
+      ">
+        ${item.date || ''}
+      </div>
+
+      <h3 class="news-title" style="
+        font-family:'Bebas Neue';
+        font-size:1.6rem;
+        letter-spacing:1px;
+        margin:5px 0;
+      ">
+        ${item.title}
+      </h3>
+
+      <p class="news-excerpt" style="
+        font-size:0.95rem;
+        opacity:0.85;
+        line-height:1.5;
+      ">
+        ${item.content}
+      </p>
+
+      ${adminGrid ? `
+        <button onclick="deleteNews('${item.id}')" style="
+          background:none;
+          border:none;
+          color:var(--red);
+          cursor:pointer;
+          font-size:0.7rem;
+          margin-top:10px;
+        ">
+          [ DELETE POST ]
+        </button>
+      ` : ''}
+
+    </div>
+  `).join('');
+
+  if (publicGrid) publicGrid.innerHTML = html;
+  if (adminGrid) adminGrid.innerHTML = html;
+}
+
+
+/**
+ * POST NEWS (ADMIN)
  */
 function postNews() {
-  const titleInput = document.getElementById('n-title');
-  const contentInput = document.getElementById('n-content');
-  
-  const title = titleInput.value.trim();
-  const content = contentInput.value.trim();
+  const title = document.getElementById('n-title').value.trim();
+  const content = document.getElementById('n-content').value.trim();
 
-  // Validation
   if (!title || !content) {
     toast("Headline and Content cannot be empty!", "error");
     return;
   }
 
-  // Create the News Object
-  const newPost = {
-    title: title,
-    content: content,
-    date: new Date().toLocaleDateString('en-GB', { 
-      day: '2-digit', 
-      month: 'short', 
-      year: 'numeric' 
-    })
+  const data = {
+    title,
+    content,
+    author: currentUser.Name
   };
 
-  toast("Publishing your story...", "info");
+  toast("Publishing...", "info");
 
-  // Send to Google Apps Script (Server Side)
-  if (typeof google !== 'undefined' && google.script && google.script.run) {
-    google.script.run
-      .withSuccessHandler(() => {
-        toast("Published to the Feed!", "success");
-        // Clear inputs
-        titleInput.value = '';
-        contentInput.value = '';
-        // Refresh the data so it appears immediately
-        refreshData(); 
-      })
-      .withFailureHandler(err => {
-        toast("Publishing failed: " + err, "error");
-      })
-      .addNews(newPost); // This calls the function in your Code.gs
-  } else {
-    // Local Testing Mode (if not running in Google Sheets)
-    if(!dbData.news) dbData.news = [];
-    dbData.news.push(newPost);
-    renderNews();
-    toast("Local update successful (Demo)", "success");
-    titleInput.value = '';
-    contentInput.value = '';
+  google.script.run
+    .withSuccessHandler((res) => {
+      if (res.success) {
+        toast("Published!", "success");
 
-  }
+        document.getElementById('n-title').value = '';
+        document.getElementById('n-content').value = '';
+
+        loadPublicNews();   // 🔥 instant update
+        loadDashNews();     // admin refresh
+      }
+    })
+    .withFailureHandler(() => {
+      toast("Publish failed", "error");
+    })
+    .addNews(data);
+}
+
+
+/**
+ * DELETE NEWS (BY ID — SAFE)
+ */
+function deleteNews(id) {
+  if (!confirm("Delete this news post?")) return;
+
+  toast("Deleting...", "info");
+
+  google.script.run
+    .withSuccessHandler(() => {
+      toast("Deleted!", "success");
+
+      loadPublicNews();  // 🔥 refresh
+      loadDashNews();
+
+    })
+    .withFailureHandler(() => {
+      toast("Delete failed", "error");
+    })
+    .deleteNewsById(id);
 }
 
 
@@ -2367,16 +2709,38 @@ function loadDashMedia() {
     .getMedia();
 }
 
+/**
+ * RENDER PUBLIC MEDIA
+ */
 function renderPublicMedia() {
   const grid = document.getElementById('public-media-grid');
-  grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="loader"></div></div>';
+  if (grid) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="loader"></div></div>';
+  }
 
-  google.script.run
-    .withSuccessHandler((rows) => {
-      const media = rows.slice(1).map(r => ({ ID: r[0], Type: r[1], URL: r[2], UploadedBy: r[3], Date: r[4] }));
-      renderMediaGrid('public-media-grid', media.length ? media : DUMMY_MEDIA);
-    })
-    .getMedia();
+  // Safety check to prevent "google is not defined" error
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    google.script.run
+      .withSuccessHandler((rows) => {
+        const media = rows.slice(1).map(r => ({ 
+          ID: r[0], 
+          Type: r[1], 
+          URL: r[2], 
+          UploadedBy: r[3], 
+          Date: r[4] 
+        }));
+        renderMediaGrid('public-media-grid', media.length ? media : DUMMY_MEDIA);
+      })
+      .getMedia();
+  } else {
+    // Fallback for local testing
+    console.warn("Google context missing. Loading dummy media for preview.");
+    if (typeof DUMMY_MEDIA !== 'undefined') {
+      renderMediaGrid('public-media-grid', DUMMY_MEDIA);
+    } else if (grid) {
+      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Media preview unavailable locally.</p>';
+    }
+  }
 }
 
 function uploadMedia() {
@@ -2619,8 +2983,9 @@ function renderNews() {
         <h3 style="font-family:'Bebas Neue'; font-size:1.5rem; letter-spacing:1px; margin:5px 0;">${item.title}</h3>
         <p style="font-size:0.9rem; opacity:0.8;">${item.content}</p>
         ${adminGrid ? `
-          <button onclick="deleteNews(${index})" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:0.7rem; margin-top:10px; padding:0; text-transform:uppercase;">
-            [ Delete Post ]
+          <button onclick="deleteNews('${item.ID}')" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:0.7rem; margin-top:10px; padding:0; text-transform:uppercase;">
+  [ Delete Post ]
+</button>
           </button>` : ''}
       </div>
     `;
@@ -2632,25 +2997,37 @@ function renderNews() {
 }
 
 // ═══════════════════════════════════════════════
-// DELETE NEWS FUNCTION (Standalone)
+// DELETE NEWS FUNCTION (FINAL FIXED)
 // ═══════════════════════════════════════════════
-function deleteNews(index) {
+function deleteNews(id) {
   if (!confirm("Delete this news post?")) return;
+
   toast("Deleting...", "info");
 
   if (typeof google !== 'undefined' && google.script && google.script.run) {
-    google.script.run.withSuccessHandler(() => {
-      toast("Post Removed", "success");
-      refreshData();
-    }).deleteNewsFromSheet(index); 
+    google.script.run
+      .withSuccessHandler(() => {
+        toast("Post Removed", "success");
+        refreshData();
+      })
+      .withFailureHandler(err => {
+        toast("Delete failed: " + err, "error");
+      })
+      .deleteNews(id); // ✅ sends ID to backend
+
   } else {
-    // Local demo delete
-    const realIndex = dbData.news.length - 1 - index;
-    dbData.news.splice(realIndex, 1);
-    renderNews();
+    // Local demo fallback
+    if (dbData && dbData.news) {
+      const index = dbData.news.findIndex(n => n.ID == id);
+      if (index > -1) {
+        dbData.news.splice(index, 1);
+        renderNews();
+      }
+    }
     toast("Deleted locally", "success");
   }
 }
+    
 // ═══════════════════════════════════════════════
 // MASTER SYSTEM INITIALIZATION
 // ═══════════════════════════════════════════════
