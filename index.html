@@ -818,7 +818,8 @@ strong{color:var(--gold)}
           <option value="Player">Player</option>
           <option value="Coach">Coach</option>
           <option value="Secretary">Secretary</option>
-          <option value="President">Official</option>
+          <option value="Welfare">Welfare</option>
+          <option value="Official">Official</option>
           <option value="President">President</option>
         </select>
       </div>
@@ -6850,6 +6851,662 @@ document.addEventListener("selectstart", function(e) {
   e.preventDefault();
 });
 
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════
+   SANSIRO v8.2 — UPGRADE PATCH (append-only, backwards compatible)
+   • Role dropdown cleanup     • Coach team-lock
+   • Member dashboard cleanup  • Read-only discipline view for members
+   • Officials: Match Reports + Team Sheets + Inbox + Broadcast
+   • Welfare dashboard module  • Admin master access switcher (impersonation)
+   • Sec/Pres/Admin inboxes    • Finance approval flow (Sec→Pres→Members)
+   • Rules grouped (FIFA + House)
+   Maintains every existing API/sheet/ID/URL.
+   ═══════════════════════════════════════════════════════════════════ */
+(function(){
+  'use strict';
+
+  /* ---------- helpers ---------- */
+  const _esc=(s)=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const _u   =()=> window.currentUser || null;
+  const _role=()=> (_u()&&(_u().Role||_u().role))||'';
+  const _team=()=> (_u()&&(_u().Team||_u().team))||'';
+  const _name=()=> (_u()&&(_u().Name||_u().name))||'';
+  const _id  =()=> (_u()&&(_u().ID  ||_u().UserID))||'';
+  const _isMember=()=> /^(player|member)$/i.test(_role());
+  const _isCoach =()=> /coach/i.test(_role());
+  const _isExec  =()=> /^(president|secretary|admin|vice president)$/i.test(_role());
+  const _isOfficial=()=> /^(official|admin|president|secretary)$/i.test(_role());
+  const _toast = (m,t)=> (window.toast?window.toast(m,t||'info'):console.log('[toast]',m));
+  const _api = async (action, data={}) => {
+    if (typeof window.APP_URL !== 'string') return {success:false,message:'no api'};
+    try{
+      const r = await fetch(window.APP_URL,{method:'POST',mode:'cors',
+        headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify({action, data, _session: localStorage.getItem('sansiro_session')||''})});
+      return await r.json();
+    }catch(e){ return {success:false,message:String(e)}; }
+  };
+  // expose for other patches / console
+  window.SansiroV82 = { api:_api, role:_role, team:_team, isMember:_isMember };
+
+  /* ---------- styles ---------- */
+  const css = document.createElement('style'); css.id='v82-css';
+  css.textContent = `
+    .v82-hidden{display:none!important}
+    .v82-card{padding:1rem;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.03);margin-bottom:.8rem}
+    .v82-row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+    .v82-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.8rem}
+    .v82-tag{display:inline-block;padding:.15rem .5rem;border-radius:3px;font-size:.65rem;letter-spacing:1.5px;text-transform:uppercase}
+    .v82-tag.green{background:rgba(0,212,106,.18);border:1px solid var(--green);color:var(--green)}
+    .v82-tag.yellow{background:rgba(255,200,0,.15);border:1px solid #ffc800;color:#ffd84a}
+    .v82-tag.red{background:rgba(232,25,44,.18);border:1px solid var(--red);color:var(--red-light)}
+    .v82-tag.gold{background:rgba(212,168,67,.15);border:1px solid var(--gold);color:var(--gold)}
+    .v82-pill{padding:.3rem .6rem;border-radius:99px;background:rgba(255,255,255,.06);border:1px solid var(--border);font-size:.7rem;cursor:pointer}
+    .v82-pill.active{border-color:var(--gold);color:var(--gold)}
+    .v82-input{width:100%;padding:.55rem .8rem;background:rgba(255,255,255,.04);border:1px solid var(--border);color:var(--text);border-radius:4px;font-family:inherit}
+    .v82-section-title{font-family:'Bebas Neue';letter-spacing:3px;color:var(--gold);font-size:1.1rem;margin:.4rem 0 .8rem;border-bottom:1px solid var(--border);padding-bottom:.4rem}
+    .v82-msg{padding:.6rem .8rem;border-radius:6px;background:rgba(255,255,255,.04);border-left:3px solid var(--gold);margin-bottom:.5rem}
+    .v82-msg .meta{font-size:.65rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+    .v82-player-card{display:flex;gap:.7rem;align-items:center;padding:.7rem;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.03)}
+    .v82-player-card img,.v82-player-card .avx{width:48px;height:48px;border-radius:50%;object-fit:cover;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';color:var(--gold);font-size:1.2rem}
+    .v82-captain::after{content:' (C)';color:var(--gold);font-weight:700}
+    .v82-banner{padding:.5rem .8rem;background:rgba(212,168,67,.1);border:1px dashed var(--gold);border-radius:6px;font-size:.8rem;margin-bottom:.6rem}
+  `;
+  document.head.appendChild(css);
+
+  /* ============================================================
+     A. ROLE / NAV GATING (member dashboard cleanup)
+     ============================================================ */
+  function applyRoleGating(){
+    const role = _role(); if(!role) return;
+    const hideForMember = ['mod-quick-entry','mod-player-stats','mod-coaches-portal'];
+    const hideButtonsForMember = [
+      'btn-coaches-portal','btn-coach-req','btn-team-mgmt','btn-dues-mgmt',
+      'btn-contributions','btn-expenses','btn-news-post','btn-media-upload',
+      'btn-coach-inbox','btn-fin-dashboard','btn-officials','btn-league','btn-transfers'
+    ];
+    // Reset
+    document.querySelectorAll('.dash-nav-btn').forEach(b=>b.classList.remove('v82-hidden'));
+
+    if (_isMember()){
+      hideButtonsForMember.forEach(id=>{ const b=document.getElementById(id); if(b)b.classList.add('v82-hidden'); });
+      // also hide Quick Entry + Player Stats + Coach Portal nav buttons by text
+      document.querySelectorAll('.dash-nav-btn').forEach(b=>{
+        const t=(b.textContent||'').toLowerCase();
+        if(t.includes('quick entry')||t.includes('player stats')||t.includes('coaches portal')) b.classList.add('v82-hidden');
+      });
+    }
+    if (_role().toLowerCase()==='secretary'){
+      // Remove Coach Portal from Secretary
+      document.querySelectorAll('.dash-nav-btn').forEach(b=>{
+        if(/coach\s*portal|coaches\s*portal/i.test(b.textContent||'')) b.classList.add('v82-hidden');
+      });
+    }
+    // Coach team-lock visual indicator
+    if (_isCoach()){
+      const t=_team();
+      if(!t || /both/i.test(t)){ promptCoachTeamPick(); }
+    }
+  }
+
+  /* Coach must pick ONE team if currently 'Both' or empty */
+  function promptCoachTeamPick(){
+    if(document.getElementById('v82-coach-pick')) return;
+    const ov=document.createElement('div');
+    ov.id='v82-coach-pick';
+    ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:99999;display:flex;align-items:center;justify-content:center';
+    ov.innerHTML=`<div class="v82-card" style="max-width:420px;width:90%">
+      <div class="v82-section-title">Select your Team</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:.8rem">Coaches are now restricted to one team. Pick yours — this can only be set once.</p>
+      <div class="v82-row" style="justify-content:center">
+        <button class="btn btn-red"   onclick="SansiroV82.lockTeam('AC Milan')">AC Milan</button>
+        <button class="btn btn-blue"  onclick="SansiroV82.lockTeam('Inter Milan')">Inter Milan</button>
+      </div></div>`;
+    document.body.appendChild(ov);
+  }
+  window.SansiroV82.lockTeam = async function(team){
+    const r = await _api('coachLockTeam',{userID:_id(),team});
+    if(r&&r.success){ if(window.currentUser) window.currentUser.Team=team;
+      const ov=document.getElementById('v82-coach-pick'); if(ov)ov.remove();
+      _toast('Team locked: '+team,'success');
+    } else _toast(r&&r.message||'Failed to lock team','error');
+  };
+
+  /* ============================================================
+     B. INBOX SYSTEM (members, coaches, officials, exec)
+     ============================================================ */
+  function ensureInboxModule(){
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-inbox')) return;
+    const m=document.createElement('div');
+    m.className='dash-module'; m.id='mod-v82-inbox';
+    m.innerHTML=`<div class="section-title">📥 My Inbox</div>
+      <div class="v82-row" style="margin-bottom:.6rem">
+        <button class="v82-pill active" data-inbox-tab="received">Received</button>
+        <button class="v82-pill" data-inbox-tab="sent">Sent</button>
+        <button class="v82-pill" data-inbox-tab="broadcast">Broadcasts</button>
+      </div>
+      <div id="v82-inbox-list">Loading…</div>
+      <div class="v82-card" style="margin-top:1rem">
+        <div class="v82-section-title">✏️ New Message</div>
+        <div class="v82-row" style="margin-bottom:.5rem">
+          <select id="v82-msg-to" class="v82-input" style="flex:1;min-width:160px">
+            <option value="">— Select recipient —</option>
+          </select>
+          <select id="v82-msg-type" class="v82-input" style="flex:0 0 160px">
+            <option value="direct">Direct</option>
+            <option value="team">My Team</option>
+            <option value="broadcast">Broadcast (Officials/Exec)</option>
+          </select>
+        </div>
+        <textarea id="v82-msg-body" class="v82-input" rows="3" placeholder="Message…"></textarea>
+        <div class="v82-row" style="margin-top:.5rem;justify-content:flex-end">
+          <button class="btn btn-blue" onclick="SansiroV82.sendInbox()">Send</button>
+        </div>
+      </div>`;
+    wrap.appendChild(m);
+
+    // nav button
+    const navHost = document.querySelector('.nav-group[data-group="PERSONAL"]') || document.querySelector('.dash-nav');
+    if(navHost && !document.getElementById('btn-v82-inbox')){
+      const b=document.createElement('button');
+      b.className='dash-nav-btn'; b.id='btn-v82-inbox';
+      b.innerHTML='📥 Inbox';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-inbox',b); loadInbox('received'); };
+      navHost.appendChild(b);
+    }
+    m.addEventListener('click', e=>{
+      const t=e.target.closest('[data-inbox-tab]'); if(!t) return;
+      m.querySelectorAll('[data-inbox-tab]').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      loadInbox(t.dataset.inboxTab);
+    });
+  }
+
+  async function loadInbox(tab){
+    const list=document.getElementById('v82-inbox-list'); if(!list) return;
+    list.textContent='Loading…';
+    const r=await _api('getInbox',{userID:_id(),tab});
+    const msgs=(r&&r.messages)||[];
+    if(!msgs.length){ list.innerHTML='<p style="color:var(--muted)">No messages.</p>'; return; }
+    list.innerHTML = msgs.map(m=>`
+      <div class="v82-msg">
+        <div class="meta">${_esc(m.From||m.User||'')} → ${_esc(m.To||m.Channel||'')} · ${_esc(m.Time||'')} ${m.Type?'· '+_esc(m.Type):''}</div>
+        <div>${_esc(m.Message||'')}</div>
+      </div>`).join('');
+
+    // populate recipients
+    const sel=document.getElementById('v82-msg-to'); if(sel && sel.options.length<2){
+      const u=await _api('getUsers',{}); const users=(u&&u.users)||[];
+      sel.innerHTML='<option value="">— Select recipient —</option>'
+        + users.filter(x=>x.Name).map(x=>`<option value="${_esc(x.UserID||x.ID)}">${_esc(x.Name)} (${_esc(x.Role||'')})</option>`).join('');
+    }
+  }
+
+  window.SansiroV82.sendInbox = async function(){
+    const to=document.getElementById('v82-msg-to').value;
+    const ty=document.getElementById('v82-msg-type').value;
+    const body=document.getElementById('v82-msg-body').value.trim();
+    if(!body){ _toast('Empty message','warn'); return; }
+    if(ty==='direct' && !to){ _toast('Pick recipient','warn'); return; }
+    const r=await _api('sendInbox',{from:_id(),fromName:_name(),fromRole:_role(),to,type:ty,team:_team(),message:body});
+    if(r&&r.success){ document.getElementById('v82-msg-body').value=''; _toast('Sent','success'); loadInbox('sent'); }
+    else _toast((r&&r.message)||'Failed','error');
+  };
+
+  /* ============================================================
+     C. TEAM SHEET (final published team-sheet view)
+     ============================================================ */
+  function ensureTeamSheetView(){
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-teamsheet')) return;
+    const m=document.createElement('div');
+    m.className='dash-module'; m.id='mod-v82-teamsheet';
+    m.innerHTML=`<div class="section-title">📋 Official Team Sheet</div>
+      <div class="v82-row" style="margin-bottom:.7rem">
+        <button class="v82-pill active" data-ts-team="AC Milan">AC Milan</button>
+        <button class="v82-pill" data-ts-team="Inter Milan">Inter Milan</button>
+      </div>
+      <div id="v82-ts-body">Loading…</div>`;
+    wrap.appendChild(m);
+
+    m.addEventListener('click',e=>{
+      const t=e.target.closest('[data-ts-team]'); if(!t) return;
+      m.querySelectorAll('[data-ts-team]').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      loadTeamSheet(t.dataset.tsTeam);
+    });
+
+    // nav button under TEAM OPS
+    const host=document.querySelector('.nav-group[data-group="TEAM OPS"]');
+    if(host && !document.getElementById('btn-v82-ts')){
+      const b=document.createElement('button');
+      b.className='dash-nav-btn'; b.id='btn-v82-ts';
+      b.innerHTML='📑 Final Team Sheet';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-teamsheet',b); loadTeamSheet('AC Milan'); };
+      host.appendChild(b);
+    }
+  }
+  async function loadTeamSheet(team){
+    const body=document.getElementById('v82-ts-body'); if(!body) return;
+    body.textContent='Loading…';
+    const r=await _api('getTeamSheet',{team});
+    const sh=r&&r.sheet;
+    if(!sh){ body.innerHTML='<p style="color:var(--muted)">No sheet published yet.</p>'; return; }
+    const fmt=(arr,label)=> `<div class="v82-section-title">${label}</div><div class="v82-grid">${
+      (arr||[]).map(p=>`<div class="v82-player-card"><div class="avx">${_esc((p.Name||'?').slice(0,1))}</div>
+        <div><div class="${p.Captain?'v82-captain':''}">${_esc(p.Name||'')}</div>
+        <div style="font-size:.7rem;color:var(--muted)">${_esc(p.Position||'')} ${p.Number?'#'+p.Number:''}</div></div></div>`).join('')||'<p style="color:var(--muted)">None</p>'
+      }</div>`;
+    body.innerHTML = `<div class="v82-banner">Formation: <strong>${_esc(sh.Formation||'4-4-2')}</strong> · Match: ${_esc(sh.Match||'TBD')} · Published by ${_esc(sh.Coach||'')} on ${_esc(sh.Date||'')}</div>
+      ${fmt(sh.Starting,'Starting XI')}
+      ${fmt(sh.Subs,'Substitutes')}`;
+  }
+
+  /* ============================================================
+     D. DISCIPLINE — read-only for member, full for officials
+     ============================================================ */
+  function ensureDisciplineView(){
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-discipline')) return;
+    const m=document.createElement('div');
+    m.className='dash-module'; m.id='mod-v82-discipline';
+    m.innerHTML=`<div class="section-title">🟥 Discipline & Sanctions</div>
+      <div id="v82-disc-body">Loading…</div>
+      <div id="v82-disc-admin" style="display:none;margin-top:1rem" class="v82-card">
+        <div class="v82-section-title">Issue Card / Sanction</div>
+        <div class="v82-row">
+          <select id="v82-disc-player" class="v82-input" style="flex:1;min-width:200px"></select>
+          <select id="v82-disc-type" class="v82-input" style="flex:0 0 160px">
+            <option value="Yellow">🟨 Yellow Card</option>
+            <option value="Red">🟥 Red Card</option>
+            <option value="Ineligible">⛔ Mark Ineligible</option>
+            <option value="Clear">✅ Clear Sanctions</option>
+          </select>
+          <input id="v82-disc-reason" class="v82-input" placeholder="Reason / match" style="flex:1;min-width:160px"/>
+          <button class="btn btn-red" onclick="SansiroV82.issueCard()">Issue</button>
+        </div>
+      </div>`;
+    wrap.appendChild(m);
+
+    const host=document.querySelector('.nav-group[data-group="GOVERNANCE"]') || document.querySelector('.nav-group[data-group="TEAM OPS"]');
+    if(host && !document.getElementById('btn-v82-disc')){
+      const b=document.createElement('button');
+      b.className='dash-nav-btn'; b.id='btn-v82-disc';
+      b.innerHTML='🟥 Discipline';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-discipline',b); loadDiscipline(); };
+      host.appendChild(b);
+    }
+  }
+  async function loadDiscipline(){
+    const body=document.getElementById('v82-disc-body'); if(!body) return;
+    const adm=document.getElementById('v82-disc-admin');
+    body.textContent='Loading…';
+    const r=await _api('getDiscipline',{});
+    const items=(r&&r.items)||[];
+    body.innerHTML = items.length
+      ? '<div class="v82-grid">'+items.map(x=>`<div class="v82-card">
+          <div style="font-family:Bebas Neue;letter-spacing:2px;font-size:1rem">${_esc(x.Player||x.Name||'')}</div>
+          <div style="font-size:.7rem;color:var(--muted)">${_esc(x.Team||'')}</div>
+          <div style="margin-top:.4rem">
+            <span class="v82-tag yellow">🟨 ${x.Yellow||0}</span>
+            <span class="v82-tag red">🟥 ${x.Red||0}</span>
+            ${x.Ineligible?'<span class="v82-tag red">⛔ INELIGIBLE</span>':'<span class="v82-tag green">ELIGIBLE</span>'}
+          </div>
+          ${x.LastReason?`<div style="font-size:.75rem;margin-top:.4rem;color:var(--muted)">${_esc(x.LastReason)}</div>`:''}
+        </div>`).join('')+'</div>'
+      : '<p style="color:var(--muted)">No active sanctions.</p>';
+
+    if(_isOfficial()){
+      adm.style.display='block';
+      const sel=document.getElementById('v82-disc-player');
+      const u=await _api('getUsers',{}); const players=((u&&u.users)||[]).filter(x=>/player/i.test(x.Role||''));
+      sel.innerHTML='<option value="">— Player —</option>'
+        + players.map(p=>`<option value="${_esc(p.UserID||p.ID)}" data-team="${_esc(p.Team||'')}">${_esc(p.Name)} (${_esc(p.Team||'')})</option>`).join('');
+    } else {
+      adm.style.display='none';
+    }
+  }
+  window.SansiroV82.issueCard = async function(){
+    const sel=document.getElementById('v82-disc-player');
+    const opt=sel.options[sel.selectedIndex]; if(!opt||!opt.value){ _toast('Pick a player','warn'); return; }
+    const r=await _api('issueDiscipline',{
+      playerID:opt.value, playerName:opt.text, team:opt.dataset.team,
+      type:document.getElementById('v82-disc-type').value,
+      reason:document.getElementById('v82-disc-reason').value,
+      by:_name(), byRole:_role()
+    });
+    if(r&&r.success){ _toast('Recorded','success'); loadDiscipline(); }
+    else _toast((r&&r.message)||'Failed','error');
+  };
+
+  /* ============================================================
+     E. MATCH REPORTS
+     ============================================================ */
+  function ensureMatchReports(){
+    if(!_isOfficial()) return;
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-match-rep')) return;
+    const m=document.createElement('div'); m.className='dash-module'; m.id='mod-v82-match-rep';
+    m.innerHTML=`<div class="section-title">📝 Match Reports</div>
+      <div class="v82-card">
+        <div class="v82-section-title">New Report</div>
+        <div class="v82-row">
+          <input id="mr-match" class="v82-input" placeholder="Match (e.g. AC vs Inter)" style="flex:1"/>
+          <input id="mr-score" class="v82-input" placeholder="Score" style="flex:0 0 100px"/>
+          <input id="mr-att" class="v82-input" placeholder="Attendance" style="flex:0 0 120px"/>
+        </div>
+        <textarea id="mr-summary" class="v82-input" rows="2" placeholder="Match summary…" style="margin-top:.4rem"></textarea>
+        <textarea id="mr-incidents" class="v82-input" rows="2" placeholder="Incidents / sanctions…" style="margin-top:.4rem"></textarea>
+        <textarea id="mr-comments" class="v82-input" rows="2" placeholder="Officials' comments…" style="margin-top:.4rem"></textarea>
+        <div class="v82-row" style="justify-content:flex-end;margin-top:.5rem">
+          <button class="btn btn-blue" onclick="SansiroV82.submitReport()">Submit Report</button>
+        </div>
+      </div>
+      <div class="v82-section-title">Recent Reports</div>
+      <div id="mr-list">Loading…</div>`;
+    wrap.appendChild(m);
+
+    const host=document.querySelector('.nav-group[data-group="GOVERNANCE"]');
+    if(host && !document.getElementById('btn-v82-mr')){
+      const b=document.createElement('button'); b.className='dash-nav-btn'; b.id='btn-v82-mr';
+      b.innerHTML='📝 Match Reports';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-match-rep',b); loadReports(); };
+      host.appendChild(b);
+    }
+  }
+  async function loadReports(){
+    const list=document.getElementById('mr-list'); if(!list) return;
+    const r=await _api('getMatchReports',{});
+    const reps=(r&&r.reports)||[];
+    list.innerHTML = reps.length ? reps.map(x=>`<div class="v82-card">
+      <div style="font-family:Bebas Neue;letter-spacing:2px">${_esc(x.Match||'')} <span class="v82-tag gold">${_esc(x.Score||'')}</span></div>
+      <div style="font-size:.7rem;color:var(--muted)">By ${_esc(x.By||'')} · ${_esc(x.Date||'')}</div>
+      <div style="margin-top:.4rem">${_esc(x.Summary||'')}</div>
+    </div>`).join('') : '<p style="color:var(--muted)">No reports yet.</p>';
+  }
+  window.SansiroV82.submitReport = async function(){
+    const r=await _api('submitMatchReport',{
+      match:document.getElementById('mr-match').value,
+      score:document.getElementById('mr-score').value,
+      attendance:document.getElementById('mr-att').value,
+      summary:document.getElementById('mr-summary').value,
+      incidents:document.getElementById('mr-incidents').value,
+      comments:document.getElementById('mr-comments').value,
+      by:_name(), byRole:_role()
+    });
+    if(r&&r.success){ _toast('Report submitted','success'); loadReports(); }
+    else _toast((r&&r.message)||'Failed','error');
+  };
+
+  /* ============================================================
+     F. WELFARE DASHBOARD MODULE
+     ============================================================ */
+  function ensureWelfare(){
+    if(!/^(welfare|admin|president|secretary)$/i.test(_role())) return;
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-welfare')) return;
+    const m=document.createElement('div'); m.className='dash-module'; m.id='mod-v82-welfare';
+    m.innerHTML=`<div class="section-title">💚 Welfare Hub</div>
+      <div class="v82-card">
+        <div class="v82-section-title">Record Welfare Entry</div>
+        <div class="v82-row">
+          <select id="wf-user" class="v82-input" style="flex:1;min-width:180px"></select>
+          <select id="wf-type" class="v82-input" style="flex:0 0 160px">
+            <option value="Support">Support given</option>
+            <option value="Concern">Financial concern</option>
+            <option value="Notice">Welfare notice</option>
+            <option value="Dues">Welfare dues</option>
+          </select>
+          <input id="wf-amt" class="v82-input" placeholder="Amount (₵)" style="flex:0 0 120px"/>
+        </div>
+        <textarea id="wf-note" class="v82-input" rows="2" placeholder="Notes…" style="margin-top:.4rem"></textarea>
+        <div class="v82-row" style="justify-content:flex-end;margin-top:.5rem">
+          <button class="btn btn-blue" onclick="SansiroV82.welfareSave()">Save</button>
+        </div>
+      </div>
+      <div class="v82-section-title">Records</div>
+      <div id="wf-list">Loading…</div>`;
+    wrap.appendChild(m);
+
+    const host=document.querySelector('.nav-group[data-group="FINANCE"]') || document.querySelector('.dash-nav');
+    if(host && !document.getElementById('btn-v82-wf')){
+      const b=document.createElement('button'); b.className='dash-nav-btn'; b.id='btn-v82-wf';
+      b.innerHTML='💚 Welfare';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-welfare',b); loadWelfare(); };
+      host.appendChild(b);
+    }
+  }
+  async function loadWelfare(){
+    const list=document.getElementById('wf-list'); if(!list) return;
+    const sel=document.getElementById('wf-user');
+    if(sel && sel.options.length<2){
+      const u=await _api('getUsers',{}); const users=((u&&u.users)||[]).filter(x=>x.Name);
+      sel.innerHTML='<option value="">— Member —</option>'+users.map(x=>`<option value="${_esc(x.UserID||x.ID)}">${_esc(x.Name)}</option>`).join('');
+    }
+    const r=await _api('getWelfare',{});
+    const items=(r&&r.items)||[];
+    list.innerHTML = items.length ? items.map(x=>`<div class="v82-msg"><div class="meta">${_esc(x.UserName||x.UserID||'')} · ${_esc(x.Type||'')} · ₵${_esc(x.Amount||0)} · ${_esc(x.Date||'')}</div><div>${_esc(x.Notes||'')}</div></div>`).join('') : '<p style="color:var(--muted)">No records.</p>';
+  }
+  window.SansiroV82.welfareSave = async function(){
+    const r=await _api('addWelfare',{
+      userID:document.getElementById('wf-user').value,
+      type:document.getElementById('wf-type').value,
+      amount:document.getElementById('wf-amt').value,
+      notes:document.getElementById('wf-note').value,
+      by:_name()
+    });
+    if(r&&r.success){ _toast('Saved','success'); loadWelfare(); }
+    else _toast((r&&r.message)||'Failed','error');
+  };
+
+  /* ============================================================
+     G. FINANCE APPROVAL FLOW (Sec submits → Pres approves → Members)
+     ============================================================ */
+  function ensureFinanceApproval(){
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-fin-app')) return;
+    const m=document.createElement('div'); m.className='dash-module'; m.id='mod-v82-fin-app';
+    m.innerHTML=`<div class="section-title">🧾 Monthly Finance Approval</div>
+      <div id="v82-fin-content">Loading…</div>`;
+    wrap.appendChild(m);
+
+    const host=document.querySelector('.nav-group[data-group="FINANCE"]') || document.querySelector('.dash-nav');
+    if(host && !document.getElementById('btn-v82-fin')){
+      const b=document.createElement('button'); b.className='dash-nav-btn'; b.id='btn-v82-fin';
+      b.innerHTML='🧾 Approvals';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-fin-app',b); loadFinanceApproval(); };
+      host.appendChild(b);
+    }
+  }
+  async function loadFinanceApproval(){
+    const c=document.getElementById('v82-fin-content'); if(!c) return;
+    const r=await _api('getFinanceApprovals',{});
+    const items=(r&&r.approvals)||[];
+    let html = '';
+    if(/secretary/i.test(_role()) || /admin/i.test(_role())){
+      html += `<div class="v82-card">
+        <div class="v82-section-title">Submit Month for Approval</div>
+        <div class="v82-row">
+          <input id="fa-month" class="v82-input" placeholder="Month (e.g. Nov 2025)" style="flex:1"/>
+          <input id="fa-contrib" class="v82-input" placeholder="Total contributions ₵" style="flex:1"/>
+          <input id="fa-exp" class="v82-input" placeholder="Total expenses ₵" style="flex:1"/>
+          <input id="fa-dues" class="v82-input" placeholder="Dues collected ₵" style="flex:1"/>
+        </div>
+        <textarea id="fa-notes" class="v82-input" rows="2" placeholder="Notes" style="margin-top:.4rem"></textarea>
+        <div class="v82-row" style="justify-content:flex-end;margin-top:.4rem">
+          <button class="btn btn-blue" onclick="SansiroV82.submitApproval()">Submit</button>
+        </div>
+      </div>`;
+    }
+    html += `<div class="v82-section-title">Submissions</div>` + (items.length ? items.map(x=>`<div class="v82-card">
+      <div class="v82-row" style="justify-content:space-between">
+        <div><strong>${_esc(x.Month||'')}</strong> · by ${_esc(x.SubmittedBy||'')} · ${_esc(x.SubmittedAt||'')}</div>
+        <div>${x.Status==='Approved'?'<span class="v82-tag green">APPROVED</span>':x.Status==='Rejected'?'<span class="v82-tag red">REJECTED</span>':'<span class="v82-tag yellow">PENDING</span>'}</div>
+      </div>
+      <div style="margin-top:.4rem">Contributions: ₵${_esc(x.Contributions||0)} · Expenses: ₵${_esc(x.Expenses||0)} · Dues: ₵${_esc(x.Dues||0)} · <strong>Net: ₵${_esc((+x.Contributions||0)+(+x.Dues||0)-(+x.Expenses||0))}</strong></div>
+      ${x.Notes?`<div style="font-size:.8rem;color:var(--muted);margin-top:.3rem">${_esc(x.Notes)}</div>`:''}
+      ${(/president|admin/i.test(_role())&&x.Status==='Pending')?`<div class="v82-row" style="margin-top:.5rem;justify-content:flex-end">
+        <button class="btn btn-red" onclick="SansiroV82.reviewApproval('${_esc(x.AppID)}','Rejected')">Reject</button>
+        <button class="btn btn-blue" onclick="SansiroV82.reviewApproval('${_esc(x.AppID)}','Approved')">Approve</button>
+      </div>`:''}
+    </div>`).join('') : '<p style="color:var(--muted)">No submissions yet.</p>');
+    c.innerHTML = html;
+  }
+  window.SansiroV82.submitApproval = async function(){
+    const r=await _api('submitFinanceApproval',{
+      month:document.getElementById('fa-month').value,
+      contributions:document.getElementById('fa-contrib').value,
+      expenses:document.getElementById('fa-exp').value,
+      dues:document.getElementById('fa-dues').value,
+      notes:document.getElementById('fa-notes').value,
+      by:_name()
+    });
+    if(r&&r.success){ _toast('Submitted','success'); loadFinanceApproval(); }
+    else _toast((r&&r.message)||'Failed','error');
+  };
+  window.SansiroV82.reviewApproval = async function(id,status){
+    const r=await _api('reviewFinanceApproval',{id,status,by:_name()});
+    if(r&&r.success){ _toast(status,'success'); loadFinanceApproval(); }
+  };
+
+  /* ============================================================
+     H. MEMBER FINANCE — show ONLY approved monthly summary
+     ============================================================ */
+  function ensureMemberFinance(){
+    if(!_isMember()) return;
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-mem-fin')) return;
+    const m=document.createElement('div'); m.className='dash-module'; m.id='mod-v82-mem-fin';
+    m.innerHTML=`<div class="section-title">📊 Group Finance Summary</div>
+      <div id="v82-mf-body">Loading…</div>`;
+    wrap.appendChild(m);
+
+    const host=document.querySelector('.nav-group[data-group="FINANCE"]') || document.querySelector('.dash-nav');
+    if(host && !document.getElementById('btn-v82-mf')){
+      const b=document.createElement('button'); b.className='dash-nav-btn'; b.id='btn-v82-mf';
+      b.innerHTML='📊 Group Finance';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-mem-fin',b); loadMemberFinance(); };
+      host.appendChild(b);
+    }
+  }
+  async function loadMemberFinance(){
+    const body=document.getElementById('v82-mf-body'); if(!body) return;
+    const r=await _api('getApprovedFinance',{});
+    const items=(r&&r.approved)||[];
+    body.innerHTML = items.length ? items.map(x=>{
+      const net = (+x.Contributions||0)+(+x.Dues||0)-(+x.Expenses||0);
+      return `<div class="v82-card">
+        <div style="font-family:Bebas Neue;letter-spacing:2px;font-size:1.2rem">${_esc(x.Month||'')}</div>
+        <div style="font-size:.75rem;color:var(--muted)">Approved by ${_esc(x.ReviewedBy||'')} on ${_esc(x.ReviewedAt||'')}</div>
+        <div class="v82-row" style="margin-top:.5rem;gap:1.5rem">
+          <div><div style="font-size:.7rem;color:var(--muted)">Contributions</div><div style="font-size:1.1rem;color:var(--green)">₵${_esc(x.Contributions||0)}</div></div>
+          <div><div style="font-size:.7rem;color:var(--muted)">Dues</div><div style="font-size:1.1rem;color:var(--gold)">₵${_esc(x.Dues||0)}</div></div>
+          <div><div style="font-size:.7rem;color:var(--muted)">Expenses</div><div style="font-size:1.1rem;color:var(--red-light)">₵${_esc(x.Expenses||0)}</div></div>
+          <div><div style="font-size:.7rem;color:var(--muted)">Net</div><div style="font-size:1.3rem;font-weight:700">₵${_esc(net)}</div></div>
+        </div>
+      </div>`;
+    }).join('') : '<p style="color:var(--muted)">No approved finance summary yet.</p>';
+  }
+
+  /* ============================================================
+     I. ADMIN MASTER ACCESS — switch into any account (logged)
+     ============================================================ */
+  function ensureAdminMaster(){
+    if(!/admin/i.test(_role())) return;
+    const wrap=document.querySelector('.dash-content'); if(!wrap) return;
+    if(document.getElementById('mod-v82-master')) return;
+    const m=document.createElement('div'); m.className='dash-module'; m.id='mod-v82-master';
+    m.innerHTML=`<div class="section-title">🔑 Admin Master Access</div>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:.6rem">Switch into any registered account to test their dashboard. Every switch is logged.</p>
+      <div class="v82-row">
+        <select id="adm-user" class="v82-input" style="flex:1;min-width:200px"></select>
+        <button class="btn btn-blue" onclick="SansiroV82.impersonate()">Switch</button>
+        <button class="btn btn-red"  onclick="SansiroV82.endImpersonate()">Restore Admin</button>
+      </div>
+      <div class="v82-section-title" style="margin-top:1.2rem">Recent Access Log</div>
+      <div id="adm-log">Loading…</div>`;
+    wrap.appendChild(m);
+
+    const host=document.querySelector('.nav-group[data-group="GOVERNANCE"]') || document.querySelector('.dash-nav');
+    if(host && !document.getElementById('btn-v82-master')){
+      const b=document.createElement('button'); b.className='dash-nav-btn'; b.id='btn-v82-master';
+      b.innerHTML='🔑 Master Access';
+      b.onclick=()=>{ window.showModule&&window.showModule('v82-master',b); loadMaster(); };
+      host.appendChild(b);
+    }
+  }
+  async function loadMaster(){
+    const sel=document.getElementById('adm-user');
+    const u=await _api('getUsers',{}); const users=((u&&u.users)||[]).filter(x=>x.Name);
+    sel.innerHTML='<option value="">— Member —</option>'+users.map(x=>`<option value="${_esc(x.UserID||x.ID)}">${_esc(x.Name)} (${_esc(x.Role||'')})</option>`).join('');
+    const log=await _api('getAccessLog',{});
+    const rows=(log&&log.log)||[];
+    document.getElementById('adm-log').innerHTML = rows.length
+      ? rows.slice(-30).reverse().map(r=>`<div class="v82-msg"><div class="meta">${_esc(r.By||'')} → ${_esc(r.AsName||r.As||'')} · ${_esc(r.Time||'')}</div></div>`).join('')
+      : '<p style="color:var(--muted)">No access yet.</p>';
+  }
+  window.SansiroV82.impersonate = async function(){
+    const id=document.getElementById('adm-user').value; if(!id){ _toast('Pick user','warn'); return; }
+    const r=await _api('adminImpersonate',{adminID:_id(),adminName:_name(),targetID:id});
+    if(r&&r.success&&r.user){
+      sessionStorage.setItem('v82_admin_origin', JSON.stringify(window.currentUser));
+      window.currentUser = r.user;
+      _toast('Now viewing as '+(r.user.Name||r.user.Role),'success');
+      setTimeout(()=>location.reload(),700);
+    } else _toast((r&&r.message)||'Failed','error');
+  };
+  window.SansiroV82.endImpersonate = function(){
+    const orig=sessionStorage.getItem('v82_admin_origin');
+    if(!orig){ _toast('Not impersonating','warn'); return; }
+    window.currentUser = JSON.parse(orig);
+    sessionStorage.removeItem('v82_admin_origin');
+    _toast('Restored admin','success'); setTimeout(()=>location.reload(),500);
+  };
+
+  /* ============================================================
+     J. NAV: remove "Rules" from public top navbar
+     ============================================================ */
+  function purgeTopNavRules(){
+    document.querySelectorAll('.nav-links a, #navbar a, #navbar button').forEach(a=>{
+      if(/^rules$/i.test((a.textContent||'').trim())){
+        const li=a.closest('li')||a; if(li&&li.parentElement) li.parentElement.removeChild(li);
+      }
+    });
+  }
+
+  /* ============================================================
+     K. INIT
+     ============================================================ */
+  function initAll(){
+    purgeTopNavRules();
+    if(!_u()) return;       // wait until login
+    applyRoleGating();
+    ensureInboxModule();
+    ensureTeamSheetView();
+    ensureDisciplineView();
+    ensureMatchReports();
+    ensureWelfare();
+    ensureFinanceApproval();
+    ensureMemberFinance();
+    ensureAdminMaster();
+  }
+  // Run on load AND whenever a login completes (we observe currentUser)
+  document.addEventListener('DOMContentLoaded', ()=> setTimeout(initAll, 1500));
+  // Re-run after login button clicks / dashboard opens
+  document.addEventListener('click', e=>{
+    if(e.target.closest('#login-btn,[onclick*="doLogin"],[onclick*="showPage"]')){
+      setTimeout(initAll, 1200);
+    }
+  }, true);
+  // Periodic safety re-init (cheap)
+  setInterval(()=>{ if(_u() && !document.getElementById('mod-v82-inbox')) initAll(); }, 4000);
+
+  console.log('✅ Sansiro v8.2 upgrade patch active');
+})();
+
+</script>
 </script>
 </body>
 </html>
