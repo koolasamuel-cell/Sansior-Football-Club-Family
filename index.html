@@ -700,11 +700,7 @@
 <div class="bg-rotator" id="bg-rotator">
   <div class="bg-overlay" style="background:rgba(0,0,0,0.35);z-index:1;"></div>
 
-  <!-- SAN SIRO LOGO -->
-  <div class="club-watermark">
-    <img src="https://koolasamuel-cell.github.io/Sansior-Football-Club-Family/logo.png" alt="San Siro Football Family Logo">
-  </div>
-
+  
   <!-- AC MILAN LEGENDS -->
   <div class="bg-slide active" data-mode="ac-milan" style="background-image:url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=1920&auto=format&fit=crop')"></div>
 
@@ -776,12 +772,13 @@
         </div>
       </div>
 
-      <script>
+<script>
         const lightbox = document.getElementById("media-lightbox");
         const img = document.getElementById("lightbox-img");
         const loader = document.getElementById("lightbox-loader");
 
         function openLightbox(src){
+          if (!lightbox || !loader || !img) return;
           lightbox.classList.add("open");
           loader.style.display = "block";
           img.style.opacity = "0";
@@ -790,8 +787,10 @@
         }
 
         function closeLightbox(){
-          lightbox.classList.remove("open");
-          img.src = "";
+          if (lightbox && img) {
+            lightbox.classList.remove("open");
+            img.src = "";
+          }
         }
 
         document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeLightbox(); });
@@ -799,13 +798,17 @@
         function toggleMobileNav() {
           const hamburger = document.querySelector('.hamburger');
           const mobileNav = document.querySelector('.mobile-nav');
-          hamburger.classList.toggle('open');
-          mobileNav.classList.toggle('open');
+          if (hamburger && mobileNav) {
+            hamburger.classList.toggle('open');
+            mobileNav.classList.toggle('open');
+          }
         }
 
         function closeMobileNav() {
-          document.querySelector('.hamburger').classList.remove('open');
-          document.querySelector('.mobile-nav').classList.remove('open');
+          const hamburger = document.querySelector('.hamburger');
+          const mobileNav = document.querySelector('.mobile-nav');
+          if (hamburger) hamburger.classList.remove('open');
+          if (mobileNav) mobileNav.classList.remove('open');
         }
 
         function showPage(pageId) {
@@ -815,87 +818,325 @@
         function openFullscreenLogo(url) {
           const overlay = document.getElementById('logo-overlay');
           const overlayImg = document.getElementById('overlay-img');
-          overlayImg.src = url;
-          overlay.style.display = 'flex';
+          if (overlay && overlayImg) {
+            overlayImg.src = url;
+            overlay.style.display = 'flex';
+          }
         }
       </script>
 
-      </body>
-      </html>
 
-<!-- LIGHTBOX SCRIPT -->
-<script>
-  const lightbox = document.getElementById("media-lightbox");
-  const img = document.getElementById("lightbox-img");
-  const loader = document.getElementById("lightbox-loader");
-
-  function openLightbox(src){
-    lightbox.classList.add("open");
-    loader.style.display = "block";
-    img.style.opacity = "0";
-
-    img.onload = () => {
-      loader.style.display = "none";
-      img.style.opacity = "1";
-    };
-
-    img.src = src;
-  }
-
-  function closeLightbox(){
-    lightbox.classList.remove("open");
-    img.src = "";
-  }
-
-  document.addEventListener("keydown", (e) => {
-    if(e.key === "Escape") closeLightbox();
-  });
-
-</script>
   <!-- AUTH MODAL -->
   <div id="auth-modal">
-    <div class="auth-box glass">
-      <button class="auth-close" onclick="closeAuth()">✕</button>
-      <div class="auth-logo">SANSIRO SPECIAL</div>
-      <div class="auth-sub">MEMBER ACCESS</div>
-      <div class="auth-tabs">
-        <div class="auth-tab active" onclick="switchAuthTab('login',this)">Login</div>
-        <div class="auth-tab" onclick="switchAuthTab('register',this)">Register</div>
+  <div class="auth-box glass">
+
+    <style>
+      /* FULL SYSTEM MODAL STRUCTURE INTEGRATION */
+      #auth-modal, #edit-modal, #league-modal, #match-result-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 9997;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, .85);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        padding: 1rem;
+      }
+
+      /* TOGGLE FOR SHOWING THE MODAL */
+      #auth-modal.open, #edit-modal.open, #league-modal.open, #match-result-modal.open {
+        display: flex;
+      }
+
+      /* GLASS CONTAINER VISUALS */
+      .auth-box.glass {
+        width: 100%;
+        max-width: 480px;
+        max-height: 85vh;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #ff0000 #1a1a1a;
+        padding: 2rem;
+        position: relative;
+        background: #050505; /* Matches system dark theme */
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+      }
+
+      .auth-box.glass::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .auth-box.glass::-webkit-scrollbar-track {
+        background: #1a1a1a;
+      }
+
+      .auth-box.glass::-webkit-scrollbar-thumb {
+        background: #ff0000;
+        border-radius: 10px;
+      }
+
+      /* AUTH FORMS */
+      .auth-form {
+        display: none;
+      }
+
+      .auth-form.active {
+        display: block;
+      }
+
+      /* RECOVERY MESSAGE BOX */
+      .recovery-box {
+        display: none;
+        margin-bottom: 18px;
+        padding: 18px;
+        border-radius: 18px;
+        background: rgba(10, 10, 10, 0.72);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45), inset 0 0 25px rgba(255, 255, 255, 0.02);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .recovery-box::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255, 77, 77, 0.05), rgba(0, 217, 255, 0.03), rgba(255, 204, 0, 0.04));
+        pointer-events: none;
+      }
+
+      /* UPDATED THEME COLORS (RED/GOLD) */
+      .recovery-success {
+        border: 1px solid rgba(255, 0, 0, 0.3);
+      }
+
+      .recovery-error {
+        border: 1px solid rgba(255, 77, 77, 0.25);
+      }
+
+      .recovery-title {
+        font-size: 17px;
+        font-weight: 800;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+        background: linear-gradient(to bottom, #ff4d4d, #ff9900, #00d9ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .password-display {
+        margin-top: 12px;
+        padding: 14px;
+        border-radius: 12px;
+        background: rgba(255, 0, 0, 0.08);
+        border: 1px solid rgba(255, 0, 0, 0.4);
+        color: #ff4d4d;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.1), inset 0 0 10px rgba(255, 255, 255, 0.02);
+      }
+    </style>
+
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+
+    <div class="auth-logo">SANSIRO SPECIAL</div>
+    <div class="auth-sub">MEMBER ACCESS</div>
+
+    <div class="auth-tabs" id="auth-tabs-container">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login', this)">Login</div>
+      <div class="auth-tab" id="tab-register" onclick="switchAuthTab('register', this)">Register</div>
+    </div>
+
+    <div class="auth-form active" id="login-form">
+      <div class="auth-msg" id="login-msg"></div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input id="l-email" type="email" placeholder="your@email.com" />
       </div>
-      <div class="auth-form active" id="login-form">
-        <div class="auth-msg" id="login-msg"></div>
-        <div class="form-group"><label>Email</label><input id="l-email" type="email" placeholder="your@email.com"/></div>
-        <div class="form-group"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
-        <button class="btn btn-red" style="width:100%;justify-content:center;clip-path:none;border-radius:2px" onclick="doLogin()" id="login-btn">Login</button>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()" />
       </div>
-      <div class="auth-form" id="register-form">
-        <div class="auth-msg" id="reg-msg"></div>
-        <div class="form-group"><label>Full Name</label><input id="r-name" type="text" placeholder="Full name"/></div>
-        <div class="form-group"><label>Email</label><input id="r-email" type="email" placeholder="your@email.com"/></div>
-        <div class="form-group"><label>Password</label><input id="r-pass" type="password" placeholder="Create password"/></div>
-        <div class="form-group"><label>Role</label>
-          <select id="r-role">
-            <option value="">— Select role —</option>
-            <option value="Player">Player</option>
-            <option value="Coach">Coach</option>
-            <option value="Secretary">Secretary</option>
-            <option value="Welfare">Welfare</option>
-            <option value="Official">Official</option>
-            <option value="President">President</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Team</label>
-          <select id="r-team">
-            <option value="">— Select team —</option>
-            <option value="AC Milan">AC Milan</option>
-            <option value="Inter Milan">Inter Milan</option>
-          </select>
-        </div>
-        <button class="btn btn-blue" style="width:100%;justify-content:center;clip-path:none;border-radius:2px" onclick="doRegister()" id="reg-btn">Create Account</button>
+
+      <div style="text-align:right; margin-top:-5px; margin-bottom:15px;">
+        <a href="javascript:void(0)" onclick="showForgotPasswordForm()" style="font-size:12px; color:#aaaaaa; text-decoration:none; transition:0.3s;" onmouseover="this.style.color='#ffcc00'" onmouseout="this.style.color='#aaaaaa'">
+          Forgot Password?
+        </a>
+      </div>
+
+      <button class="btn btn-red" style="width:100%; justify-content:center; clip-path:none; border-radius:2px;" onclick="doLogin()" id="login-btn">
+        Login
+      </button>
+    </div>
+
+    <div class="auth-form" id="forgot-form">
+      <div class="auth-msg" id="forgot-msg"></div>
+
+      <div class="form-group">
+        <label>Account Recovery</label>
+        <input id="f-identity" type="text" placeholder="Enter your registered Email or Phone Number" onkeydown="if(event.key==='Enter') executePasswordRecovery()" />
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:20px;">
+        <button class="btn" style="flex:1; background:#222; color:#fff; border:1px solid #333; justify-content:center; clip-path:none; border-radius:2px;" onclick="hideForgotPasswordForm()">
+          Back to Login
+        </button>
+        <button class="btn btn-blue" style="flex:1; justify-content:center; clip-path:none; border-radius:2px;" onclick="executePasswordRecovery()">
+          Find Account
+        </button>
       </div>
     </div>
-  </div>
 
+    <div class="auth-form" id="register-form">
+      <div class="auth-msg" id="reg-msg"></div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input id="r-name" type="text" placeholder="Full name" />
+      </div>
+
+      <div class="form-group">
+        <label>Nickname / Alias</label>
+        <input id="r-nickname" type="text" placeholder="e.g. KOOLA" maxlength="20" />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input id="r-email" type="email" placeholder="your@email.com" />
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input id="r-pass" type="password" placeholder="Create password" />
+      </div>
+
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input id="r-confirm-pass" type="password" placeholder="Confirm password" />
+      </div>
+
+      <div class="form-group">
+        <label>Role</label>
+        <select id="r-role" onchange="togglePositionField()">
+          <option value="">— Select role —</option>
+          <option value="Player">Player</option>
+          <option value="Coach">Coach</option>
+          <option value="Welfare">Welfare</option>
+          <option value="Official">Official</option>
+          <option value="Supporter">Supporter</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="position-group" style="display:none; background:rgba(255,0,0,0.1); border-left:3px solid #ff0000; padding:10px; border-radius:4px;">
+        <label>Player Position</label>
+        <select id="r-position">
+          <option value="">— Select position —</option>
+          <option value="Goalkeeper">Goalkeeper (GK)</option>
+          <option value="Left Back">Left Back (LB)</option>
+          <option value="Right Back">Right Back (RB)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Team</label>
+        <select id="r-team">
+          <option value="">— Select team —</option>
+          <option value="AC Milan">AC Milan</option>
+          <option value="Inter Milan">Inter Milan</option>
+          <option value="Supporter">Supporter</option>
+        </select>
+      </div>
+
+      <button class="btn btn-blue" style="width:100%; justify-content:center; clip-path:none; border-radius:2px; margin-top:10px;" onclick="doRegister()" id="reg-btn">
+        Create Account
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function togglePositionField() {
+    const roleSelect = document.getElementById('r-role');
+    const positionGroup = document.getElementById('position-group');
+    positionGroup.style.display = (roleSelect.value === 'Player') ? 'block' : 'none';
+  }
+
+  /* SWITCHING VIEWS VIA NATIVE EMBEDDED FIELDS */
+  function showForgotPasswordForm() {
+    // Hide standard forms and messages
+    document.getElementById('login-form').classList.remove('active');
+    document.getElementById('register-form').classList.remove('active');
+    document.getElementById('login-msg').style.display = 'none';
+    document.getElementById('forgot-msg').style.display = 'none';
+    
+    // Hide tabs container so view looks completely clean
+    document.getElementById('auth-tabs-container').style.display = 'none';
+    
+    // Clear and open the recovery input field view
+    document.getElementById('f-identity').value = '';
+    document.getElementById('forgot-form').classList.add('active');
+  }
+
+  function hideForgotPasswordForm() {
+    document.getElementById('forgot-form').classList.remove('active');
+    document.getElementById('auth-tabs-container').style.display = 'flex';
+    document.getElementById('login-form').classList.add('active');
+    
+    // Return active status highlighting to login tab element
+    document.getElementById('tab-register').classList.remove('active');
+    document.getElementById('tab-login').classList.add('active');
+  }
+
+  function executePasswordRecovery() {
+    const input = document.getElementById('f-identity').value.trim();
+    const forgotMsg = document.getElementById('forgot-msg');
+    
+    if (!input) {
+      forgotMsg.className = "auth-msg recovery-box recovery-error";
+      forgotMsg.style.display = "block";
+      forgotMsg.innerHTML = `<div class="recovery-title">ERROR</div><div style="color:#ffffff;">Please enter a value first.</div>`;
+      return;
+    }
+
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+    const foundUser = users.find(user => user.email === input || user.phone === input);
+
+    if (!foundUser) {
+      forgotMsg.className = "auth-msg recovery-box recovery-error";
+      forgotMsg.style.display = "block";
+      forgotMsg.innerHTML = `
+        <div class="recovery-title">ACCESS DENIED</div>
+        <div style="color:#ffffff; line-height:1.8;">
+          No account found with:<br><br>
+          <span style="color:#ffcc00; font-weight:bold;">${input}</span>
+        </div>`;
+      return;
+    }
+
+    forgotMsg.className = "auth-msg recovery-box recovery-success";
+    forgotMsg.style.display = "block";
+    forgotMsg.innerHTML = `
+      <div class="recovery-title">SANSIRO SPECIAL</div>
+      <div style="color:#ff4d4d; font-size:15px; font-weight:700; margin-bottom:15px; text-shadow:0 0 10px rgba(255,0,0,0.5);">
+        PASSWORD RECOVERY SUCCESSFUL
+      </div>
+      <div style="color:#aaaaaa; font-size:12px; letter-spacing:1px; margin-bottom:8px;">ACCOUNT VERIFIED</div>
+      <div style="color:#ffffff; font-weight:bold; margin-bottom:15px;">${input}</div>
+      <div style="color:#ffcc00; font-size:12px; letter-spacing:1px; margin-bottom:10px;">YOUR PASSWORD</div>
+      <div class="password-display">${foundUser.password}</div>`;
+  }
+</script>
   <!-- EDIT MEMBER MODAL -->
   <div id="edit-modal">
     <div class="edit-box glass">
@@ -1784,7 +2025,7 @@
   <script>
   'use strict';
 
-  const APP_URL = "https://script.google.com/macros/s/AKfycbxh2X8EQS-G6apEtwHWuH2NPd6ABwRhivoiAJMtpmfjHGmKchZsqVt8ll7FNUCVuMdBlw/exec";
+  const APP_URL = "https://script.google.com/macros/s/AKfycbwNENdrw3uEXMILZzo8GlOyVbo6YXXrg--eRfKGekNr1qCnYbHKPRC5k8y4u2bOvKVAZw/exec";
   const DUES_MONTHS = ['August 2025','September 2025','October 2025','November 2025','December 2025','January 2026','February 2026','March 2026','April 2026'];
   const DUES_PER_MONTH = 10;
 
@@ -6917,7 +7158,7 @@
   });
 
 
-  <script>
+  
   /* ═══════════════════════════════════════════════════════════════════
      SANSIRO v8.2 — UPGRADE PATCH (append-only, backwards compatible)
      • Role dropdown cleanup     • Coach team-lock
