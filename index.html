@@ -980,24 +980,7 @@
       </button>
     </div>
 
-    <div class="auth-form" id="forgot-form">
-      <div class="auth-msg" id="forgot-msg"></div>
-
-      <div class="form-group">
-        <label>Account Recovery</label>
-        <input id="f-identity" type="text" placeholder="Enter your registered Email or Phone Number" onkeydown="if(event.key==='Enter') executePasswordRecovery()" />
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:20px;">
-        <button class="btn" style="flex:1; background:#222; color:#fff; border:1px solid #333; justify-content:center; clip-path:none; border-radius:2px;" onclick="hideForgotPasswordForm()">
-          Back to Login
-        </button>
-        <button class="btn btn-blue" style="flex:1; justify-content:center; clip-path:none; border-radius:2px;" onclick="executePasswordRecovery()">
-          Find Account
-        </button>
-      </div>
-    </div>
-
+<!-- ========================================================= SECURE PASSWORD RECOVERY FORM ========================================================= --> <div class="auth-form" id="forgot-form"> <div class="auth-msg" id="forgot-msg"></div> <!-- STEP 1 --> <div id="recovery-step-1"> <div class="form-group"> <label>Account Recovery</label> <input id="f-identity" type="text" placeholder="Enter registered Email or Phone" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key==='Enter') sendRecoveryOTP()" /> </div> <div style="display:flex;gap:10px;margin-top:20px;"> <button class="btn" style="flex:1;background:#222;color:#fff;border:1px solid #333;justify-content:center;clip-path:none;border-radius:2px;" onclick="hideForgotPasswordForm()" > Back </button> <button class="btn btn-blue" style="flex:1;justify-content:center;clip-path:none;border-radius:2px;" onclick="sendRecoveryOTP()" > Send OTP </button> </div> </div> <!-- STEP 2 --> <div id="recovery-step-2" style="display:none;"> <div class="form-group"> <label>Enter OTP</label> <input id="f-otp" type="text" placeholder="Enter OTP code" autocomplete="off" onkeydown="if(event.key==='Enter') verifyRecoveryOTP()" /> </div> <div class="form-group"> <label>New Password</label> <input id="f-new-password" type="password" placeholder="Enter new password" autocomplete="new-password" /> </div> <div class="form-group"> <label>Confirm Password</label> <input id="f-confirm-password" type="password" placeholder="Confirm new password" autocomplete="new-password" onkeydown="if(event.key==='Enter') verifyRecoveryOTP()" /> </div> <div style="display:flex;gap:10px;margin-top:20px;"> <button class="btn" style="flex:1;background:#222;color:#fff;border:1px solid #333;justify-content:center;clip-path:none;border-radius:2px;" onclick="backToRecoveryStep1()" > Back </button> <button class="btn btn-blue" style="flex:1;justify-content:center;clip-path:none;border-radius:2px;" onclick="verifyRecoveryOTP()" > Reset Password </button> </div> </div> </div>
     <div class="auth-form" id="register-form">
       <div class="auth-msg" id="reg-msg"></div>
 
@@ -1072,72 +1055,235 @@
     positionGroup.style.display = (roleSelect.value === 'Player') ? 'block' : 'none';
   }
 
-  /* SWITCHING VIEWS VIA NATIVE EMBEDDED FIELDS */
-  function showForgotPasswordForm() {
-    // Hide standard forms and messages
-    document.getElementById('login-form').classList.remove('active');
-    document.getElementById('register-form').classList.remove('active');
-    document.getElementById('login-msg').style.display = 'none';
-    document.getElementById('forgot-msg').style.display = 'none';
-    
-    // Hide tabs container so view looks completely clean
-    document.getElementById('auth-tabs-container').style.display = 'none';
-    
-    // Clear and open the recovery input field view
-    document.getElementById('f-identity').value = '';
-    document.getElementById('forgot-form').classList.add('active');
+ /* =========================================================
+   SECURE PASSWORD RECOVERY SYSTEM
+========================================================= */
+
+/* OPEN RECOVERY FORM */
+function showForgotPasswordForm() {
+
+  document.getElementById('login-form').classList.remove('active');
+  document.getElementById('register-form').classList.remove('active');
+
+  document.getElementById('auth-tabs-container').style.display = 'none';
+
+  document.getElementById('forgot-form').classList.add('active');
+
+  document.getElementById('forgot-msg').style.display = 'none';
+
+  resetRecoveryUI();
+}
+
+/* CLOSE RECOVERY FORM */
+function hideForgotPasswordForm() {
+
+  document.getElementById('forgot-form').classList.remove('active');
+
+  document.getElementById('auth-tabs-container').style.display = 'flex';
+
+  document.getElementById('login-form').classList.add('active');
+
+  document.getElementById('tab-register').classList.remove('active');
+  document.getElementById('tab-login').classList.add('active');
+
+  resetRecoveryUI();
+}
+
+/* RESET UI */
+function resetRecoveryUI() {
+
+  document.getElementById('recovery-step-1').style.display = 'block';
+  document.getElementById('recovery-step-2').style.display = 'none';
+
+  document.getElementById('f-identity').value = '';
+  document.getElementById('f-otp').value = '';
+  document.getElementById('f-new-password').value = '';
+  document.getElementById('f-confirm-password').value = '';
+
+}
+
+/* BACK BUTTON */
+function backToRecoveryStep1() {
+
+  document.getElementById('recovery-step-1').style.display = 'block';
+  document.getElementById('recovery-step-2').style.display = 'none';
+
+}
+
+/* SHOW MESSAGE */
+function recoveryMessage(type, text) {
+
+  const box = document.getElementById('forgot-msg');
+
+  box.style.display = 'block';
+
+  if (type === 'success') {
+
+    box.style.background = 'rgba(0,212,106,0.08)';
+    box.style.border = '1px solid rgba(0,212,106,0.3)';
+    box.style.color = '#00d46a';
+
+  } else {
+
+    box.style.background = 'rgba(255,0,0,0.08)';
+    box.style.border = '1px solid rgba(255,0,0,0.3)';
+    box.style.color = '#ff4d4d';
+
   }
 
-  function hideForgotPasswordForm() {
-    document.getElementById('forgot-form').classList.remove('active');
-    document.getElementById('auth-tabs-container').style.display = 'flex';
-    document.getElementById('login-form').classList.add('active');
-    
-    // Return active status highlighting to login tab element
-    document.getElementById('tab-register').classList.remove('active');
-    document.getElementById('tab-login').classList.add('active');
+  box.style.padding = '12px';
+  box.style.borderRadius = '6px';
+  box.innerHTML = text;
+
+}
+
+/* =========================================================
+   SEND OTP
+========================================================= */
+
+async function sendRecoveryOTP() {
+
+  const identity = document.getElementById('f-identity').value.trim();
+
+  if (!identity) {
+
+    recoveryMessage('error', 'Enter your email or phone number.');
+    return;
+
   }
 
-  function executePasswordRecovery() {
-    const input = document.getElementById('f-identity').value.trim();
-    const forgotMsg = document.getElementById('forgot-msg');
-    
-    if (!input) {
-      forgotMsg.className = "auth-msg recovery-box recovery-error";
-      forgotMsg.style.display = "block";
-      forgotMsg.innerHTML = `<div class="recovery-title">ERROR</div><div style="color:#ffffff;">Please enter a value first.</div>`;
+  recoveryMessage('success', 'Sending OTP...');
+
+  try {
+
+    const result = await api('sendRecoveryOTP', {
+      identity
+    });
+
+    if (!result.success) {
+
+      recoveryMessage('error', result.message || 'Account not found.');
       return;
+
     }
 
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    const foundUser = users.find(user => user.email === input || user.phone === input);
+    recoveryMessage(
+      'success',
+      'OTP sent successfully. Check your email or phone.'
+    );
 
-    if (!foundUser) {
-      forgotMsg.className = "auth-msg recovery-box recovery-error";
-      forgotMsg.style.display = "block";
-      forgotMsg.innerHTML = `
-        <div class="recovery-title">ACCESS DENIED</div>
-        <div style="color:#ffffff; line-height:1.8;">
-          No account found with:<br><br>
-          <span style="color:#ffcc00; font-weight:bold;">${input}</span>
-        </div>`;
+    document.getElementById('recovery-step-1').style.display = 'none';
+    document.getElementById('recovery-step-2').style.display = 'block';
+
+  } catch (err) {
+
+    recoveryMessage(
+      'error',
+      'Connection error. Please try again.'
+    );
+
+  }
+
+}
+
+/* =========================================================
+   VERIFY OTP + RESET PASSWORD
+========================================================= */
+
+async function verifyRecoveryOTP() {
+
+  const identity = document.getElementById('f-identity').value.trim();
+
+  const otp = document.getElementById('f-otp').value.trim();
+
+  const newPassword =
+    document.getElementById('f-new-password').value;
+
+  const confirmPassword =
+    document.getElementById('f-confirm-password').value;
+
+  if (!otp || !newPassword || !confirmPassword) {
+
+    recoveryMessage(
+      'error',
+      'Fill all fields first.'
+    );
+
+    return;
+
+  }
+
+  if (newPassword.length < 6) {
+
+    recoveryMessage(
+      'error',
+      'Password must be at least 6 characters.'
+    );
+
+    return;
+
+  }
+
+  if (newPassword !== confirmPassword) {
+
+    recoveryMessage(
+      'error',
+      'Passwords do not match.'
+    );
+
+    return;
+
+  }
+
+  recoveryMessage(
+    'success',
+    'Verifying OTP...'
+  );
+
+  try {
+
+    const result = await api('verifyRecoveryOTP', {
+
+      identity,
+      otp,
+      newPassword
+
+    });
+
+    if (!result.success) {
+
+      recoveryMessage(
+        'error',
+        result.message || 'Invalid OTP.'
+      );
+
       return;
+
     }
 
-    forgotMsg.className = "auth-msg recovery-box recovery-success";
-    forgotMsg.style.display = "block";
-    forgotMsg.innerHTML = `
-      <div class="recovery-title">SANSIRO SPECIAL</div>
-      <div style="color:#ff4d4d; font-size:15px; font-weight:700; margin-bottom:15px; text-shadow:0 0 10px rgba(255,0,0,0.5);">
-        PASSWORD RECOVERY SUCCESSFUL
-      </div>
-      <div style="color:#aaaaaa; font-size:12px; letter-spacing:1px; margin-bottom:8px;">ACCOUNT VERIFIED</div>
-      <div style="color:#ffffff; font-weight:bold; margin-bottom:15px;">${input}</div>
-      <div style="color:#ffcc00; font-size:12px; letter-spacing:1px; margin-bottom:10px;">YOUR PASSWORD</div>
-      <div class="password-display">${foundUser.password}</div>`;
+    recoveryMessage(
+      'success',
+      'Password reset successful. You can now login.'
+    );
+
+    setTimeout(() => {
+
+      hideForgotPasswordForm();
+
+    }, 2000);
+
+  } catch (err) {
+
+    recoveryMessage(
+      'error',
+      'Server connection failed.'
+    );
+
   }
+
+}
 </script>
-  <!-- EDIT MEMBER MODAL -->
+  // <!-- EDIT MEMBER MODAL -->
   <div id="edit-modal">
     <div class="edit-box glass">
       <button class="modal-close" onclick="closeEditModal()">✕</button>
@@ -2025,7 +2171,7 @@
   <script>
   'use strict';
 
-  const APP_URL = "https://script.google.com/macros/s/AKfycbzGFtQHuZWKb_uI1NFRBHE04P2owQfAQUvRZ5teqy03vc_8SS3Q7k63Z6PkdIiBBycpZg/exec";
+  const APP_URL = "https://script.google.com/macros/s/AKfycbxzKC-smOFubiTeJSt7_SjlaILAF1XoWjM1OTNXWiiBcI3FQJDOd3emlhjNmqo5jkcK/exec";
   const DUES_MONTHS = ['August 2025','September 2025','October 2025','November 2025','December 2025','January 2026','February 2026','March 2026','April 2026'];
   const DUES_PER_MONTH = 10;
 
@@ -7770,57 +7916,61 @@
       sessionStorage.removeItem('v82_admin_origin');
       _toast('Restored admin','success'); setTimeout(()=>location.reload(),500);
     };
+// /* ============================================================
+//        J. NAV: remove "Rules" from public top navbar
+//        ============================================================ */
+//     function purgeTopNavRules(){
+//       // Completely neutralized - does nothing now so "Rules" stays visible
+//       return; 
+//       
+//       /*
+//       document.querySelectorAll('.nav-links a, #navbar a, #navbar button').forEach(a=>{
+//         if(/^rules$/i.test((a.textContent||'').trim())){
+//           const li=a.closest('li')||a; if(li&&li.parentElement) li.parentElement.removeChild(li);
+//         }
+//       });
+//       */
+//     }
 
-    /* ============================================================
-       J. NAV: remove "Rules" from public top navbar
-       ============================================================ */
-    function purgeTopNavRules(){
-      document.querySelectorAll('.nav-links a, #navbar a, #navbar button').forEach(a=>{
-        if(/^rules$/i.test((a.textContent||'').trim())){
-          const li=a.closest('li')||a; if(li&&li.parentElement) li.parentElement.removeChild(li);
-        }
-      });
-    }
+//     /* ============================================================
+//        K. INIT
+//        ============================================================ */
+//     function initAll(){
+//       purgeTopNavRules(); // Safe to leave here, it returns instantly
+//       if(!_u()) return;       // wait until login
+//       applyRoleGating();
+//       ensureInboxModule();
+//       ensureTeamSheetView();
+//       ensureDisciplineView();
+//       ensureMatchReports();
+//       ensureWelfare();
+//       ensureFinanceApproval();
+//       ensureMemberFinance();
+//       ensureAdminMaster();
+//     }
+//     // Run on load AND whenever a login completes (we observe currentUser)
+//     document.addEventListener('DOMContentLoaded', ()=> setTimeout(initAll, 1500));
+//     // Re-run after login button clicks / dashboard opens
+//     document.addEventListener('click', e=>{
+//       if(e.target.closest('#login-btn,[onclick*="doLogin"],[onclick*="showPage"]')){
+//         setTimeout(initAll, 1200);
+//       }
+//     }, true);
+//     // Periodic safety re-init (cheap)
+//     setInterval(()=>{ if(_u() && !document.getElementById('mod-v82-inbox')) initAll(); }, 4000);
 
-    /* ============================================================
-       K. INIT
-       ============================================================ */
-    function initAll(){
-      purgeTopNavRules();
-      if(!_u()) return;       // wait until login
-      applyRoleGating();
-      ensureInboxModule();
-      ensureTeamSheetView();
-      ensureDisciplineView();
-      ensureMatchReports();
-      ensureWelfare();
-      ensureFinanceApproval();
-      ensureMemberFinance();
-      ensureAdminMaster();
-    }
-    // Run on load AND whenever a login completes (we observe currentUser)
-    document.addEventListener('DOMContentLoaded', ()=> setTimeout(initAll, 1500));
-    // Re-run after login button clicks / dashboard opens
-    document.addEventListener('click', e=>{
-      if(e.target.closest('#login-btn,[onclick*="doLogin"],[onclick*="showPage"]')){
-        setTimeout(initAll, 1200);
-      }
-    }, true);
-    // Periodic safety re-init (cheap)
-    setInterval(()=>{ if(_u() && !document.getElementById('mod-v82-inbox')) initAll(); }, 4000);
-
-    console.log('✅ Sansiro v8.2 upgrade patch active');
+//     console.log('✅ Sansiro v8.2 upgrade patch active');
   })();
 
- function openFullscreenLogo(imgSrc) {
-  const overlay = document.getElementById('logo-overlay');
-  const overlayImg = document.getElementById('overlay-img');
-  
-  if (overlay && overlayImg) {
-    overlayImg.src = imgSrc;
-    overlay.style.display = 'flex';
-  }
-}
+//  function openFullscreenLogo(imgSrc) {
+//   const overlay = document.getElementById('logo-overlay');
+//   const overlayImg = document.getElementById('overlay-img');
+//   
+//   if (overlay && overlayImg) {
+//     overlayImg.src = imgSrc;
+//     overlay.style.display = 'flex';
+//   }
+// }
   </script>
   </body>
   </html>
