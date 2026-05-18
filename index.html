@@ -2170,11 +2170,25 @@ async function verifyRecoveryOTP() {
   </footer>
   <script>
   'use strict';
+const APP_URL = "https://script.google.com/macros/s/AKfycbxzKC-smOFubiTeJSt7_SjlaILAF1XoWjM1OTNXWiiBcI3FQJDOd3emlhjNmqo5jkcK/exec";
+  window.APP_URL = APP_URL; 
+  
+  // 🔄 Automatically generate dues months from August 2025 up to the current date
+  const DUES_MONTHS = (() => {
+    const months = [];
+    const start = new Date(2025, 7); // August 2025 (JavaScript months are 0-indexed, so 7 = August)
+    const current = new Date();     // Right now
+    
+    const formatter = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric' });
+    
+    while (start <= current) {
+      months.push(formatter.format(start));
+      start.setMonth(start.getMonth() + 1); // Move to the next month
+    }
+    return months;
+  })();
 
-  const APP_URL = "https://script.google.com/macros/s/AKfycbxzKC-smOFubiTeJSt7_SjlaILAF1XoWjM1OTNXWiiBcI3FQJDOd3emlhjNmqo5jkcK/exec";
-  const DUES_MONTHS = ['August 2025','September 2025','October 2025','November 2025','December 2025','January 2026','February 2026','March 2026','April 2026'];
   const DUES_PER_MONTH = 10;
-
   let currentUser = null;
   let currentChannel = 'General';
   let chatInterval = null;
